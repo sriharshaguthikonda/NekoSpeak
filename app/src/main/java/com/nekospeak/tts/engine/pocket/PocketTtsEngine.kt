@@ -240,46 +240,23 @@ class PocketTtsEngine(
     
     private fun createSessionOptions(): OrtSession.SessionOptions {
         val prefs = com.nekospeak.tts.data.PrefsManager(context)
-        return OrtSession.SessionOptions().apply {
-            // Use user-configured threads (default 6, which works well on most devices)
-            setIntraOpNumThreads(prefs.cpuThreads)
-            setOptimizationLevel(OrtSession.SessionOptions.OptLevel.ALL_OPT)
-            setMemoryPatternOptimization(true)
-        }
-    }
-    
-    /**
-     * Check if running on 32-bit ARM architecture.
-     * 32-bit ARM has memory alignment requirements that can cause SIGBUS with mmap'd INT8 models.
-     */
-    private fun is32BitArm(): Boolean {
-        val abi = android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: ""
-        return abi == "armeabi-v7a" || abi == "armeabi"
+        return com.nekospeak.tts.engine.OrtModelLoader.createSessionOptions(prefs.cpuThreads)
     }
     
     /**
      * Load ONNX model with architecture-aware loading strategy.
-     * 
-     * On 32-bit ARM (armeabi-v7a): Uses byte array loading to avoid mmap alignment issues.
-     * INT8 quantized models can have unaligned tensor data that triggers SIGBUS (BUS_ADRALN)
-     * when accessed via mmap on ARMv7 which requires 4-byte aligned memory access.
-     * 
-     * On 64-bit (arm64-v8a, x86_64): Uses efficient mmap-based file path loading.
+     *
+     * Uses the shared OrtModelLoader utility which handles SIGBUS prevention
+     * on 32-bit ARM by using page-aligned ByteBuffers and disabling ORT's
+     * memory pattern optimization (which internally uses mmap).
+     *
+     * Fixes: https://github.com/siva-sub/NekoSpeak/issues/3
      */
     private fun loadModel(dir: File, name: String, options: OrtSession.SessionOptions): OrtSession {
         val modelFile = File(dir, name)
         val sizeInMB = modelFile.length() / 1024 / 1024
         Log.d(TAG, "Loading model: ${modelFile.absolutePath} (${sizeInMB}MB)")
-        
-        return if (is32BitArm()) {
-            // On 32-bit ARM, load as byte array to avoid mmap alignment issues with INT8 models
-            Log.d(TAG, "Using byte array loading for 32-bit ARM compatibility (avoids mmap alignment issues)")
-            val modelBytes = modelFile.readBytes()
-            ortEnv!!.createSession(modelBytes, options)
-        } else {
-            // On 64-bit, use efficient mmap-based file path loading
-            ortEnv!!.createSession(modelFile.absolutePath, options)
-        }
+        return com.nekospeak.tts.engine.OrtModelLoader.loadModel(ortEnv!!, modelFile, options)
     }
     
     // Voice embeddings cache: voiceId -> FloatArray of shape [N * 1024] flattened

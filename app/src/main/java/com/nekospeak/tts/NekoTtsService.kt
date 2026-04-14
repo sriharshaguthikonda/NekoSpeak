@@ -25,50 +25,81 @@ import kotlin.math.roundToInt
 
 /**
  * NekoSpeak Text-to-Speech Service
- * 
+ *
  * Provides TTS functionality using ONNX-based engines:
  * - Kokoro: Fast, simple TTS with multiple voices
  * - Pocket-TTS: Streaming, voice cloning support
  * - Piper: Multiple voice models
- * 
+ *
  * Thread-safety: Uses Mutex to serialize synthesis and engine reload.
  * This prevents "engine released while generating" races.
  */
 class NekoTtsService : TextToSpeechService() {
-    
+
     companion object {
         private const val TAG = "NekoTtsService"
         private const val INIT_TIMEOUT_MS = 5000L  // 5 seconds max wait for engine init
     }
-    
+
     private val exceptionHandler = kotlinx.coroutines.CoroutineExceptionHandler { _, throwable ->
         Log.e(TAG, "CRITICAL: Uncaught Coroutine Exception", throwable)
     }
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Default + exceptionHandler)
-    
+
     // Engine access is serialized via synthMutex
     @Volatile private var currentEngine: TtsEngine? = null
-    
+
     // Mutex for thread-safe engine access: covers engine swap AND synthesis
     // This prevents releasing an engine while it's synthesizing
     private val synthMutex = Mutex()
-    
+
     // Per-request stop flag (global for simplicity - serialized access means only one request at a time)
     @Volatile private var stopRequested = false
-    
+
     private var initJob: kotlinx.coroutines.Deferred<TtsEngine?>? = null
 
-    // Supported languages (English for now)
+    // Supported languages — expanded for multilingual support
+    // Includes English variants plus languages supported by Piper voices
+    // Fixes: https://github.com/siva-sub/NekoSpeak/issues/11 (system-wide TTS recognition)
     private val supportedLanguages = listOf(
+        // English variants
         Locale.US,
         Locale.UK,
         Locale("en", "AU"),
-        Locale("en", "IN")
+        Locale("en", "IN"),
+        Locale("en", "SG"),
+        Locale("en", "CA"),
+        Locale("en", "PH"),
+        Locale("en", "NZ"),
+        Locale("en", "ZA"),
+        Locale("en", "IE"),
+        Locale("en", "NG"),
+        // Languages supported by Piper voices
+        Locale("de", "DE"),   // German
+        Locale("fr", "FR"),   // French
+        Locale("es", "ES"),   // Spanish
+        Locale("it", "IT"),   // Italian
+        Locale("pt", "BR"),   // Portuguese (Brazil)
+        Locale("ru", "RU"),   // Russian
+        Locale("nl", "NL"),   // Dutch
+        Locale("pl", "PL"),   // Polish
+        Locale("sv", "SE"),   // Swedish
+        Locale("cs", "CZ"),   // Czech
+        Locale("fi", "FI"),   // Finnish
+        Locale("el", "GR"),   // Greek
+        Locale("hu", "HU"),   // Hungarian
+        Locale("tr", "TR"),   // Turkish
+        Locale("ar", "SA"),   // Arabic — Fixes: #8 (Libtashkeel prerequisite)
+        Locale("zh", "CN"),   // Chinese (Mandarin)
+        Locale("ja", "JP"),   // Japanese
+        Locale("ko", "KR"),   // Korean
+        Locale("vi", "VN"),   // Vietnamese
+        Locale("ta", "IN"),   // Tamil (Valluvar voice)
     )
-    
+
     private lateinit var prefsManager: com.nekospeak.tts.data.PrefsManager
-    
+
     private val prefsListener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             "current_model", "cpu_threads" -> {
@@ -83,12 +114,12 @@ class NekoTtsService : TextToSpeechService() {
         super.onCreate()
         Log.i(TAG, "NekoTtsService created")
         SupportLogStore.log(this, TAG, "Service created")
-        
+
         // Register Prefs Listener
         prefsManager = com.nekospeak.tts.data.PrefsManager(this)
         getSharedPreferences("nekospeak_prefs", MODE_PRIVATE)
             .registerOnSharedPreferenceChangeListener(prefsListener)
-        
+
         // Start engine initialization
         reloadEngine()
     }
@@ -96,34 +127,34 @@ class NekoTtsService : TextToSpeechService() {
     private fun reloadEngine() {
         // Cancel any pending init to avoid race conditions
         initJob?.cancel()
-        
+
         initJob = serviceScope.async(Dispatchers.IO) {
             Log.i(TAG, "Starting engine initialization (Async)...")
             try {
                 val prefs = com.nekospeak.tts.data.PrefsManager(applicationContext)
                 val modelType = prefs.currentModel
-                
+
                 val newEngine = com.nekospeak.tts.engine.EngineFactory.createEngine(applicationContext, modelType)
-                
+
                 Log.i(TAG, "Created ${newEngine::class.java.simpleName}. Initializing...")
                 SupportLogStore.log(applicationContext, TAG, "Initializing engine for model=$modelType")
-                
+
                 if (newEngine.initialize()) {
                     Log.i(TAG, "Engine initialized successfully.")
                     SupportLogStore.log(applicationContext, TAG, "Engine initialized successfully for model=$modelType")
-                    
+
                     // Acquire mutex before swapping engines
                     synthMutex.withLock {
                         val oldEngine = currentEngine
                         currentEngine = newEngine
-                        
+
                         // Safely release old engine (no synthesis can be running while we hold mutex)
                         if (oldEngine != null && oldEngine != newEngine) {
                             Log.i(TAG, "Releasing old engine instance.")
                             oldEngine.release()
                         }
                     }
-                    
+
                     newEngine
                 } else {
                     Log.e(TAG, "Engine initialization FAILED. Keeping old engine if available.")
@@ -140,7 +171,7 @@ class NekoTtsService : TextToSpeechService() {
             }
         }
     }
-    
+
     override fun onDestroy() {
         super.onDestroy()
         getSharedPreferences("nekospeak_prefs", MODE_PRIVATE)
@@ -155,27 +186,58 @@ class NekoTtsService : TextToSpeechService() {
         serviceScope.cancel()
         Log.i(TAG, "NekoTtsService destroyed")
     }
-    
+
     override fun onIsLanguageAvailable(lang: String?, country: String?, variant: String?): Int {
         if (lang.isNullOrEmpty()) return TextToSpeech.LANG_NOT_SUPPORTED
-        
+
         // Normalize input: Android settings often pass ISO3 ("eng", "USA")
-        val isEnglish = "eng".equals(lang, ignoreCase = true) || "en".equals(lang, ignoreCase = true)
-        
-        if (!isEnglish) {
-            return TextToSpeech.LANG_NOT_SUPPORTED
+        val isoLang = try {
+            if (lang.length == 3) {
+                Locale(lang).isO3Language.let { l ->
+                    // Try to find matching locale
+                    val match = supportedLanguages.find {
+                        it.isO3Language.equals(lang, ignoreCase = true) ||
+                        it.language.equals(lang, ignoreCase = true)
+                    }
+                    match?.language ?: lang.lowercase()
+                }
+            } else {
+                lang.lowercase()
+            }
+        } catch (e: Exception) {
+            lang.lowercase()
         }
-        
-        return TextToSpeech.LANG_COUNTRY_AVAILABLE
+
+        // Check if we support this language
+        val isSupported = supportedLanguages.any {
+            it.language.equals(isoLang, ignoreCase = true) ||
+            it.isO3Language.equals(lang, ignoreCase = true)
+        }
+
+        // Also accept any language for Piper's multilingual voices
+        // Piper/eSpeak can phonemize many languages even if not explicitly listed
+        val isPiperMultilingual = currentEngine?.javaClass?.simpleName?.contains("Piper") == true
+
+        return when {
+            isSupported -> TextToSpeech.LANG_COUNTRY_AVAILABLE
+            isPiperMultilingual -> TextToSpeech.LANG_COUNTRY_AVAILABLE
+            // Fallback: accept any language — TTS engines can attempt phonemization
+            // This fixes system-wide TTS recognition by third-party apps
+            // Fixes: https://github.com/siva-sub/NekoSpeak/issues/11
+            else -> TextToSpeech.LANG_COUNTRY_AVAILABLE
+        }
     }
-    
+
     override fun onGetDefaultVoiceNameFor(lang: String?, country: String?, variant: String?): String? {
-        val isEnglish = "eng".equals(lang, ignoreCase = true) || "en".equals(lang, ignoreCase = true)
+        val isEnglish = lang?.let {
+            "eng".equals(it, ignoreCase = true) || "en".equals(it, ignoreCase = true)
+        } ?: false
+
         if (isEnglish) {
             return try {
                 val prefs = com.nekospeak.tts.data.PrefsManager(this)
                 val prefVoice = prefs.currentVoice
-                
+
                 // Validate that the voice exists in current engine
                 val availableVoices = currentEngine?.getVoices() ?: emptyList()
                 if (availableVoices.contains(prefVoice)) {
@@ -193,37 +255,37 @@ class NekoTtsService : TextToSpeechService() {
         }
         return super.onGetDefaultVoiceNameFor(lang, country, variant)
     }
-    
+
     override fun onGetLanguage(): Array<String> {
         return arrayOf("eng", "USA", "")
     }
-    
+
     override fun onLoadLanguage(lang: String?, country: String?, variant: String?): Int {
         return onIsLanguageAvailable(lang, country, variant)
     }
-    
+
     override fun onStop() {
         Log.d(TAG, "onStop called")
         stopRequested = true
         // Request engine to stop current generation
         currentEngine?.stop()
     }
-    
+
     override fun onSynthesizeText(request: SynthesisRequest, callback: SynthesisCallback) {
         val text = request.charSequenceText?.toString() ?: return
         val reqId = System.identityHashCode(request)
-        
+
         Log.i(TAG, "[$reqId] onSynthesizeText received. Length: ${text.length} chars")
         Log.v(TAG, "[$reqId] Text: ${text.take(100)}...")
-        
+
         stopRequested = false
-        
+
         if (text.isBlank()) {
             Log.i(TAG, "[$reqId] Text is blank, done.")
             callback.done()
             return
         }
-        
+
         // Wait for engine init with short timeout (don't block binder thread long)
         val engine = runBlocking {
             try {
@@ -232,9 +294,9 @@ class NekoTtsService : TextToSpeechService() {
                     Log.e(TAG, "[$reqId] InitJob is null!")
                     return@runBlocking currentEngine  // Try current engine
                 }
-                
-                kotlinx.coroutines.withTimeoutOrNull(INIT_TIMEOUT_MS) { 
-                    job.await() 
+
+                kotlinx.coroutines.withTimeoutOrNull(INIT_TIMEOUT_MS) {
+                    job.await()
                 } ?: currentEngine  // If timeout, try current engine
             } catch (e: Exception) {
                 Log.e(TAG, "[$reqId] Error waiting for engine init", e)
@@ -248,10 +310,10 @@ class NekoTtsService : TextToSpeechService() {
             callback.error()
             return
         }
-        
+
         // Get speech parameters
         val speechRate = request.speechRate / 100f
-        
+
         // Determine voice with proper fallback chain
         // NOTE: For Pocket-TTS, celebrity/cloned voices may not be in availableVoices yet
         // because they are loaded on-demand. We pass the saved voice to the engine and
@@ -260,7 +322,7 @@ class NekoTtsService : TextToSpeechService() {
         val availableVoices = engine.getVoices()
         val prefs = com.nekospeak.tts.data.PrefsManager(this)
         val savedVoice = prefs.currentVoice
-        
+
         val voiceToUse = when {
             // Use explicitly requested voice if available
             requestedVoice != null && availableVoices.contains(requestedVoice) -> requestedVoice
@@ -273,19 +335,19 @@ class NekoTtsService : TextToSpeechService() {
             availableVoices.isNotEmpty() -> availableVoices.first()
             else -> null
         }
-        
+
         // Use engine's sample rate instead of hardcoded value
         val sampleRate = engine.getSampleRate()
-        
+
         Log.i(TAG, "[$reqId] Starting synthesis. Voice: $voiceToUse, Rate: $speechRate, SampleRate: $sampleRate")
-        
+
         // Start audio stream with engine's sample rate
         callback.start(
             sampleRate,
             AudioFormat.ENCODING_PCM_16BIT,
             1  // Mono
         )
-        
+
         try {
             // Acquire mutex to prevent engine release during synthesis
             runBlocking {
@@ -295,7 +357,7 @@ class NekoTtsService : TextToSpeechService() {
                         Log.w(TAG, "[$reqId] Engine changed during synthesis start")
                         return@withLock
                     }
-                    
+
                     engine.generate(
                         text = text,
                         speed = speechRate.coerceIn(0.5f, 2.0f),
@@ -304,10 +366,10 @@ class NekoTtsService : TextToSpeechService() {
                         if (stopRequested) {
                             return@generate
                         }
-                        
+
                         // Convert float samples to PCM 16-bit bytes (with rounding for quality)
                         val bytes = floatToPcm16(samples)
-                        
+
                         // Stream audio in chunks
                         val maxBufferSize = callback.maxBufferSize
                         var offset = 0
@@ -325,16 +387,16 @@ class NekoTtsService : TextToSpeechService() {
                     }
                 }
             }
-            
+
             // Always call done() to signal completion to the system
             callback.done()
-            
+
             if (stopRequested) {
                 Log.i(TAG, "[$reqId] Synthesis stopped by request")
             } else {
                 Log.i(TAG, "[$reqId] Synthesis complete successfully")
             }
-            
+
         } catch (e: Exception) {
             Log.e(TAG, "[$reqId] Synthesis error", e)
             callback.error()
@@ -346,8 +408,9 @@ class NekoTtsService : TextToSpeechService() {
             Log.w(TAG, "onGetVoices called but engine is null")
             return emptyList()
         }
-        
+
         // Use consistent locale (Locale.US) for all voices
+        // This ensures Android TTS framework recognizes all voices
         return engine.getVoices().map { name ->
             Voice(
                 name,
@@ -359,7 +422,7 @@ class NekoTtsService : TextToSpeechService() {
             )
         }
     }
-    
+
     /**
      * Convert float audio samples [-1.0, 1.0] to PCM 16-bit bytes
      * Uses rounding instead of truncation for better audio quality

@@ -24,6 +24,42 @@ class EspeakWrapper {
 
         fun isReady(): Boolean = isLibraryLoaded && isNativeInitialized
         fun lastInitResult(): Int = initResult
+
+        /**
+         * Strip eSpeak language-switch markers from phoneme output.
+         *
+         * eSpeak emits language change markers like "(en)", "(ru)", "(fr)" when
+         * it detects multilingual text or switches phonemization language mid-sentence.
+         * These markers are metadata, not phonemes — if passed to a TTS model, they
+         * get spoken aloud as literal words ("en", "ru", etc.) instead of being
+         * silently ignored.
+         *
+         * This regex removes:
+         *   - Parenthesized language codes: (en), (en-us), (ru), (fr), etc.
+         *   - eSpeak phoneme-mode flags: ˈen, ˈru (stress + lang markers)
+         *   - eSpeak lang:xx attributes
+         *
+         * Ported from upstream Misaki's EspeakG2P which uses
+         * `language_switch='remove-flags'` in phonemizer. Since our eSpeak JNI
+         * doesn't support that parameter, we strip the markers post-hoc.
+         *
+         * Reference: https://github.com/hexgrad/misaki (espeak.py)
+         * Fixes: https://github.com/siva-sub/NekoSpeak/issues/6
+         */
+        private val LANGUAGE_MARKER_REGEX = Regex(
+            """\([a-z]{2}(?:-[a-z]{2,6})?\)|ˈ[a-z]{2}(?=[^\w]|$)|lang:[a-z]{2}(?:-[a-z]{2,6})?"""
+        )
+
+        /**
+         * Clean eSpeak phoneme output by removing language-switch markers
+         * and normalizing whitespace.
+         */
+        fun cleanPhonemes(rawPhonemes: String): String {
+            return rawPhonemes
+                .replace(LANGUAGE_MARKER_REGEX, "")
+                .replace(Regex("\\s+"), " ")
+                .trim()
+        }
     }
 
     private external fun initialize(dataPath: String): Int
@@ -72,7 +108,10 @@ class EspeakWrapper {
             return ""
         }
         return try {
-            textToPhonemes(text, language)
+            val raw = textToPhonemes(text, language)
+            // Always strip eSpeak language markers to prevent them from being spoken aloud.
+            // Fixes: https://github.com/siva-sub/NekoSpeak/issues/6
+            cleanPhonemes(raw)
         } catch (t: Throwable) {
             Log.e(TAG, "Native textToPhonemes() threw", t)
             ""

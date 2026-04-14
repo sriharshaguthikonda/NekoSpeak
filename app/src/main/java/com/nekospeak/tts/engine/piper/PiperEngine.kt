@@ -94,22 +94,13 @@ class PiperEngine(
             try {
                 ortEnv = OrtEnvironment.getEnvironment()
                 Log.v(TAG, "ONNX Environment created. Creating SessionOptions...")
-                val opts = OrtSession.SessionOptions().apply {
-                     setIntraOpNumThreads(4)
-                }
-                Log.v(TAG, "Creating ONNX Session from ${modelFile.absolutePath}...")
-                
-                // Use byte array loading on 32-bit ARM to avoid mmap alignment issues
-                val abi = android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: ""
-                val is32BitArm = abi == "armeabi-v7a" || abi == "armeabi"
-                
-                ortSession = if (is32BitArm) {
-                    Log.v(TAG, "Using byte array loading for 32-bit ARM compatibility")
-                    val modelBytes = modelFile.readBytes()
-                    ortEnv?.createSession(modelBytes, opts)
-                } else {
-                    ortEnv?.createSession(modelFile.absolutePath, opts)
-                }
+                // Create session options with architecture-aware settings
+                // Uses OrtModelLoader for SIGBUS prevention on 32-bit ARM
+                // Fixes: https://github.com/siva-sub/NekoSpeak/issues/3
+                val opts = com.nekospeak.tts.engine.OrtModelLoader.createSessionOptions(4)
+
+                // Use OrtModelLoader for safe model loading (handles 32-bit ARM alignment)
+                ortSession = com.nekospeak.tts.engine.OrtModelLoader.loadModel(ortEnv!!, modelFile, opts)
                 Log.v(TAG, "ONNX Session created.")
             } catch (e: Throwable) {
                 Log.e(TAG, "CRITICAL: ONNX Init Failed!", e)

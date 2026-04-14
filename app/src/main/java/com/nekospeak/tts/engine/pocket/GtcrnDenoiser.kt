@@ -63,14 +63,6 @@ class GtcrnDenoiser(private val context: Context) {
     }
     
     /**
-     * Check if running on 32-bit ARM (has memory alignment issues with mmap).
-     */
-    private fun is32BitArm(): Boolean {
-        val abi = android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: ""
-        return abi == "armeabi-v7a" || abi == "armeabi"
-    }
-    
-    /**
      * Initialize the denoiser. Loads the model from bundled assets.
      */
     suspend fun initialize(): Boolean = withContext(Dispatchers.IO) {
@@ -82,18 +74,12 @@ class GtcrnDenoiser(private val context: Context) {
             }
             
             ortEnv = OrtEnvironment.getEnvironment()
-            val sessionOptions = OrtSession.SessionOptions().apply {
-                setIntraOpNumThreads(2)
-            }
+            // Use OrtModelLoader for architecture-aware session options
+            // Fixes: https://github.com/siva-sub/NekoSpeak/issues/3
+            val sessionOptions = com.nekospeak.tts.engine.OrtModelLoader.createSessionOptions(threadCount = 2)
             
-            // Use byte array loading on 32-bit ARM to avoid mmap alignment issues
-            session = if (is32BitArm()) {
-                Log.d(TAG, "Using byte array loading for 32-bit ARM compatibility")
-                val modelBytes = modelFile.readBytes()
-                ortEnv!!.createSession(modelBytes, sessionOptions)
-            } else {
-                ortEnv!!.createSession(modelFile.absolutePath, sessionOptions)
-            }
+            // Use OrtModelLoader for safe model loading (handles 32-bit ARM alignment)
+            session = com.nekospeak.tts.engine.OrtModelLoader.loadModel(ortEnv!!, modelFile, sessionOptions)
             isInitialized = true
             
             Log.i(TAG, "GTCRN denoiser initialized successfully with JTransforms FFT")

@@ -24,11 +24,52 @@ object VoiceDefinitions {
         VoiceDefinition("azelma", "Azelma", "Female", "English", "VCTK speaker p303", "https://huggingface.co/kyutai/tts-voices/blob/main/vctk/p303_023.wav", "pocket_v1")
     )
 
-    // Kokoro Standard Voices (Subset)
+    // Kokoro Standard Voices — expanded to include all voices from the ONNX model
+    // The onnx-community/Kokoro-82M-ONNX voice pack includes these voice embeddings.
+    // Fixes: https://github.com/siva-sub/NekoSpeak/issues/5
     val KOKORO_VOICES = listOf(
-        VoiceDefinition("af_heart", "Heart", "Female", "US", "Standard American Female", null, "kokoro_v1.0"),
-        VoiceDefinition("af_bella", "Bella", "Female", "US", "Bella", null, "kokoro_v1.0"),
-        VoiceDefinition("am_adam", "Adam", "Male", "US", "Adam", null, "kokoro_v1.0")
+        // American Female voices
+        VoiceDefinition("af_heart", "Heart ♡", "Female", "US", "Warm American female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("af_bella", "Bella", "Female", "US", "Clear American female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("af_nicole", "Nicole", "Female", "US", "Professional American female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("af_sarah", "Sarah", "Female", "US", "Soft American female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("af_sky", "Sky", "Female", "US", "Bright American female voice", null, "kokoro_v1.0"),
+        
+        // American Male voices
+        VoiceDefinition("am_adam", "Adam", "Male", "US", "Deep American male voice", null, "kokoro_v1.0"),
+        VoiceDefinition("am_michael", "Michael", "Male", "US", "Natural American male voice", null, "kokoro_v1.0"),
+        
+        // British Female voices
+        VoiceDefinition("bf_emma", "Emma", "Female", "UK", "Elegant British female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("bf_isabella", "Isabella", "Female", "UK", "Refined British female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("bf_alice", "Alice", "Female", "UK", "Warm British female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("bf_lily", "Lily", "Female", "UK", "Young British female voice", null, "kokoro_v1.0"),
+        
+        // British Male voices
+        VoiceDefinition("bm_george", "George", "Male", "UK", "Authoritative British male voice", null, "kokoro_v1.0"),
+        VoiceDefinition("bm_lewis", "Lewis", "Male", "UK", "Friendly British male voice", null, "kokoro_v1.0"),
+        
+        // Additional voices from Kokoro v1.0 model
+        VoiceDefinition("bf_dora", "Dora", "Female", "UK", "Expressive British female voice", null, "kokoro_v1.0"),
+        VoiceDefinition("am_santa", "Santa", "Male", "US", "Deep festive American male voice", null, "kokoro_v1.0"),
+        
+        // French voices (Kokoro v1.0 multilingual)
+        VoiceDefinition("ff_siwis", "Siwis", "Female", "FR", "French female voice (multilingual)", null, "kokoro_v1.0"),
+        
+        // Hindi voice (Kokoro v1.0 multilingual)
+        VoiceDefinition("hf_alpha", "Alpha ♀", "Female", "IN", "Hindi female voice (multilingual)", null, "kokoro_v1.0"),
+        VoiceDefinition("hm_beta", "Beta ♂", "Male", "IN", "Hindi male voice (multilingual)", null, "kokoro_v1.0"),
+        
+        // Japanese voices (Kokoro v1.0 multilingual)
+        VoiceDefinition("jf_gongitsune", "Gongitsune", "Female", "JP", "Japanese female voice (multilingual)", null, "kokoro_v1.0"),
+        VoiceDefinition("jf_nezumi", "Nezumi", "Female", "JP", "Japanese female voice (multilingual)", null, "kokoro_v1.0"),
+        VoiceDefinition("jm_kumo", "Kumo", "Male", "JP", "Japanese male voice (multilingual)", null, "kokoro_v1.0"),
+        
+        // Mandarin Chinese voice (Kokoro v1.0 multilingual)
+        VoiceDefinition("zf_xiaobei", "Xiaobei", "Female", "CN", "Mandarin Chinese female voice (multilingual)", null, "kokoro_v1.0"),
+        
+        // Korean voice (Kokoro v1.0 multilingual)
+        VoiceDefinition("kf_xiaoyi", "Xiaoyi", "Female", "KR", "Korean female voice (multilingual)", null, "kokoro_v1.0"),
     )
     
     // Celebrity Voices (Downloaded on-demand from HuggingFace)

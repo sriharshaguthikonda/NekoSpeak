@@ -8,19 +8,24 @@ import java.text.Normalizer
 import java.util.*
 import com.nekospeak.tts.engine.misaki.G2P
 import com.nekospeak.tts.engine.misaki.Lexicon
+import com.nekospeak.tts.engine.misaki.OutputMode
 
 class Phonemizer(private val context: Context) {
     
     companion object {
         private const val TAG = "Phonemizer"
         private const val MAX_PHONEME_LENGTH = 400
+        
+        // Arabic Unicode range for diacritization preprocessing
+        // Fixes: https://github.com/siva-sub/NekoSpeak/issues/8
+        private val ARABIC_REGEX = Regex("[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]")
     }
     
     // Default vocabulary mapping phonemes to tokens
     // Official Kokoro/Kitten TTS Vocabulary (0-177)
     private val defaultVocab = mapOf(
         "$" to 0, ";" to 1, ":" to 2, "," to 3, "." to 4, "!" to 5, "?" to 6, "¡" to 7, "¿" to 8, "—" to 9,
-        "…" to 10, "\"" to 11, "«" to 12, "»" to 13, "“" to 14, "”" to 15, " " to 16,
+        "…" to 10, "\"" to 11, "«" to 12, "»" to 13, """ to 14, """ to 15, " " to 16,
         "A" to 17, "B" to 18, "C" to 19, "D" to 20, "E" to 21, "F" to 22, "G" to 23, "H" to 24, "I" to 25,
         "J" to 26, "K" to 27, "L" to 28, "M" to 29, "N" to 30, "O" to 31, "P" to 32, "Q" to 33, "R" to 34,
         "S" to 35, "T" to 36, "U" to 37, "V" to 38, "W" to 39, "X" to 40, "Y" to 41, "Z" to 42,
@@ -45,9 +50,6 @@ class Phonemizer(private val context: Context) {
     private lateinit var g2pGB: G2P
     private lateinit var espeak: EspeakWrapper
     private var isLoaded = false
-    
-    // Legacy maps for non-English or fallback if G2P fails (though G2P handles fallback)
-    // We keep them for now but they likely won't be used for English.
 
     suspend fun load() = withContext(Dispatchers.IO) {
         if (isLoaded) return@withContext
@@ -61,7 +63,7 @@ class Phonemizer(private val context: Context) {
             
             espeak = EspeakWrapper()
             val initRes = espeak.initializeSafe(context.filesDir.absolutePath)
-            if (initRes < 0) { // -1 is error, but returns sample rate on success?
+            if (initRes < 0) {
                  Log.e(TAG, "Espeak init failed: $initRes")
             } else {
                  Log.i(TAG, "Espeak initialized with data in ${context.filesDir.absolutePath}")
@@ -80,10 +82,61 @@ class Phonemizer(private val context: Context) {
             }
             
             isLoaded = true
-            Log.i(TAG, "Loaded Misaki G2P engines")
+            Log.i(TAG, "Loaded Misaki G2P engines (US + GB)")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to load G2P", e)
         }
+    }
+
+    /**
+     * Determine the language code for phonemization.
+     * Maps language tags from the TTS service to eSpeak/Misaki language codes.
+     *
+     * Supports: en, en-us, en-gb, fr, de, es, it, pt, ru, nl, pl, sv, cs, fi, el, hu, tr, ar, zh, ja, ko, vi, ta
+     * Fixes: https://github.com/siva-sub/NekoSpeak/issues/5
+     */
+    private fun resolveLanguage(language: String): String {
+        return when (language.lowercase()) {
+            "en", "eng", "en-us", "a" -> "en-us"
+            "en-gb", "en-uk", "b" -> "en-gb"
+            "en-au" -> "en-au"
+            "en-in" -> "en-in"
+            "fr", "fra" -> "fr"
+            "de", "deu" -> "de"
+            "es", "spa" -> "es"
+            "it", "ita" -> "it"
+            "pt", "por", "pt-br" -> "pt-br"
+            "ru", "rus" -> "ru"
+            "nl", "nld" -> "nl"
+            "pl", "pol" -> "pl"
+            "sv", "swe" -> "sv"
+            "cs", "ces" -> "cs"
+            "fi", "fin" -> "fi"
+            "el", "gre" -> "el"
+            "hu", "hun" -> "hu"
+            "tr", "tur" -> "tr"
+            "ar", "ara" -> "ar"
+            "zh", "zho", "cmn" -> "zh"
+            "ja", "jpn" -> "ja"
+            "ko", "kor" -> "ko"
+            "vi", "vie" -> "vi"
+            "ta", "tam" -> "ta"
+            else -> "en-us"  // Default fallback
+        }
+    }
+
+    /**
+     * Detect if text contains Arabic characters.
+     * Arabic text requires diacritization (tashkeel) before phonemization
+     * because Arabic omits short vowels — without diacritics, the TTS output
+     * is unreliable or nonsensical.
+     *
+     * This is a prerequisite for Libtashkeel integration (Issue #8).
+     * Currently logs a warning; full diacritization will be added when
+     * Libtashkeel is integrated.
+     */
+    private fun containsArabic(text: String): Boolean {
+        return ARABIC_REGEX.containsMatchIn(text)
     }
 
     fun phonemize(text: String, language: String = "en-us"): String {
@@ -92,20 +145,38 @@ class Phonemizer(private val context: Context) {
              return ""
         }
         return try {
-             // Normalization is now handled inside G2P logic (preprocess step)
-             // But we might want some basic cleanup? 
-             // G2P.phonemize takes raw text.
+            val langCode = resolveLanguage(language)
             
-            val phonemes = when (language.lowercase()) {
-                "en", "en-us", "a" -> g2pUS.phonemize(text)
-                "en-gb", "b" -> g2pGB.phonemize(text)
+            // Arabic preprocessing hook (Issue #8 prerequisite)
+            // Arabic text needs diacritization before phonemization to be intelligible.
+            // Without tashkeel (diacritical marks), Arabic TTS produces nonsensical output.
+            // Full Libtashkeel integration is tracked in Issue #8.
+            if (langCode == "ar" || containsArabic(text)) {
+                Log.w(TAG, "Arabic text detected but diacritization (tashkeel) is not yet integrated. " +
+                    "Arabic TTS quality will be limited. See: https://github.com/siva-sub/NekoSpeak/issues/8")
+            }
+            
+            val phonemes = when (langCode) {
+                "en-us", "a" -> g2pUS.phonemize(text, OutputMode.KOKORO)
+                "en-gb", "b" -> g2pGB.phonemize(text, OutputMode.KOKORO)
                 else -> {
-                    // Try direct Espeak for other languages
+                    // For non-English languages, use eSpeak directly
+                    // eSpeak supports 100+ languages and handles phonemization natively.
+                    // The language markers are already stripped by EspeakWrapper.cleanPhonemes().
+                    // Fixes: https://github.com/siva-sub/NekoSpeak/issues/5
                     try {
-                        espeak.textToPhonemesSafe(text, language)
+                        val espeakPhonemes = espeak.textToPhonemesSafe(text, langCode)
+                        if (espeakPhonemes.isBlank()) {
+                            Log.w(TAG, "eSpeak returned empty phonemes for language=$langCode, falling back to English")
+                            g2pUS.phonemize(text, OutputMode.KOKORO)
+                        } else {
+                            // Convert eSpeak output to Kokoro-compatible phonemes
+                            // eSpeak produces IPA-like output with language markers already stripped
+                            convertEspeakToKokoro(espeakPhonemes)
+                        }
                     } catch (e: Exception) {
-                        Log.w(TAG, "Espeak failed for $language, falling back to English")
-                        g2pUS.phonemize(text)
+                        Log.w(TAG, "eSpeak failed for $langCode, falling back to English", e)
+                        g2pUS.phonemize(text, OutputMode.KOKORO)
                     }
                 }
             }
@@ -115,6 +186,46 @@ class Phonemizer(private val context: Context) {
             Log.e(TAG, "Phonemization failed", e)
             text.filter { defaultVocab.containsKey(it.toString()) }.take(50)
         }
+    }
+    
+    /**
+     * Convert eSpeak phoneme output to Kokoro-compatible phoneme tokens.
+     * 
+     * eSpeak produces IPA-like output with stress markers (ˈ, ˌ), diphthongs,
+     * and other symbols. This method normalizes them for the Kokoro vocabulary.
+     * 
+     * Key conversions (ported from upstream Misaki's EspeakG2P):
+     * - Tie character ^ is removed (eSpeak ties diphthongs like e^ɪ → eɪ)
+     * - Diphthong expansions: a^ɪ → AI, o^ʊ → OW, etc.
+     * - Language markers already stripped by EspeakWrapper.cleanPhonemes()
+     */
+    private fun convertEspeakToKokoro(espeakPhonemes: String): String {
+        var result = espeakPhonemes
+        
+        // Remove tie characters (eSpeak uses ^ to tie diphthong components)
+        result = result.replace("^", "")
+        
+        // Remove hyphens (eSpeak sometimes outputs these)
+        result = result.replace("-", "")
+        
+        // Convert common eSpeak diphthong patterns to Kokoro phoneme representation
+        // These are the diphthongs that eSpeak ties with ^
+        val diphthongMap = mapOf(
+            "eɪ" to "AI",    // hey
+            "aɪ" to "AY",    // high (Kokoro uses Y for aɪ)
+            "oʊ" to "OW",    // go
+            "aʊ" to "AW",    // how
+            "ɔɪ" to "OY",    // soy
+            "əʊ" to "OW",    // British go
+            "eə" to "EH",    // British air
+            "ɪə" to "IY",    // British here
+        )
+        
+        for ((espeak, kokoro) in diphthongMap) {
+            result = result.replace(espeak, kokoro)
+        }
+        
+        return result
     }
     
     fun tokenize(phonemes: String): List<Int> {

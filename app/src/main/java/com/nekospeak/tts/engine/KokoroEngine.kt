@@ -128,22 +128,13 @@ class KokoroEngine(private val context: Context) : TtsEngine {
             availableVoices.sort()
             Log.i(TAG, "Found ${availableVoices.size} voices")
             
-            val options = OrtSession.SessionOptions().apply {
-                setIntraOpNumThreads(threads)
-                setOptimizationLevel(OrtSession.SessionOptions.OptLevel.ALL_OPT)
-            }
-            
-            // Use byte array loading on 32-bit ARM to avoid mmap alignment issues
-            val abi = android.os.Build.SUPPORTED_ABIS.firstOrNull() ?: ""
-            val is32BitArm = abi == "armeabi-v7a" || abi == "armeabi"
-            
-            ortSession = if (is32BitArm) {
-                Log.i(TAG, "Using byte array loading for 32-bit ARM compatibility")
-                val modelBytes = modelFile.readBytes()
-                ortEnv?.createSession(modelBytes, options)
-            } else {
-                ortEnv?.createSession(modelFile.absolutePath, options)
-            }
+            // Create session options with architecture-aware settings
+            // Uses OrtModelLoader for SIGBUS prevention on 32-bit ARM
+            // Fixes: https://github.com/siva-sub/NekoSpeak/issues/3
+            val options = com.nekospeak.tts.engine.OrtModelLoader.createSessionOptions(threads)
+
+            // Use OrtModelLoader for safe model loading (handles 32-bit ARM alignment)
+            ortSession = com.nekospeak.tts.engine.OrtModelLoader.loadModel(ortEnv!!, modelFile, options)
             
             // Introspect inputs
             val inputNames = ortSession?.inputNames ?: emptySet()
