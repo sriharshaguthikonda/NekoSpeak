@@ -76,6 +76,22 @@ object ModelRepository {
                 ModelFile("kitten_tts_nano_v0_1.onnx", "https://github.com/siva-sub/NekoSpeak/releases/download/v1.0.0/kitten_tts_nano_v0_1.onnx", "Model Weights"),
                 ModelFile("voices.npz", "https://github.com/siva-sub/NekoSpeak/releases/download/v1.0.0/voices.npz", "Voice Pack")
             )
+        ),
+        ModelInfo(
+            id = "omnivoice",
+            name = "OmniVoice (Diffusion TTS)",
+            description = "600+ language multilingual TTS with voice cloning. 2.3GB main model + 83MB decoder. Optional 624MB encoder for voice cloning. ~3GB total download.",
+            files = listOf(
+                ModelFile("omnivoice/omnivoice-main-split.onnx", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main-split.onnx", "Main Model Graph (1MB)"),
+                ModelFile("omnivoice/omnivoice-main.onnx_data_00", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main.onnx_data_00", "Main Model Shard 1/5 (592MB)"),
+                ModelFile("omnivoice/omnivoice-main.onnx_data_01", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main.onnx_data_01", "Main Model Shard 2/5 (488MB)"),
+                ModelFile("omnivoice/omnivoice-main.onnx_data_02", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main.onnx_data_02", "Main Model Shard 3/5 (492MB)"),
+                ModelFile("omnivoice/omnivoice-main.onnx_data_03", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main.onnx_data_03", "Main Model Shard 4/5 (500MB)"),
+                ModelFile("omnivoice/omnivoice-main.onnx_data_04", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main.onnx_data_04", "Main Model Shard 5/5 (264MB)"),
+                ModelFile("omnivoice/omnivoice-decoder.onnx", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-decoder.onnx", "Audio Decoder (83MB)"),
+                ModelFile("omnivoice/omnivoice-encoder-fixed.onnx", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-encoder-fixed.onnx", "Audio Encoder - Voice Cloning (624MB)"),
+                ModelFile("omnivoice/omnivoice-config.json", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-config.json", "Model Config")
+            )
         )
     )
     

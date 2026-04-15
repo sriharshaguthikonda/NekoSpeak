@@ -37,6 +37,10 @@ object EngineFactory {
                 val voiceId = selectedModel.removePrefix("piper_")
                 PiperEngine(context, voiceId)
             }
+            selectedModel == "omnivoice" -> {
+                android.util.Log.i("EngineFactory", "Creating OmniVoiceEngine")
+                OmniVoiceEngine(context)
+            }
             else -> {
                 // Default to Kokoro
                 KokoroEngine(context)
