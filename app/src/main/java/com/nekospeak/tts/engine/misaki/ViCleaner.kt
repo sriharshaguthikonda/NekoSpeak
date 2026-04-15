@@ -29,6 +29,44 @@ class ViCleaner(
     companion object {
         private const val TAG = "ViCleaner"
 
+        // --- Dynamic dictionaries (loaded from JSON assets) ---
+        private var viAcronyms: Map<String, String> = emptyMap()
+        private var viTeencode: Map<String, String> = emptyMap()
+        private var viSymbols: Map<String, String> = emptyMap()
+        @Volatile private var dictsLoaded = false
+
+        /** Load Vietnamese dictionaries from assets. Call once during init. */
+        fun loadDictionaries(context: android.content.Context) {
+            if (dictsLoaded) return
+            try {
+                viAcronyms = loadJsonDict(context, "vi_acronyms.json")
+                viTeencode = loadJsonDict(context, "vi_teencode.json")
+                viSymbols = loadJsonDict(context, "vi_symbols.json")
+                dictsLoaded = true
+                Log.d(TAG, "Loaded vi_acronyms: ${viAcronyms.size}, vi_teencode: ${viTeencode.size}, vi_symbols: ${viSymbols.size}")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to load Vietnamese dictionaries: ${e.message}")
+                dictsLoaded = true // Don't retry
+            }
+        }
+
+        private fun loadJsonDict(context: android.content.Context, filename: String): Map<String, String> {
+            val map = mutableMapOf<String, String>()
+            context.assets.open(filename).bufferedReader().use { reader ->
+                val json = reader.readText()
+                // Simple JSON object parser: {"key": "value", ...}
+                val entries = json.trim().removeSurrounding("{", "}")
+                val regex = Regex("""\s*"([^"]+)"\s*:\s*"([^"]*)"\s*""")
+                for (line in entries.split(",")) {
+                    val match = regex.find(line)
+                    if (match != null) {
+                        map[match.groupValues[1]] = match.groupValues[2]
+                    }
+                }
+            }
+            return map
+        }
+
         // --- Vietnamese character sets (from symbol_vi.py) ---
         private val VI_CHARS_SET = (
             "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY" +
@@ -208,13 +246,20 @@ class ViCleaner(
         // 2. Normalize NFC
         result = java.text.Normalizer.normalize(result, java.text.Normalizer.Form.NFC)
 
-        // 3. Expand abbreviations
+        // 3. Expand teencode/slang (from vi_teencode.json)
+        if (viTeencode.isNotEmpty()) {
+            for ((slang, proper) in viTeencode) {
+                result = result.replace(Regex("\\b${Regex.escape(slang)}\\b", RegexOption.IGNORE_CASE), proper)
+            }
+        }
+
+        // 4. Expand abbreviations
         if (cleanAbbr) result = expandAbbreviations(result)
 
-        // 4. Expand Roman numbers
+        // 5. Expand Roman numbers
         result = expandRomanNumbers(result)
 
-        // 5. Expand acronyms
+        // 6. Expand acronyms
         if (cleanAcronym) result = expandAcronyms(result)
 
         // 6. Expand date/time
@@ -270,7 +315,13 @@ class ViCleaner(
 
     private fun expandAcronyms(text: String): String {
         var result = text
-        // Vietnamese-specific acronyms first
+        // Dynamic acronyms from vi_acronyms.json (highest priority)
+        if (viAcronyms.isNotEmpty()) {
+            for ((acr, expanded) in viAcronyms) {
+                result = result.replace(Regex("\\b${Regex.escape(acr)}\\b", RegexOption.IGNORE_CASE), expanded)
+            }
+        }
+        // Vietnamese-specific acronyms from code
         for ((acr, expanded) in ACRONYMS_VI) {
             result = result.replace(Regex("\\b${Regex.escape(acr)}\\b", RegexOption.IGNORE_CASE), expanded)
         }

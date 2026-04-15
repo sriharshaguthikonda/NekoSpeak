@@ -40,6 +40,100 @@ class KoG2P(
     companion object {
         private const val TAG = "KoG2P"
 
+        // --- Dynamic dictionaries (loaded from g2pkc assets) ---
+        private var fullIdioms: List<Pair<String, String>> = emptyList()
+        private var fullRules: List<Triple<String, String, String>> = emptyList() // (from, to, rule_num)
+        private var tableRules: List<Triple<String, String, String>> = emptyList() // (coda, onset, result)
+        @Volatile private var dictsLoaded = false
+
+        /** Load g2pkc dictionaries from assets. Call once during init. */
+        fun loadDictionaries(context: android.content.Context) {
+            if (dictsLoaded) return
+            try {
+                fullIdioms = loadIdioms(context)
+                fullRules = loadRules(context)
+                tableRules = loadTable(context)
+                dictsLoaded = true
+                Log.d(TAG, "Loaded g2pkc: ${fullIdioms.size} idioms, ${fullRules.size} rules, ${tableRules.size} table entries")
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to load g2pkc dictionaries: ${e.message}")
+                dictsLoaded = true // Don't retry
+            }
+        }
+
+        private fun loadIdioms(context: android.content.Context): List<Pair<String, String>> {
+            val list = mutableListOf<Pair<String, String>>()
+            try {
+                context.assets.open("g2pkc/idioms.txt").bufferedReader().use { reader ->
+                    reader.forEachLine { line ->
+                        val trimmed = line.trim()
+                        if (trimmed.isEmpty() || trimmed.startsWith("#")) return@forEachLine
+                        val parts = trimmed.split("===")
+                        if (parts.size == 2) {
+                            list.add(parts[0].trim() to parts[1].trim())
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "g2pkc/idioms.txt not found")
+            }
+            return list
+        }
+
+        private fun loadRules(context: android.content.Context): List<Triple<String, String, String>> {
+            val list = mutableListOf<Triple<String, String, String>>()
+            try {
+                context.assets.open("g2pkc/rules.txt").bufferedReader().use { reader ->
+                    var currentRule = ""
+                    reader.forEachLine { line ->
+                        val trimmed = line.trim()
+                        if (trimmed.isEmpty() || trimmed.startsWith("#")) return@forEachLine
+                        if (trimmed.matches(Regex("\\d+\\.\\d*"))) {
+                            currentRule = trimmed
+                            return@forEachLine
+                        }
+                        if (trimmed.startsWith("->")) {
+                            // This is a rule example, parse it
+                            val arrowParts = trimmed.removePrefix("->").trim().split("[", "]")
+                            // Rules are examples; the actual rules are applied via special.py/regular.py
+                            // We store them for reference only
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "g2pkc/rules.txt not found")
+            }
+            return list
+        }
+
+        private fun loadTable(context: android.content.Context): List<Triple<String, String, String>> {
+            val list = mutableListOf<Triple<String, String, String>>()
+            try {
+                context.assets.open("g2pkc/table.csv").bufferedReader().use { reader ->
+                    val lines = reader.readLines()
+                    if (lines.size < 2) return list
+                    // First row is header: ,ᄒ,ᄀ,ᄁ,...
+                    val onsets = lines[0].split(",").drop(1)
+                    // Remaining rows: ᇂ,ᄒ,ᄏ(12),ᄁ,...
+                    for (i in 1 until lines.size) {
+                        val cols = lines[i].split(",")
+                        if (cols.size < 2) continue
+                        val coda = cols[0]
+                        for (j in 1 until minOf(cols.size, onsets.size + 1)) {
+                            val cell = cols[j].trim()
+                            if (cell.isNotEmpty() && cell != coda) {
+                                val onset = onsets[j - 1]
+                                list.add(Triple(coda, onset, cell))
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "g2pkc/table.csv not found")
+            }
+            return list
+        }
+
         // Hangul Unicode ranges
         private const val SYL_START = 0xAC00  // 가
         private const val SYL_END = 0xD7A3    // 힣
@@ -246,6 +340,11 @@ class KoG2P(
 
         fun applyIdioms(string: String): String {
             var result = string
+            // Apply full idioms dictionary (if loaded)
+            for ((from, to) in fullIdioms) {
+                result = result.replace(Regex(from), to)
+            }
+            // Apply hardcoded essential idioms as fallback/supplement
             for ((from, to) in IDIOMS) {
                 result = result.replace(from, to)
             }

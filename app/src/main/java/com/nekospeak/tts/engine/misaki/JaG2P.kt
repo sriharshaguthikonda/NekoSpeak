@@ -1,5 +1,8 @@
 package com.nekospeak.tts.engine.misaki
 
+import android.content.Context
+import android.util.Log
+
 /**
  * Faithful port of upstream Misaki's Japanese G2P (ja.py + cutlet.py + num2kana.py).
  * References:
@@ -10,14 +13,17 @@ package com.nekospeak.tts.engine.misaki
  * On Android, we don't have pyopenjtalk or fugashi (MeCab), so this port
  * uses eSpeak's Japanese phonemizer as the primary backend, then applies
  * Misaki's M2P (moras-to-phonemes) mapping for Kokoro-compatible output.
+ * The ja_words.txt dictionary (147K+ entries from cutlet) is used for
+ * word segmentation of kana strings.
  *
  * Pipeline:
- * 1. Normalize text (full-width → half-width, Unicode NFKC)
+ * 1. Normalize text (full-width → half-width, Unicode NFKC, half-width katakana)
  * 2. Convert digits to Japanese words (num2kana)
- * 3. Use eSpeak ja backend for word segmentation + pronunciation
- * 4. Map kana output → IPA via HEPBURN/M2P tables
- * 5. Apply pitch accent approximation
- * 6. Assemble final phoneme string
+ * 3. Load ja_words.txt dictionary for word segmentation
+ * 4. Segment kana text using greedy longest-match against dictionary
+ * 5. Use eSpeak ja backend for pronunciation (with kana→IPA fallback)
+ * 6. Apply M2P (moras-to-phonemes) mapping
+ * 7. Assemble final phoneme string
  */
 class JaG2P(
     private val espeakFallback: ((String, String) -> String?)? = null,
@@ -91,6 +97,17 @@ class JaG2P(
                 "ヴャ" to "ᶀa", "ヴュ" to "ᶀu", "ヴョ" to "ᶀo"
             )
             M2P.putAll(digraphs)
+
+            // Katakana Phonetic Extensions (from cutlet.py)
+            val phoneticExt = mapOf(
+                'ㇰ' to "ク", 'ㇱ' to "シ", 'ㇲ' to "ス", 'ㇳ' to "ト",
+                'ㇴ' to "ヌ", 'ㇵ' to "ハ", 'ㇶ' to "ヒ", 'ㇷ' to "フ",
+                'ㇸ' to "ヘ", 'ㇹ' to "ホ", 'ㇺ' to "ム", 'ㇻ' to "ラ",
+                'ㇼ' to "リ", 'ㇽ' to "ル", 'ㇾ' to "レ", 'ㇿ' to "ロ"
+            )
+            for ((k, v) in phoneticExt) {
+                M2P[k.toString()] = M2P[v].toString()
+            }
         }
 
         // --- Hiragana → Katakana mapping ---
@@ -105,7 +122,37 @@ class JaG2P(
             HIRA_TO_KATA = h2k
         }
 
-        // --- Punctuation mapping ---
+        // --- Half-width katakana → full-width mapping ---
+        private val HALFWIDTH_KATA = mapOf(
+            '･' to '・', 'ｦ' to 'ヲ', 'ｧ' to 'ァ', 'ｨ' to 'ィ', 'ｩ' to 'ゥ',
+            'ｪ' to 'ェ', 'ｫ' to 'ォ', 'ｬ' to 'ャ', 'ｭ' to 'ュ', 'ｮ' to 'ョ',
+            'ｯ' to 'ッ', 'ｰ' to 'ー', 'ｱ' to 'ア', 'ｲ' to 'イ', 'ｳ' to 'ウ',
+            'ｴ' to 'エ', 'ｵ' to 'オ', 'ｶ' to 'カ', 'ｷ' to 'キ', 'ｸ' to 'ク',
+            'ｹ' to 'ケ', 'ｺ' to 'コ', 'ｻ' to 'サ', 'ｼ' to 'シ', 'ｽ' to 'ス',
+            'ｾ' to 'セ', 'ｿ' to 'ソ', 'ﾀ' to 'タ', 'ﾁ' to 'チ', 'ﾂ' to 'ツ',
+            'ﾃ' to 'テ', 'ﾄ' to 'ト', 'ﾅ' to 'ナ', 'ﾆ' to 'ニ', 'ﾇ' to 'ヌ',
+            'ﾈ' to 'ネ', 'ﾉ' to 'ノ', 'ﾊ' to 'ハ', 'ﾋ' to 'ヒ', 'ﾌ' to 'フ',
+            'ﾍ' to 'ヘ', 'ﾎ' to 'ホ', 'ﾏ' to 'マ', 'ﾐ' to 'ミ', 'ﾑ' to 'ム',
+            'ﾒ' to 'メ', 'ﾓ' to 'モ', 'ﾔ' to 'ヤ', 'ﾕ' to 'ユ', 'ﾖ' to 'ヨ',
+            'ﾗ' to 'ラ', 'ﾘ' to 'リ', 'ﾙ' to 'ル', 'ﾚ' to 'レ', 'ﾛ' to 'ロ',
+            'ﾜ' to 'ワ', 'ﾝ' to 'ン'
+        )
+
+        // --- Dakuten/handakuten mapping (from cutlet.py) ---
+        private val DAKUTEN_MAP = mapOf(
+            'か' to 'が', 'き' to 'ぎ', 'く' to 'ぐ', 'け' to 'げ', 'こ' to 'ご',
+            'さ' to 'ざ', 'し' to 'じ', 'す' to 'ず', 'せ' to 'ぜ', 'そ' to 'ぞ',
+            'た' to 'だ', 'ち' to 'ぢ', 'つ' to 'づ', 'て' to 'で', 'と' to 'ど',
+            'は' to 'ば', 'ひ' to 'び', 'ふ' to 'ぶ', 'へ' to 'べ', 'ほ' to 'ぼ'
+        )
+        private val HANDAKUTEN_MAP = mapOf(
+            'は' to 'ぱ', 'ひ' to 'ぴ', 'ふ' to 'ぷ', 'へ' to 'ぺ', 'ほ' to 'ぽ'
+        )
+
+        // Small kana (sutegana)
+        private val SUTEGANA = setOf('ゃ', 'ゅ', 'ょ', 'ぁ', 'ぃ', 'ぅ', 'ぇ', 'ぉ')
+
+        // --- Punctuation mapping (from cutlet.py) ---
         private val PUNCT_MAP = mapOf(
             '«' to '"', '»' to '"', '、' to ',', '。' to '.',
             '〈' to '"', '〉' to '"', '《' to '"', '》' to '"',
@@ -118,16 +165,121 @@ class JaG2P(
             '!', '"', '(', ')', ',', '.', ':', ';', '?', '—', '\u201C', '\u201D', '…'
         )
 
-        private val PUNCT_STOPS = setOf('!', ')', ',', '.', ':', ';', '?', '"')
-        private val PUNCT_STARTS = setOf('(', '"')
-
         private val VOWELS = setOf('a', 'e', 'i', 'o', 'u')
         private val TAILS = M2P.values.map { it.last() }.toSet()
+
+        // --- Japanese word dictionary (loaded from ja_words.txt) ---
+        private var jaWords: Set<String> = emptySet()
+        @Volatile private var jaWordsLoaded = false
+
+        /** Load the ja_words.txt dictionary from assets. */
+        fun loadDictionary(context: Context) {
+            if (jaWordsLoaded) return
+            try {
+                val words = mutableSetOf<String>()
+                context.assets.open("ja_words.txt").bufferedReader().use { reader ->
+                    reader.forEachLine { line ->
+                        val trimmed = line.trim()
+                        if (trimmed.isNotEmpty()) words.add(trimmed)
+                    }
+                }
+                jaWords = words
+                jaWordsLoaded = true
+                Log.d(TAG, "Loaded ${words.size} entries from ja_words.txt")
+            } catch (e: Exception) {
+                Log.w(TAG, "ja_words.txt not found in assets, word segmentation will be limited")
+                jaWordsLoaded = true // Don't retry
+            }
+        }
 
         // Convert a number string to kana reading (delegates to Num2Kana)
         fun numToKana(numStr: String): String {
             return Num2Kana.convert(numStr)
         }
+    }
+
+    /**
+     * Segment kana text into words using the ja_words dictionary.
+     * Uses greedy longest-match from left (same algorithm as cutlet.py).
+     */
+    fun segmentKana(text: String): List<String> {
+        if (!jaWordsLoaded || jaWords.isEmpty()) {
+            // Fallback: character-by-character for kana, group non-kana
+            return segmentSimple(text)
+        }
+
+        val result = mutableListOf<String>()
+        var i = 0
+        while (i < text.length) {
+            val ch = text[i]
+
+            // Non-kana characters: group them together
+            if (!isKana(ch)) {
+                val start = i
+                while (i < text.length && !isKana(text[i])) i++
+                result.add(text.substring(start, i))
+                continue
+            }
+
+            // Find the next position where character type changes
+            var z = i + 1
+            while (z < text.length && isKana(text[z])) z++
+
+            // Try longest match first within the kana run
+            var j: Int? = null
+            for (jj in z downTo i + 1) {
+                if (text.substring(i, jj) in jaWords) {
+                    j = jj
+                    break
+                }
+            }
+
+            if (j == null) {
+                // No word match; emit single character
+                result.add(ch.toString())
+                i++
+            } else {
+                result.add(text.substring(i, j))
+                i = j
+            }
+        }
+        return result
+    }
+
+    /** Simple fallback segmentation: group consecutive kana or non-kana. */
+    private fun segmentSimple(text: String): List<String> {
+        val result = mutableListOf<String>()
+        var i = 0
+        while (i < text.length) {
+            val ch = text[i]
+            if (isKana(ch)) {
+                // Try digraph grouping
+                if (i + 1 < text.length && isKana(text[i + 1])) {
+                    val pair = text.substring(i, i + 2)
+                    if (pair in M2P) {
+                        result.add(pair)
+                        i += 2
+                        continue
+                    }
+                }
+                result.add(ch.toString())
+                i++
+            } else {
+                val start = i
+                while (i < text.length && !isKana(text[i])) i++
+                result.add(text.substring(start, i))
+            }
+        }
+        return result
+    }
+
+    private fun isKana(ch: Char): Boolean {
+        val c = ch.code
+        return c in 0x3041..0x3096 ||  // Hiragana
+               c in 0x30A1..0x30FA ||  // Katakana
+               c in 0x30FC..0x30FF ||  // Katakana extensions (ー, ヽ, ヾ)
+               c in 0xFF65..0xFF9F ||  // Half-width katakana
+               c in 0x31F0..0x31FF     // Katakana Phonetic Extensions
     }
 
     /**
@@ -169,43 +321,77 @@ class JaG2P(
      * Convert hiragana to katakana.
      */
     fun hiraToKata(text: String): String {
-        return text.map { HIRA_TO_KATA[it] ?: it }.joinToString("")
+        return text.map { ch ->
+            // Handle combining dakuten/handakuten (from cutlet.py)
+            when {
+                HIRA_TO_KATA.containsKey(ch) -> HIRA_TO_KATA[ch]!!
+                ch.code == 0x3099 -> { // combining dakuten
+                    // Apply to previous character
+                    ch // handled separately in normalizeText
+                }
+                ch.code == 0x309A -> { // combining handakuten
+                    ch // handled separately in normalizeText
+                }
+                else -> ch
+            }
+        }.joinToString("")
     }
 
     /**
-     * Normalize Japanese text: NFKC, full-width → half-width, half-width katakana → full-width.
+     * Normalize Japanese text: NFKC, full-width → half-width digits/ascii,
+     * half-width katakana → full-width, combining dakuten application.
+     * Ported from cutlet.py's normalize_text.
      */
     fun normalizeText(text: String): String {
         var result = java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFKC)
-        // Convert half-width katakana to full-width (simple mapping)
+
+        // Apply combining dakuten/handakuten (from cutlet.py)
+        val sb = StringBuilder()
+        var i = 0
+        while (i < result.length) {
+            val ch = result[i]
+            if (i + 1 < result.length) {
+                val next = result[i + 1]
+                if (next.code == 0x3099 && DAKUTEN_MAP.containsKey(ch)) {
+                    // Dakuten: apply to previous kana
+                    sb.append(DAKUTEN_MAP[ch])
+                    i += 2
+                    continue
+                }
+                if (next.code == 0x309A && HANDAKUTEN_MAP.containsKey(ch)) {
+                    // Handakuten: apply to previous kana
+                    sb.append(HANDAKUTEN_MAP[ch])
+                    i += 2
+                    continue
+                }
+            }
+            sb.append(ch)
+            i++
+        }
+        result = sb.toString()
+
+        // Convert half-width katakana to full-width
+        result = result.map { ch -> HALFWIDTH_KATA[ch] ?: ch }.joinToString("")
+
+        // Convert full-width digits to half-width (from cutlet.py: mojimoji.zen_to_han)
         result = result.map { ch ->
-            if (ch.code in 0xFF65..0xFF9F) {
-                // Half-width katakana range
-                val offset = ch.code - 0xFF65
-                if (offset in 0..56) {
-                    // Map to full-width katakana
-                    when (offset) {
-                        0 -> '・'; 1 -> 'ァ'; 2 -> 'ア'; 3 -> 'ィ'; 4 -> 'イ'
-                        5 -> 'ゥ'; 6 -> 'ウ'; 7 -> 'ェ'; 8 -> 'エ'; 9 -> 'ォ'
-                        10 -> 'オ'; 11 -> 'カ'; 12 -> 'キ'; 13 -> 'ク'; 14 -> 'ケ'
-                        15 -> 'コ'; 16 -> 'サ'; 17 -> 'シ'; 18 -> 'ス'; 19 -> 'セ'
-                        20 -> 'ソ'; 21 -> 'タ'; 22 -> 'チ'; 23 -> 'ツ'; 24 -> 'テ'
-                        25 -> 'ト'; 26 -> 'ナ'; 27 -> 'ニ'; 28 -> 'ヌ'; 29 -> 'ネ'
-                        30 -> 'ノ'; 31 -> 'ハ'; 32 -> 'ヒ'; 33 -> 'フ'; 34 -> 'ヘ'
-                        35 -> 'ホ'; 36 -> 'マ'; 37 -> 'ミ'; 38 -> 'ム'; 39 -> 'メ'
-                        40 -> 'モ'; 41 -> 'ヤ'; 42 -> 'ユ'; 43 -> 'ヨ'; 44 -> 'ラ'
-                        45 -> 'リ'; 46 -> 'ル'; 47 -> 'レ'; 48 -> 'ロ'; 49 -> 'ワ'
-                        50 -> 'ヲ'; 51 -> 'ン'; else -> ch
-                    }
-                } else ch
-            } else ch
+            if (ch.code in 0xFF10..0xFF19) (ch.code - 0xFF10 + 0x30).toChar() // ０-９ → 0-9
+            else if (ch.code in 0xFF21..0xFF3A) (ch.code - 0xFF21 + 0x41).toChar() // Ａ-Ｚ → A-Z
+            else if (ch.code in 0xFF41..0xFF5A) (ch.code - 0xFF41 + 0x61).toChar() // ａ-ｚ → a-z
+            else ch
         }.joinToString("")
+
+        // Convert digits to kana reading (from cutlet.py: num2kana Convert)
+        result = Regex("\\d+").replace(result) { match ->
+            numToKana(match.value)
+        }
+
         return result
     }
 
     /**
      * Main phonemization entry point.
-     * Returns (phonemes, pitch) as a single string for Kokoro.
+     * Returns phonemes as a string for Kokoro.
      */
     fun phonemize(text: String): String {
         if (text.isBlank()) return ""
@@ -220,11 +406,18 @@ class JaG2P(
         }
 
         // 3. Direct kana conversion (fallback if eSpeak unavailable)
-        // Convert all hiragana to katakana first, then apply M2P
+        // Convert all hiragana to katakana first
         val kataOnly = hiraToKata(normalized)
-        val ipa = kanaToIpa(kataOnly)
 
-        // 4. Clean up
-        return ipa.replace(Regex("\\s+"), " ").trim()
+        // 4. Segment into words using dictionary (if loaded)
+        val segments = segmentKana(kataOnly)
+
+        // 5. Convert each segment to IPA
+        val ipaParts = segments.map { seg ->
+            kanaToIpa(seg)
+        }
+
+        // 6. Clean up
+        return ipaParts.joinToString(" ").replace(Regex("\\s+"), " ").trim()
     }
 }

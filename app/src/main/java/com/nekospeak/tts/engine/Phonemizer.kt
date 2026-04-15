@@ -110,6 +110,7 @@ class Phonemizer(private val context: Context) {
 
             // Japanese G2P (Misaki JA port)
             jaG2P = JaG2P(espeakFallback = espeakFallback)
+            JaG2P.loadDictionary(context)
 
             // Chinese G2P (Misaki ZH port)
             zhG2P = ZhG2P(espeakFallback = espeakFallback, enCallable = enCallable)
@@ -117,12 +118,14 @@ class Phonemizer(private val context: Context) {
 
             // Korean G2P (Misaki KO port)
             koG2P = KoG2P(espeakFallback = espeakFallback)
+            KoG2P.loadDictionaries(context)
 
             // Vietnamese G2P (Misaki VI port)
             viG2P = ViG2P(
                 enG2P = { text -> g2pUS.phonemize(text, OutputMode.KOKORO) },
                 espeakFallback = espeakFallback
             )
+            ViCleaner.loadDictionaries(context)
 
             // Hebrew G2P (Misaki HE port)
             heG2P = HeG2P(espeakFallback = espeakFallback)
