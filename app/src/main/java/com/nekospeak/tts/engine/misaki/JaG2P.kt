@@ -124,63 +124,9 @@ class JaG2P(
         private val VOWELS = setOf('a', 'e', 'i', 'o', 'u')
         private val TAILS = M2P.values.map { it.last() }.toSet()
 
-        // --- Num2Kana (simplified) ---
-        private val ROMAJI_DICT = mapOf(
-            "." to "ten", "0" to "zero", "1" to "ichi", "2" to "ni",
-            "3" to "san", "4" to "yon", "5" to "go", "6" to "roku",
-            "7" to "nana", "8" to "hachi", "9" to "kyuu", "10" to "juu",
-            "100" to "hyaku", "1000" to "sen", "10000" to "man",
-            "300" to "sanbyaku", "600" to "roppyaku", "800" to "happyaku",
-            "3000" to "sanzen", "8000" to "hassen"
-        )
-
-        // Convert a number string to kana reading
+        // Convert a number string to kana reading (delegates to Num2Kana)
         fun numToKana(numStr: String): String {
-            val num = numStr.toLongOrNull() ?: return numStr
-            if (num == 0L) return "ゼロ"
-            return convertNumToKana(num)
-        }
-
-        private fun convertNumToKana(num: Long): String {
-            if (num < 0L) return "マイナス" + convertNumToKana(-num)
-            if (num == 0L) return ""
-            if (num in 1..9) return listOf("いち", "に", "さん", "よん", "ご", "ろく", "なな", "はち", "きゅう")[(num - 1).toInt()]
-            if (num == 10L) return "じゅう"
-            if (num in 11..99) {
-                val tens = num / 10
-                val ones = num % 10
-                return (if (tens == 1L) "じゅう" else convertNumToKana(tens) + "じゅう") +
-                    if (ones > 0) convertNumToKana(ones) else ""
-            }
-            if (num in 100..999) {
-                val hundreds = num / 100
-                val rest = num % 100
-                val prefix = when (hundreds.toInt()) {
-                    3 -> "さんびゃく"; 6 -> "ろっぴゃく"; 8 -> "はっぴゃく"
-                    else -> convertNumToKana(hundreds) + "ひゃく"
-                }
-                return prefix + if (rest > 0) convertNumToKana(rest) else ""
-            }
-            if (num in 1000..9999L) {
-                val thousands = num / 1000
-                val rest = num % 1000
-                val prefix = when (thousands.toInt()) {
-                    3 -> "さんぜん"; 8 -> "はっせん"
-                    else -> convertNumToKana(thousands) + "せん"
-                }
-                return prefix + if (rest > 0) convertNumToKana(rest) else ""
-            }
-            if (num in 10000..99999999L) {
-                val man = num / 10000
-                val rest = num % 10000
-                return convertNumToKana(man) + "まん" + if (rest > 0) convertNumToKana(rest) else ""
-            }
-            if (num in 100000000..999999999999L) {
-                val oku = num / 100000000
-                val rest = num % 100000000
-                return convertNumToKana(oku) + "おく" + if (rest > 0) convertNumToKana(rest) else ""
-            }
-            return num.toString()
+            return Num2Kana.convert(numStr)
         }
     }
 

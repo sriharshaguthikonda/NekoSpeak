@@ -20,7 +20,8 @@ import java.util.Locale
 class ViG2P(
     private val enG2P: ((String) -> String)? = null,
     private val espeakFallback: ((String, String) -> String?)? = null,
-    private val unk: String = "❓"
+    private val unk: String = "❓",
+    private val cleaner: ViCleaner = ViCleaner()
 ) {
     companion object {
         private const val TAG = "ViG2P"
@@ -261,10 +262,10 @@ class ViG2P(
             return espeakResult
         }
 
-        // Basic text normalization
-        var processed = text.lowercase(Locale.ROOT)
-            .replace('_', ' ')
-            .replace('-', ' ')
+        // Apply full ViCleaner normalization pipeline
+        // (abbreviations, acronyms, roman numerals, dates, measurements,
+        //  currency, numbers, letters, etc.)
+        var processed = cleaner.cleanText(text)
 
         // Simple word tokenization (split by spaces)
         val tokens = processed.split(Regex("\\s+")).filter { it.isNotEmpty() }

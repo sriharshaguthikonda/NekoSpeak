@@ -30,7 +30,8 @@ import java.text.Normalizer
 class ZhG2P(
     private val espeakFallback: ((String, String) -> String?)? = null,
     private val enCallable: ((String) -> String)? = null,
-    private val unk: String = "❓"
+    private val unk: String = "❓",
+    private val toneSandhi: ToneSandhi = ToneSandhi()
 ) {
     companion object {
         private const val TAG = "ZhG2P"
