@@ -35,7 +35,28 @@ fun VoiceCard(
     val isDownloaded = voice.downloadState == com.nekospeak.tts.data.DownloadState.Downloaded
     val isDownloading = voice.downloadState == com.nekospeak.tts.data.DownloadState.Downloading
     val canDelete = voice.isCloned && onDelete != null
+    val isCloned = voice.isCloned
+
+    // Visual badge for voice source
+    val sourceBadge = when {
+        isCloned -> "🧬"
+        voice.modelType == "omnivoice" -> "✨"  // Voice design
+        voice.modelType.startsWith("piper") -> "🔊"
+        voice.modelType == "pocket_v1" -> "🎤"
+        else -> ""
+    }
     
+    // Engine label
+    val engineLabel = when {
+        isCloned -> "Cloned"
+        voice.modelType == "omnivoice" -> "Voice Design"
+        voice.modelType == "pocket_v1" -> "Pocket"
+        voice.modelType == "kokoro_v1.0" -> "Kokoro"
+        voice.modelType == "kitten_nano" -> "Kitten"
+        voice.modelType.startsWith("piper") -> "Piper"
+        else -> ""
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -43,6 +64,8 @@ fun VoiceCard(
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) 
                 MaterialTheme.colorScheme.primaryContainer 
+            else if (isCloned)
+                MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.3f)  // Subtle tint for cloned
             else 
                 MaterialTheme.colorScheme.surface
         ),
@@ -59,14 +82,22 @@ fun VoiceCard(
                         .size(48.dp)
                         .clip(CircleShape)
                         .background(
-                            if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
+                            when {
+                                isSelected -> MaterialTheme.colorScheme.primary
+                                isCloned -> MaterialTheme.colorScheme.tertiary
+                                else -> MaterialTheme.colorScheme.secondaryContainer
+                            }
                         ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = voice.name.first().toString(),
+                        text = sourceBadge.ifEmpty { voice.name.first().toString() },
                         style = MaterialTheme.typography.titleLarge,
-                        color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSecondaryContainer,
+                        color = when {
+                            isSelected -> MaterialTheme.colorScheme.onPrimary
+                            isCloned -> MaterialTheme.colorScheme.onTertiary
+                            else -> MaterialTheme.colorScheme.onSecondaryContainer
+                        },
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -82,7 +113,22 @@ fun VoiceCard(
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        // Flag or Region Tag
+                        // Engine badge
+                        if (engineLabel.isNotEmpty()) {
+                            SuggestionChip(
+                                onClick = { },
+                                label = { Text(engineLabel, style = MaterialTheme.typography.labelSmall) },
+                                colors = SuggestionChipDefaults.suggestionChipColors(
+                                    containerColor = when {
+                                        isCloned -> MaterialTheme.colorScheme.tertiaryContainer
+                                        else -> MaterialTheme.colorScheme.surfaceVariant
+                                    }
+                                ),
+                                modifier = Modifier.height(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                        }
+                        // Region Tag
                         SuggestionChip(
                             onClick = { },
                             label = { Text(voice.region) },
@@ -93,7 +139,11 @@ fun VoiceCard(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (voice.gender == "Unknown" || voice.gender.isEmpty()) voice.language else "${voice.gender} • ${voice.language}",
+                            text = when {
+                                voice.gender == "Cloned" -> "Cloned Voice"
+                                voice.gender.isEmpty() -> voice.language
+                                else -> "${voice.gender} · ${voice.language}"
+                            },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

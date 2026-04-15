@@ -20,12 +20,13 @@ data class Voice(
     val id: String,
     val name: String,
     val language: String,
-    val gender: String, // "Male" or "Female"
-    val region: String, // "US" or "UK"
+    val gender: String, // "Male", "Female", "Neutral", or "Cloned"
+    val region: String, // "US", "UK", "CN", etc.
     val downloadState: com.nekospeak.tts.data.DownloadState = com.nekospeak.tts.data.DownloadState.Downloaded,
     val downloadProgress: Float = 0f,
     val metadata: com.nekospeak.tts.data.VoiceInfo? = null,
-    val isCloned: Boolean = false // True for user-cloned voices that can be deleted
+    val isCloned: Boolean = false, // True for user-cloned voices that can be deleted
+    val modelType: String = ""      // Engine model ID: "kokoro_v1.0", "pocket_v1", "piper_...", "omnivoice", "kitten_nano"
 )
 
 enum class ViewMode {
@@ -72,48 +73,48 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
     private val voiceDownloader by lazy { com.nekospeak.tts.data.VoiceDownloader(context) }
     
     private val kokoroVoices = listOf(
-        Voice("af_heart", "Heart", "en-us", "Female", "US"),
-        Voice("af_alloy", "Alloy", "en-us", "Female", "US"),
-        Voice("af_aoede", "Aoede", "en-us", "Female", "US"),
-        Voice("af_bella", "Bella", "en-us", "Female", "US"),
-        Voice("af_jessica", "Jessica", "en-us", "Female", "US"),
-        Voice("af_kore", "Kore", "en-us", "Female", "US"),
-        Voice("af_nicole", "Nicole", "en-us", "Female", "US"),
-        Voice("af_nova", "Nova", "en-us", "Female", "US"),
-        Voice("af_river", "River", "en-us", "Female", "US"),
-        Voice("af_sarah", "Sarah", "en-us", "Female", "US"),
-        Voice("af_sky", "Sky", "en-us", "Female", "US"),
+        Voice("af_heart", "Heart", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_alloy", "Alloy", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_aoede", "Aoede", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_bella", "Bella", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_jessica", "Jessica", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_kore", "Kore", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_nicole", "Nicole", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_nova", "Nova", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_river", "River", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_sarah", "Sarah", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
+        Voice("af_sky", "Sky", "en-us", "Female", "US", modelType = "kokoro_v1.0"),
         
-        Voice("am_adam", "Adam", "en-us", "Male", "US"),
-        Voice("am_echo", "Echo", "en-us", "Male", "US"),
-        Voice("am_eric", "Eric", "en-us", "Male", "US"),
-        Voice("am_fenrir", "Fenrir", "en-us", "Male", "US"),
-        Voice("am_liam", "Liam", "en-us", "Male", "US"),
-        Voice("am_michael", "Michael", "en-us", "Male", "US"),
-        Voice("am_onyx", "Onyx", "en-us", "Male", "US"),
-        Voice("am_puck", "Puck", "en-us", "Male", "US"),
-        Voice("am_santa", "Santa", "en-us", "Male", "US"),
+        Voice("am_adam", "Adam", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_echo", "Echo", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_eric", "Eric", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_fenrir", "Fenrir", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_liam", "Liam", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_michael", "Michael", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_onyx", "Onyx", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_puck", "Puck", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
+        Voice("am_santa", "Santa", "en-us", "Male", "US", modelType = "kokoro_v1.0"),
 
-        Voice("bf_alice", "Alice", "en-gb", "Female", "UK"),
-        Voice("bf_emma", "Emma", "en-gb", "Female", "UK"),
-        Voice("bf_isabella", "Isabella", "en-gb", "Female", "UK"),
-        Voice("bf_lily", "Lily", "en-gb", "Female", "UK"),
+        Voice("bf_alice", "Alice", "en-gb", "Female", "UK", modelType = "kokoro_v1.0"),
+        Voice("bf_emma", "Emma", "en-gb", "Female", "UK", modelType = "kokoro_v1.0"),
+        Voice("bf_isabella", "Isabella", "en-gb", "Female", "UK", modelType = "kokoro_v1.0"),
+        Voice("bf_lily", "Lily", "en-gb", "Female", "UK", modelType = "kokoro_v1.0"),
 
-        Voice("bm_daniel", "Daniel", "en-gb", "Male", "UK"),
-        Voice("bm_fable", "Fable", "en-gb", "Male", "UK"),
-        Voice("bm_george", "George", "en-gb", "Male", "UK"),
-        Voice("bm_lewis", "Lewis", "en-gb", "Male", "UK")
+        Voice("bm_daniel", "Daniel", "en-gb", "Male", "UK", modelType = "kokoro_v1.0"),
+        Voice("bm_fable", "Fable", "en-gb", "Male", "UK", modelType = "kokoro_v1.0"),
+        Voice("bm_george", "George", "en-gb", "Male", "UK", modelType = "kokoro_v1.0"),
+        Voice("bm_lewis", "Lewis", "en-gb", "Male", "UK", modelType = "kokoro_v1.0")
     )
     
     private val kittenVoices = listOf(
-        Voice("expr-voice-2-f", "Kitten F2", "en-us", "Female", "US"),
-        Voice("expr-voice-2-m", "Kitten M2", "en-us", "Male", "US"),
-        Voice("expr-voice-3-f", "Kitten F3", "en-us", "Female", "US"),
-        Voice("expr-voice-3-m", "Kitten M3", "en-us", "Male", "US"),
-        Voice("expr-voice-4-f", "Kitten F4", "en-us", "Female", "US"),
-        Voice("expr-voice-4-m", "Kitten M4", "en-us", "Male", "US"),
-        Voice("expr-voice-5-f", "Kitten F5", "en-us", "Female", "US"),
-        Voice("expr-voice-5-m", "Kitten M5", "en-us", "Male", "US"),
+        Voice("expr-voice-2-f", "Kitten F2", "en-us", "Female", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-2-m", "Kitten M2", "en-us", "Male", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-3-f", "Kitten F3", "en-us", "Female", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-3-m", "Kitten M3", "en-us", "Male", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-4-f", "Kitten F4", "en-us", "Female", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-4-m", "Kitten M4", "en-us", "Male", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-5-f", "Kitten F5", "en-us", "Female", "US", modelType = "kitten_nano"),
+        Voice("expr-voice-5-m", "Kitten M5", "en-us", "Male", "US", modelType = "kitten_nano"),
     )
 
     // Dynamic source
@@ -240,7 +241,8 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                             gender = "Unknown", // Metadata doesn't strictly have gender.
                             region = countryPart, // e.g. "United States"
                             metadata = info,
-                            downloadState = com.nekospeak.tts.data.DownloadState.NotDownloaded // Initial, will refresh
+                            downloadState = com.nekospeak.tts.data.DownloadState.NotDownloaded, // Initial, will refresh
+                            modelType = "piper_${info.id}"
                         )
                     }
                 }
@@ -249,10 +251,11 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                         Voice(
                             id = def.id,
                             name = def.name,
-                            language = if (def.region.contains("French")) "fr-fr" else "en-us", // Simple inference
+                            language = if (def.region.contains("French")) "fr-fr" else "en-us",
                             gender = def.gender,
                             region = def.region,
-                            downloadState = com.nekospeak.tts.data.DownloadState.Downloaded // Bundled usually
+                            downloadState = com.nekospeak.tts.data.DownloadState.Downloaded,
+                            modelType = "pocket_v1"
                         )
                     }
                     
@@ -268,7 +271,8 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                             downloadState = if (isDownloaded) 
                                 com.nekospeak.tts.data.DownloadState.Downloaded 
                             else 
-                                com.nekospeak.tts.data.DownloadState.NotDownloaded
+                                com.nekospeak.tts.data.DownloadState.NotDownloaded,
+                            modelType = "pocket_v1"
                         )
                     }
                     
@@ -283,11 +287,12 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                                     Voice(
                                         id = state.id,
                                         name = "${state.displayName} (Cloned)",
-                                        language = "en-us", // Default
+                                        language = "en-us",
                                         gender = "Cloned",
                                         region = "Custom",
                                         downloadState = com.nekospeak.tts.data.DownloadState.Downloaded,
-                                        isCloned = true // Mark as deletable
+                                        isCloned = true,
+                                        modelType = "pocket_v1"
                                     )
                                 )
                             } catch (e: Exception) {
@@ -318,7 +323,8 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                             },
                             gender = def.gender,
                             region = def.region,
-                            downloadState = com.nekospeak.tts.data.DownloadState.Downloaded
+                            downloadState = com.nekospeak.tts.data.DownloadState.Downloaded,
+                            modelType = "omnivoice"
                         )
                     }
 
@@ -337,7 +343,8 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                                         gender = "Cloned",
                                         region = "Custom",
                                         downloadState = com.nekospeak.tts.data.DownloadState.Downloaded,
-                                        isCloned = true
+                                        isCloned = true,
+                                        modelType = "omnivoice"
                                     )
                                 )
                             } catch (e: Exception) {
@@ -439,27 +446,15 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
             val prefs = PrefsManager(context)
             prefs.currentVoice = voiceId
             
-            // Detect which model this voice belongs to
-            val pocketVoiceIds = VoiceDefinitions.POCKET_VOICES.map { it.id }
-            val celebrityVoiceIds = VoiceDefinitions.CELEBRITY_VOICES.map { it.id }
-            val isClonedVoice = java.io.File(context.filesDir, "pocket/cloned_voices/$voiceId.bin").exists()
-            val isOmniClonedVoice = java.io.File(context.filesDir, "omnivoice/cloned_voices/$voiceId.bin").exists()
-            
-            val newModel = when {
-                // Kitten voices
+            // Use voice's modelType for routing (reliable, not prefix-based)
+            val voiceObj = allVoices.find { it.id == voiceId }
+            val newModel = voiceObj?.modelType?.ifBlank { null } ?: when {
+                // Legacy fallback for voices without modelType
                 voiceId.startsWith("expr-voice-") -> "kitten_nano"
-                // Kokoro voices
-                voiceId.startsWith("af_") || voiceId.startsWith("am_") || voiceId.startsWith("bf_") || voiceId.startsWith("bm_") || voiceId.startsWith("ff_") || voiceId.startsWith("hf_") || voiceId.startsWith("hm_") || voiceId.startsWith("jf_") || voiceId.startsWith("jm_") || voiceId.startsWith("zf_") || voiceId.startsWith("kf_") -> "kokoro_v1.0"
-                // OmniVoice preset voices (ov_ prefix)
                 voiceId.startsWith("ov_") -> "omnivoice"
-                // OmniVoice cloned voices
-                isOmniClonedVoice -> "omnivoice"
-                // Pocket-TTS standard voices, celebrity voices, or cloned voices
-                pocketVoiceIds.contains(voiceId) || celebrityVoiceIds.contains(voiceId) || isClonedVoice -> "pocket_v1"
-                // Default to Piper voices
                 else -> "piper_$voiceId"
             }
-            android.util.Log.i("VoicesViewModel", "selectVoice($voiceId) -> model=$newModel")
+            android.util.Log.i("VoicesViewModel", "selectVoice($voiceId) -> model=$newModel (modelType=${voiceObj?.modelType})")
             prefs.currentModel = newModel
         }
     }

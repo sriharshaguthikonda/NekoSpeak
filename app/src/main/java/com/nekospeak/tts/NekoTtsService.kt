@@ -411,17 +411,60 @@ class NekoTtsService : TextToSpeechService() {
             return emptyList()
         }
 
-        // Use consistent locale (Locale.US) for all voices
-        // This ensures Android TTS framework recognizes all voices
+        // Map voices to their proper locales based on voice ID prefix
+        // This ensures Android TTS framework shows the correct language per voice
         return engine.getVoices().map { name ->
+            val locale = voiceIdToLocale(name)
             Voice(
                 name,
-                Locale.US,  // Consistent locale for all voices
+                locale,
                 Voice.QUALITY_VERY_HIGH,
                 Voice.LATENCY_NORMAL,
                 false,
-                emptySet()  // Don't misuse features for gender
+                emptySet()
             )
+        }
+    }
+
+    /**
+     * Map a voice ID to the appropriate Locale.
+     * Uses voice ID prefix conventions for reliable mapping.
+     */
+    private fun voiceIdToLocale(voiceId: String): Locale {
+        return when {
+            // Kokoro voices by prefix
+            voiceId.startsWith("af_") || voiceId.startsWith("am_") -> Locale.US
+            voiceId.startsWith("bf_") || voiceId.startsWith("bm_") -> Locale.UK
+            voiceId.startsWith("ff_") -> Locale("fr", "FR")
+            voiceId.startsWith("hf_") || voiceId.startsWith("hm_") -> Locale("hi", "IN")
+            voiceId.startsWith("jf_") || voiceId.startsWith("jm_") -> Locale("ja", "JP")
+            voiceId.startsWith("zf_") -> Locale("zh", "CN")
+            voiceId.startsWith("kf_") -> Locale("ko", "KR")
+            // OmniVoice voices
+            voiceId.startsWith("ov_zh_") -> Locale("zh", "CN")
+            voiceId.startsWith("ov_ja_") -> Locale("ja", "JP")
+            voiceId.startsWith("ov_ko_") -> Locale("ko", "KR")
+            voiceId.startsWith("ov_fr_") -> Locale("fr", "FR")
+            voiceId.startsWith("ov_de_") -> Locale("de", "DE")
+            voiceId.startsWith("ov_es_") -> Locale("es", "ES")
+            voiceId.startsWith("ov_ar_") -> Locale("ar", "SA")
+            voiceId.startsWith("ov_ru_") -> Locale("ru", "RU")
+            voiceId.startsWith("ov_hi_") -> Locale("hi", "IN")
+            voiceId.startsWith("ov_") -> Locale.US  // English OmniVoice presets
+            // Pocket voices
+            voiceId in listOf("alba", "marius", "javert", "jean", "fantine", "cosette", "eponine", "azelma") -> Locale.US
+            voiceId.startsWith("celebrity_") -> Locale.US
+            // Piper voices: parse language code from ID (e.g. "en_US-amy-low")
+            else -> {
+                val langCode = voiceId.substringBefore("-").substringBefore("_")
+                val countryCode = voiceId.substringAfter("_", "").substringBefore("-")
+                try {
+                    if (countryCode.isNotEmpty()) Locale(langCode, countryCode)
+                    else Locale(langCode)
+                } catch (e: Exception) {
+                    Locale.US
+                }
+            }
         }
     }
 

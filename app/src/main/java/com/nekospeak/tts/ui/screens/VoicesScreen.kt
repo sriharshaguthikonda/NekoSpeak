@@ -440,7 +440,7 @@ fun VoicesScreen(
                 Column(modifier = Modifier.padding(bottom=32.dp)) {
                     Text("Select Gender", style=MaterialTheme.typography.titleLarge, modifier=Modifier.padding(16.dp))
                     HorizontalDivider()
-                    listOf("Male", "Female").forEach { gender ->
+                    listOf("Male", "Female", "Neutral").forEach { gender ->
                         Row(
                             modifier = Modifier.fillMaxWidth().clickable { viewModel.selectGender(gender); showGenderModal = false }.padding(16.dp),
                             verticalAlignment = Alignment.CenterVertically
