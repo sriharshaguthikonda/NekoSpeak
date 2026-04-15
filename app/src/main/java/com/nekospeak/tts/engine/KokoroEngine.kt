@@ -236,25 +236,14 @@ class KokoroEngine(private val context: Context) : TtsEngine {
         val phonemizer = phonemizer ?: throw IllegalStateException("Phonemizer not initialized")
         
         try {
-            // 1. Initial rough split by sentence terminators
-            val rawSentences = text.split(Regex("(?<=[.!?])\\s+|\\n+|(?<=[;])\\s+"))
-            
-            // 2. Intelligence check: Is the first sentence too long? (>75 chars triggers latency)
-            val sentences = if (rawSentences.isNotEmpty() && rawSentences[0].length > 75) {
-                val first = rawSentences[0]
-                val rest = rawSentences.drop(1)
-                
-                // Try splitting by comma
-                val subParts = first.split(Regex("(?<=[,])\\s+"))
-                if (subParts.size > 1) {
-                    subParts + rest
-                } else {
-                    // Hard split by words approx every 60 chars
-                    listOf(first.take(60), first.drop(60)) + rest
-                }
-            } else {
-                rawSentences
-            }
+            // 1. Smart sentence splitting with abbreviation awareness
+            //    (port of vocoloco_tts SentenceBuffer pattern)
+            val sentenceBuffer = SentenceBuffer(
+                minChars = 20,
+                maxChars = 250,
+                onSentence = { /* collected below */ }
+            )
+            val sentences = sentenceBuffer.split(text)
             
             Log.d(TAG, "Input split into ${sentences.size} chunks. First chunk len: ${sentences.getOrNull(0)?.length ?: 0}")
             
@@ -275,6 +264,11 @@ class KokoroEngine(private val context: Context) : TtsEngine {
             val finalSpeed = if (isKitten) prefs.speechSpeed else 1.0f
             
             Log.d(TAG, "Generating with Speed: $finalSpeed (Model: ${if(isKitten) "Kitten" else "Kokoro"})")
+            
+            // Duration estimation for logging/diagnostics (vocoloco pattern)
+            val estDuration = DurationEstimator.estimateDurationSeconds(text, finalSpeed)
+            val estTokens = DurationEstimator.estimateTargetTokens(text, speed = finalSpeed)
+            Log.d(TAG, "Estimated duration: ${"%.1f".format(estDuration)}s, ~$estTokens audio tokens")
             
             // Batching logic: Accumulate tokens to fill context window (MAX_TOKENS)
             val currentBatchTokens = ArrayList<Int>()
