@@ -229,35 +229,143 @@ class NekoTtsService : TextToSpeechService() {
     }
 
     override fun onGetDefaultVoiceNameFor(lang: String?, country: String?, variant: String?): String? {
-        val isEnglish = lang?.let {
-            "eng".equals(it, ignoreCase = true) || "en".equals(it, ignoreCase = true)
-        } ?: false
-
-        if (isEnglish) {
-            return try {
-                val prefs = com.nekospeak.tts.data.PrefsManager(this)
-                val prefVoice = prefs.currentVoice
-
-                // Validate that the voice exists in current engine
-                val availableVoices = currentEngine?.getVoices() ?: emptyList()
-                if (availableVoices.contains(prefVoice)) {
-                    prefVoice
-                } else if (availableVoices.isNotEmpty()) {
-                    // Return first available voice as safe default
-                    availableVoices.first()
-                } else {
-                    "af_heart"  // Ultimate fallback
+        // Normalize the requested language — apps may pass ISO3 ("eng") or ISO2 ("en")
+        val normalizedLang = when {
+            lang == null -> null
+            lang.length == 3 -> {
+                // Convert ISO3 to ISO2 for matching
+                val match = supportedLanguages.find {
+                    it.isO3Language.equals(lang, ignoreCase = true) ||
+                    it.language.equals(lang, ignoreCase = true)
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error getting default voice", e)
-                "af_heart"
+                match?.language ?: lang.lowercase()
             }
+            else -> lang.lowercase()
         }
-        return super.onGetDefaultVoiceNameFor(lang, country, variant)
+
+        val normalizedCountry = country?.uppercase()
+
+        return try {
+            val engine = currentEngine
+            if (engine == null || !engine.isInitialized()) {
+                Log.w(TAG, "onGetDefaultVoiceNameFor: engine not initialized")
+                return "af_heart"
+            }
+
+            val prefs = com.nekospeak.tts.data.PrefsManager(this)
+            val availableVoices = engine.getVoices()
+
+            // Strategy: find a voice matching the requested locale,
+            // fall back to the user's preferred voice, then first available
+
+            // 1. Try to match language + country
+            val countryMatch = normalizedLang?.let { l ->
+                normalizedCountry?.let { c ->
+                    availableVoices.firstOrNull { voiceId ->
+                        val voiceLocale = voiceIdToLocale(voiceId)
+                        voiceLocale.language.equals(l, ignoreCase = true) &&
+                        voiceLocale.country.equals(c, ignoreCase = true)
+                    }
+                }
+            }
+
+            // 2. Try to match just language
+            val langMatch = normalizedLang?.let { l ->
+                availableVoices.firstOrNull { voiceId ->
+                    voiceIdToLocale(voiceId).language.equals(l, ignoreCase = true)
+                }
+            }
+
+            // 3. User's current preference
+            val prefVoice = prefs.currentVoice
+            val prefMatch = if (availableVoices.contains(prefVoice)) prefVoice else null
+
+            // 4. First available
+            val firstAvailable = availableVoices.firstOrNull()
+
+            val result = countryMatch ?: langMatch ?: prefMatch ?: firstAvailable ?: "af_heart"
+            Log.d(TAG, "onGetDefaultVoiceNameFor: lang=$lang country=$country → $result")
+            return result
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting default voice", e)
+            "af_heart"
+        }
+    }
+
+    /**
+     * Validate that a voice name is recognized by this engine.
+     * Called by the Android TTS framework and apps like ReadEra
+     * to check if a specific voice is available.
+     *
+     * CRITICAL for ReadEra/Librera compatibility: these apps call
+     * TextToSpeech.isInRange() which internally checks voice validity
+     * before offering the engine as a TTS option.
+     */
+    override fun onIsValidVoiceName(voiceName: String?): Boolean {
+        if (voiceName.isNullOrBlank()) return false
+
+        val engine = currentEngine ?: return false
+        val availableVoices = engine.getVoices()
+
+        // Direct match
+        if (availableVoices.contains(voiceName)) return true
+
+        // Also accept voices from VoiceDefinitions even if engine hasn't loaded yet
+        // (engine init is async — voices may not be available immediately)
+        val allDefinedVoices = (
+            com.nekospeak.tts.data.VoiceDefinitions.KOKORO_VOICES +
+            com.nekospeak.tts.data.VoiceDefinitions.POCKET_VOICES +
+            com.nekospeak.tts.data.VoiceDefinitions.OMNIVOICE_VOICES +
+            com.nekospeak.tts.data.VoiceDefinitions.CELEBRITY_VOICES
+        ).map { it.id }
+
+        return allDefinedVoices.contains(voiceName) ||
+               voiceName.startsWith("piper_") ||
+               voiceName.startsWith("ov_") ||
+               voiceName.startsWith("expr-voice-")
+    }
+
+    /**
+     * Load a specific voice by name.
+     * Called by the Android TTS framework when a client selects a voice.
+     * Returns the language availability status for the voice's locale.
+     *
+     * CRITICAL for ReadEra/Librera compatibility: if this doesn't return
+     * LANG_AVAILABLE or better, the framework won't use this voice.
+     */
+    override fun onLoadVoice(voiceName: String?): Int {
+        if (voiceName.isNullOrBlank()) return TextToSpeech.LANG_NOT_SUPPORTED
+
+        Log.d(TAG, "onLoadVoice: $voiceName")
+
+        // Determine the locale for this voice
+        val locale = voiceIdToLocale(voiceName)
+
+        // Set the voice as current preference so next synthesis uses it
+        val engine = currentEngine
+        if (engine != null && engine.getVoices().contains(voiceName)) {
+            val prefs = com.nekospeak.tts.data.PrefsManager(this)
+            prefs.currentVoice = voiceName
+        }
+
+        // Report language availability for this voice's locale
+        return onIsLanguageAvailable(
+            locale.isO3Language,
+            locale.isO3Country,
+            locale.variant
+        )
     }
 
     override fun onGetLanguage(): Array<String> {
-        return arrayOf("eng", "USA", "")
+        // Report the current engine's default locale based on the active voice
+        val prefs = com.nekospeak.tts.data.PrefsManager(this)
+        val currentVoice = prefs.currentVoice
+        val locale = voiceIdToLocale(currentVoice)
+        return arrayOf(
+            locale.isO3Language,
+            locale.isO3Country,
+            locale.variant ?: ""
+        )
     }
 
     override fun onLoadLanguage(lang: String?, country: String?, variant: String?): Int {
