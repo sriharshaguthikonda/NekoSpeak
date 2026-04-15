@@ -90,7 +90,8 @@ object ModelRepository {
                 ModelFile("omnivoice/omnivoice-main.onnx_data_04", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main.onnx_data_04", "Main Model Shard 5/5 (264MB)"),
                 ModelFile("omnivoice/omnivoice-decoder.onnx", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-decoder.onnx", "Audio Decoder (83MB)"),
                 ModelFile("omnivoice/omnivoice-encoder-fixed.onnx", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-encoder-fixed.onnx", "Audio Encoder - Voice Cloning (624MB)"),
-                ModelFile("omnivoice/omnivoice-config.json", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-config.json", "Model Config")
+                ModelFile("omnivoice/omnivoice-config.json", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-config.json", "Model Config"),
+                ModelFile("omnivoice/omnivoice-main-manifest.json", "https://huggingface.co/Gigsu/vocoloco-onnx/resolve/main/omnivoice-main-manifest.json", "Shard Manifest")
             )
         )
     )

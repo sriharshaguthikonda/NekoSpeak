@@ -87,6 +87,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
     private var decoderSession: OrtSession? = null
     private var encoderSession: OrtSession? = null  // Optional — voice cloning
 
+    // Tokenizer
+    private var tokenizer: Qwen2Tokenizer? = null
+
     // Config
     private var numAudioCodebook = NUM_AUDIO_CODEBOOK
     private var audioVocabSize = AUDIO_VOCAB_SIZE
@@ -96,8 +99,16 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
     private var initialized = false
     private var stopRequested = false
 
-    // Voice cloning state
-    private var clonedVoices = mutableMapOf<String, Array<LongArray>>()  // voiceName → [codebook][tokens]
+    // Voice cloning state: voiceName → encoded reference [codebook][tokens]
+    private var clonedVoices = mutableMapOf<String, ClonedVoice>()
+
+    /** Encoded reference voice for cloning. */
+    data class ClonedVoice(
+        val name: String,
+        val tokens: Array<LongArray>,  // [codebook][T]
+        val refText: String? = null,
+        val durationSec: Float = 0f
+    )
 
     // ========================================================================
     // TtsEngine interface
@@ -118,6 +129,15 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
 
             // Load config
             loadConfig(modelDir)
+
+            // Load Qwen2 BPE tokenizer
+            Log.i(TAG, "Loading Qwen2 tokenizer...")
+            tokenizer = Qwen2Tokenizer.getInstance(context)
+            if (!tokenizer!!.loaded) {
+                Log.e(TAG, "Tokenizer failed to load")
+                return@withContext false
+            }
+            Log.i(TAG, "Tokenizer loaded")
 
             // Create session options with SIGBUS prevention
             val opts = OrtModelLoader.createSessionOptions(threadCount = 4)
@@ -173,15 +193,20 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
             val mainSess = mainSession ?: throw IllegalStateException("Main session null")
             val decoderSess = decoderSession ?: throw IllegalStateException("Decoder session null")
             val env = ortEnv ?: throw IllegalStateException("ORT env null")
+            val tok = tokenizer ?: throw IllegalStateException("Tokenizer not loaded")
 
             try {
-                // 1. Split text into sentences using SentenceBuffer
-                val sentences = SentenceBuffer(minChars = 20, maxChars = 250) { }.split(text)
-                Log.d(TAG, "Split into ${sentences.size} sentences")
+                // 1. Resolve voice design or clone
+                val preset = voice?.let { OmniVoiceVoiceDesign.getPreset(it) }
+                val clonedVoice = voice?.let { clonedVoices[it] }
 
-                // 2. Check for cloned voice reference
-                val refAudioTokens = voice?.let { clonedVoices[it] }
-                val refText: String? = null  // Would need to be provided with cloned voice
+                val instruct = preset?.instruct  // e.g. "female, low pitch"
+                val lang = preset?.lang ?: detectLanguage(text)
+                val seed = preset?.seed ?: OmniVoiceVoiceDesign.hashInstruct(instruct)
+
+                // 2. Split text into sentences
+                val sentences = SentenceBuffer(minChars = 20, maxChars = 250) { }.split(text)
+                Log.d(TAG, "Split into ${sentences.size} sentences, voice=$voice, lang=$lang")
 
                 // 3. Process each sentence
                 for (sentence in sentences) {
@@ -196,31 +221,34 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                     )
                     Log.d(TAG, "Estimated tokens: $numTargetTokens")
 
-                    // 3b. Tokenize text (using simple BPE or eSpeak fallback)
-                    // For now: use eSpeak phonemes as token surrogate until Qwen2 BPE is integrated
-                    val textTokenIds = tokenizeText(sentence)
+                    // 3b. Tokenize style tokens: <|denoise|><|lang_start|>{lang}<|lang_end|><|instruct_start|>{instruct}<|instruct_end|>
+                    val styleIds = tok.encodeStyle(lang = lang, instruct = instruct)
 
-                    // 3c. Prepare inference inputs
+                    // 3c. Tokenize text: <|text_start|>{text}<|text_end|>
+                    val textIds = tok.encodeTextWithRef(sentence, clonedVoice?.refText)
+
+                    // 3d. Prepare inference inputs
                     val inputs = prepareInferenceInputs(
-                        textTokenIds = textTokenIds,
+                        styleIds = styleIds,
+                        textIds = textIds,
                         numTargetTokens = numTargetTokens,
-                        refAudioTokens = refAudioTokens,
-                        lang = detectLanguage(sentence)
+                        refAudioTokens = clonedVoice?.tokens
                     )
 
-                    // 3d. Run iterative diffusion
+                    // 3e. Run iterative diffusion with seeded PRNG
                     val audioTokens = generateIterative(
                         inputs, mainSess, env,
                         numSteps = DEFAULT_NUM_STEPS,
-                        guidanceScale = DEFAULT_GUIDANCE_SCALE
+                        guidanceScale = DEFAULT_GUIDANCE_SCALE,
+                        seed = seed
                     )
 
                     if (stopRequested) break
 
-                    // 3e. Decode audio tokens to PCM
+                    // 3f. Decode audio tokens to PCM
                     val rawPcm = decodeTokens(audioTokens, numTargetTokens, decoderSess, env)
 
-                    // 3f. Post-process: trim silence, normalize
+                    // 3g. Post-process: trim silence, normalize
                     val pcm = postProcessAudio(rawPcm)
 
                     callback(pcm)
@@ -236,7 +264,7 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
     override fun getSampleRate(): Int = SAMPLE_RATE
 
     override fun getVoices(): List<String> {
-        return listOf("omnivoice_default") + clonedVoices.keys
+        return OmniVoiceVoiceDesign.getVoiceIds() + clonedVoices.keys
     }
 
     override fun release() {
@@ -287,8 +315,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 val codesData = codesTensor.value as Array<LongArray>
                 val tokens = Array(C) { c -> LongArray(T) { t -> codesData[c][t] } }
 
-                clonedVoices[voiceName] = tokens
-                Log.i(TAG, "Voice cloned: $voiceName ($T tokens, ${clipLen / SAMPLE_RATE}s)")
+                val durationSec = clipLen.toFloat() / SAMPLE_RATE
+                clonedVoices[voiceName] = ClonedVoice(voiceName, tokens, refText = null, durationSec)
+                Log.i(TAG, "Voice cloned: $voiceName ($T tokens, ${"%.1f".format(durationSec)}s)")
                 return@withContext voiceName
 
             } catch (e: Exception) {
@@ -338,31 +367,7 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
     // Internal: text tokenization
     // ========================================================================
 
-    /**
-     * Tokenize text into Qwen2 BPE token IDs.
-     *
-     * For now, uses a simplified approach: eSpeak phonemes mapped to a
-     * token surrogate space. A full Qwen2 BPE tokenizer (SentencePiece)
-     * integration would require shipping the tokenizer.model file (~2MB).
-     *
-     * TODO: Integrate SentencePiece for proper Qwen2 BPE tokenization.
-     */
-    private fun tokenizeText(text: String): LongArray {
-        // Simplified: map each character to a token ID.
-        // The OmniVoice model uses Qwen2 BPE which has a ~150K vocab.
-        // For basic functionality, we use character-level tokenization
-        // with common special tokens.
-        val tokens = mutableListOf<Long>()
-        // Add text markers
-        tokens.add(151666L)  // <|text_start|> approximate
-        for (ch in text) {
-            tokens.add(ch.code.toLong())
-        }
-        tokens.add(151667L)  // <|text_end|> approximate
-        return tokens.toLongArray()
-    }
-
-    /** Simple language detection from text content. */
+    /** Language detection from text content (used for style tokens). */
     private fun detectLanguage(text: String): String {
         val hasCjk = text.any { it.code in 0x4E00..0x9FFF || it.code in 0x3040..0x309F }
         val hasHangul = text.any { it.code in 0xAC00..0xD7AF }
@@ -391,41 +396,41 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
         val maxLen: Int
     )
 
+    /**
+     * Prepare batched inference inputs following vocoloco_tts exactly.
+     *
+     * Sequence layout: [style | text | ref_audio? | target_masked]
+     * Batch: [conditional_full, unconditional_target_only] for CFG
+     */
     private fun prepareInferenceInputs(
-        textTokenIds: LongArray,
+        styleIds: LongArray,
+        textIds: LongArray,
         numTargetTokens: Int,
-        refAudioTokens: Array<LongArray>? = null,
-        lang: String = "en"
+        refAudioTokens: Array<LongArray>? = null
     ): InferenceInputs {
         val C = numAudioCodebook
         val maskId = audioMaskId.toLong()
         val refLen = refAudioTokens?.getOrNull(0)?.size ?: 0
 
-        // Build style tokens (simplified)
-        // Full implementation would tokenize <|denoise|><|lang_start|>en<|lang_end|> etc.
-        val styleIds = longArrayOf(151644L, 151645L)  // Placeholder special tokens
+        val totalLen = styleIds.size + textIds.size + refLen + numTargetTokens
+        val maxLen = totalLen
 
-        // Total sequence: [style | text | ref_audio? | target_masked]
-        val totalLen = styleIds.size + textTokenIds.size + refLen + numTargetTokens
-        val maxLen = totalLen  // No padding for simplicity
-
-        // Build input_ids: [2, C, maxLen] — conditional + unconditional
+        // Build input_ids: [2, C, maxLen]
         val batchInputIds = LongArray(2 * C * maxLen) { maskId }
 
-        // Conditional: full sequence
-        var offset = 0
+        // Conditional: full sequence [style | text | ref_audio | target_mask]
         for (c in 0 until C) {
             var pos = 0
-            // Style tokens
+            // Style tokens (replicated across codebooks)
             for (s in styleIds) batchInputIds[c * maxLen + pos++] = s
             // Text tokens
-            for (t in textTokenIds) batchInputIds[c * maxLen + pos++] = t
+            for (t in textIds) batchInputIds[c * maxLen + pos++] = t
             // Reference audio tokens
             if (refAudioTokens != null && c < refAudioTokens.size) {
                 for (t in refAudioTokens[c]) batchInputIds[c * maxLen + pos++] = t
             }
             // Target = all mask
-            for (t in 0 until numTargetTokens) batchInputIds[c * maxLen + pos++] = maskId
+            // (already initialized to maskId)
         }
 
         // Unconditional: only target masked tokens
@@ -435,27 +440,32 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
             }
         }
 
-        val targetOff = styleIds.size + textTokenIds.size + refLen
+        val targetOff = styleIds.size + textIds.size + refLen
 
-        // Audio mask: true for audio positions
+        // Audio mask: true for audio positions (ref + target)
         val batchAudioMask = BooleanArray(2 * maxLen)
-        val audioStart = if (refAudioTokens != null) (styleIds.size + textTokenIds.size) else targetOff
+        val audioStart = styleIds.size + textIds.size  // ref_audio starts here
         for (i in audioStart until totalLen) batchAudioMask[i] = true
+        // Unconditional: target is audio
         for (t in 0 until numTargetTokens) batchAudioMask[maxLen + t] = true
 
-        // Attention mask: causal-like (1 for valid positions)
+        // Attention mask: block-causal for conditional, full for unconditional target
         val batchAttentionMask = BooleanArray(2 * maxLen * maxLen)
-        // Conditional: full attention for valid positions
+        // Conditional: full attention within valid length
         for (q in 0 until totalLen) {
             for (k in 0 until totalLen) {
                 batchAttentionMask[q * maxLen + k] = true
             }
         }
-        // Unconditional: full attention for target positions
+        // Unconditional: full attention within target length
         for (q in 0 until numTargetTokens) {
             for (k in 0 until numTargetTokens) {
                 batchAttentionMask[maxLen * maxLen + q * maxLen + k] = true
             }
+        }
+        // Padding positions attend to themselves
+        for (p in numTargetTokens until maxLen) {
+            batchAttentionMask[maxLen * maxLen + p * maxLen + p] = true
         }
 
         return InferenceInputs(
@@ -473,7 +483,8 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
         session: OrtSession,
         env: OrtEnvironment,
         numSteps: Int = DEFAULT_NUM_STEPS,
-        guidanceScale: Float = DEFAULT_GUIDANCE_SCALE
+        guidanceScale: Float = DEFAULT_GUIDANCE_SCALE,
+        seed: Int = 42
     ): LongArray = withContext(Dispatchers.Default) {
         val C = numAudioCodebook
         val V = audioVocabSize
@@ -494,8 +505,8 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
         val timeSteps = getTimeSteps(0.0, 1.0, numSteps + 1, DEFAULT_T_SHIFT)
         val schedule = computeSchedule(totalPositions, numSteps, timeSteps)
 
-        // Seed for deterministic PRNG
-        val rng = mulberry32(42)
+        // Seeded PRNG for deterministic voice reproduction
+        val rng = mulberry32(seed)
 
         for (step in 0 until numSteps) {
             if (stopRequested || !isActive) break
