@@ -115,6 +115,7 @@ class Phonemizer(private val context: Context) {
             // Chinese G2P (Misaki ZH port)
             zhG2P = ZhG2P(espeakFallback = espeakFallback, enCallable = enCallable)
             zhG2P.load(context)
+            ZhNormalization.loadCharConvert(context)
 
             // Korean G2P (Misaki KO port)
             koG2P = KoG2P(espeakFallback = espeakFallback)

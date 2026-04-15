@@ -272,8 +272,12 @@ class ZhG2P(
             return espeakResult
         }
 
+        // 0. Apply full Chinese text normalization (traditional→simplified,
+        //    dates, times, phone numbers, temperature, measurements)
+        var processed = ZhNormalization.normalize(text)
+
         // 1. Convert numbers
-        var processed = transformNumbers(text)
+        processed = transformNumbers(processed)
 
         // 2. Map punctuation
         processed = mapPunctuation(processed)
