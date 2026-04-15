@@ -1,13 +1,13 @@
 # NekoSpeak
 
-![Android](https://img.shields.io/badge/Android-35-green?style=flat&logo=android)
+![Android](https://img.shields.io/badge/Android-26+-green?style=flat&logo=android)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-purple?style=flat&logo=kotlin)
 [![GitHub Release](https://img.shields.io/github/v/release/siva-sub/NekoSpeak)](https://github.com/siva-sub/NekoSpeak/releases)
 [![License](https://img.shields.io/github/license/siva-sub/NekoSpeak)](https://github.com/siva-sub/NekoSpeak/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/siva-sub/NekoSpeak?style=social)](https://github.com/siva-sub/NekoSpeak/stargazers)
 ![ONNX Runtime](https://img.shields.io/badge/ONNX%20Runtime-1.18.0-blue)
 ![CPU](https://img.shields.io/badge/CPU-supported-brightgreen)
-[![Download APK](https://img.shields.io/badge/Download-APK%20(v1.4.2)-blue?style=for-the-badge&logo=android)](https://github.com/siva-sub/NekoSpeak/releases)
+[![Download APK](https://img.shields.io/badge/Download-APK%20(v1.5.0)-blue?style=for-the-badge&logo=android)](https://github.com/siva-sub/NekoSpeak/releases)
 
 **NekoSpeak** is a high-performance, on-device Text-to-Speech (TTS) engine for Android, capable of running **100% offline** with low latency. It bridges the gap between modern AI voice synthesis and the standard Android TTS API.
 
@@ -28,24 +28,28 @@ The first and foremost consideration was **fully offline functionality** - no in
 *   **Multi-Engine Support**:
     *   **Pocket-TTS** ⭐ **RECOMMENDED**: Zero-shot voice cloning with celebrity voices and custom voice enrollment. Best quality and most natural sounding!
     *   **Piper**: Fast, efficient, and multilingual. Supports hundreds of community voices (English, Tamil, Spanish, etc.).
-*   **Voice Cloning**: Record your own voice or upload audio to create custom TTS voices (Pocket-TTS).
+    *   **OmniVoice** 🆕: Diffusion-based TTS supporting 600+ languages with voice cloning. Downloadable encoder for voice design.
+*   **Voice Cloning**: Record your own voice or upload audio to create custom TTS voices (Pocket-TTS and OmniVoice).
 *   **Celebrity Voices**: Download and use celebrity voice profiles (Oprah Winfrey, Greta Thunberg, and more).
 *   **Privacy First**: All processing happens 100% on-device. No data is ever sent to the cloud.
-*   **System-Wide Integration**: Works with any Android app that supports TTS (MoonReader, @Voice, etc.).
+*   **System-Wide Integration**: Works with any Android app that supports TTS (ReadEra, Librera, MoonReader, @Voice, etc.).
+*   **Multilingual G2P**: Faithful ports of Misaki's Japanese, Chinese, Korean, Vietnamese, and Hebrew G2P modules with full dictionary support.
 *   **Advanced Voice Management**:
     *   **Cloud Voice Store**: Browse and download hundreds of Piper voices directly within the app.
     *   **Quality Filters**: Filter voices by quality (x_low to high).
     *   **Persistence**: Remembers your preferred voice and speed settings.
+    *   **Engine Badges**: Visual distinction between Kokoro, Piper, Pocket-TTS, and OmniVoice engines.
 
 ## 📦 Bundled Models
 
-> **What's included?** Only **Piper with Amy Low voice** (~63MB) is bundled for instant offline use. Other engines (Kokoro, Kitten TTS, Pocket-TTS) are downloaded on-demand when you select them. We recommend trying **Pocket-TTS** for the best quality experience!
+> **What's included?** Only **Piper with Amy Low voice** (~63MB) is bundled for instant offline use. Other engines (Kokoro, OmniVoice, Pocket-TTS) are downloaded on-demand. We recommend trying **Pocket-TTS** for the best quality experience!
 
 | Engine | Model | Size | Quality | Availability |
 |--------|-------|------|---------|--------------|
 | Piper | Amy Low | ~63MB | Good | ✅ Bundled (instant) |
 | Pocket-TTS | Full Model | ~176MB | Excellent | 📥 On-demand. **Recommended!** |
 | Kokoro | v1.0 | ~115MB | Excellent | 📥 On-demand |
+| OmniVoice | Diffusion TTS | ~3GB | Excellent | 📥 On-demand. 🆕 600+ languages! |
 | Kitten TTS | Nano | ~23MB | Fair | 📥 On-demand |
 | Piper | Community Voices | Varies | Varies | 📥 100+ downloadable voices |
 
@@ -61,19 +65,19 @@ The first and foremost consideration was **fully offline functionality** - no in
 
 ## 📥 Download
 
-**v1.4.2 is now available!** (voice cloning stability + in-app diagnostics)
+**v1.5.0 is now available!** (OmniVoice engine, Misaki G2P ports, SIGBUS fix, ReadEra/Librera compatibility)
 
 > **Why is the APK size large?**
 > NekoSpeak comes pre-packaged with the Piper engine and Amy Low voice to ensure **100% offline functionality** right out of the box. The Pocket-TTS model is downloaded separately on first use.
 
-*   **Universal** (135 MB): Works on all devices.
-    *   [Download apk](https://github.com/siva-sub/NekoSpeak/releases/download/v1.4.2/app-universal-release.apk)
-*   **arm64-v8a** (88 MB): Optimized for modern devices (Pixel, Samsung S-series).
-    *   [Download apk](https://github.com/siva-sub/NekoSpeak/releases/download/v1.4.2/app-arm64-v8a-release.apk)
-*   **armeabi-v7a** (82 MB): Optimized for older/low-end devices.
-    *   [Download apk](https://github.com/siva-sub/NekoSpeak/releases/download/v1.4.2/app-armeabi-v7a-release.apk)
+*   **Universal** (138 MB): Works on all devices.
+    *   [Download apk](https://github.com/siva-sub/NekoSpeak/releases/download/v1.5.0/app-universal-release.apk)
+*   **arm64-v8a** (91 MB): Optimized for modern devices (Pixel, Samsung S-series).
+    *   [Download apk](https://github.com/siva-sub/NekoSpeak/releases/download/v1.5.0/app-arm64-v8a-release.apk)
+*   **armeabi-v7a** (85 MB): Optimized for older/low-end devices.
+    *   [Download apk](https://github.com/siva-sub/NekoSpeak/releases/download/v1.5.0/app-armeabi-v7a-release.apk)
 
-[**View Full Release Notes**](https://github.com/siva-sub/NekoSpeak/releases/tag/v1.4.2)
+[**View Full Release Notes**](https://github.com/siva-sub/NekoSpeak/releases/tag/v1.5.0)
 
 ## 📂 Project Structure
 
@@ -217,7 +221,9 @@ I gratefully acknowledge the incredible work of the open-source AI community:
 *   **[Piper Tamil Voice (Valluvar)](https://huggingface.co/datasets/Jeyaram-K/piper-tamil-voice)**
     *   Special thanks to **Jeyaram-K** for training and providing the high-quality Tamil "Valluvar" model.
 *   **[Misaki](https://github.com/hexgrad/misaki)**
-    *   G2P logic ported from this excellent library.
+    *   G2P logic faithfully ported from this excellent library, including Japanese, Chinese, Korean, Vietnamese, and Hebrew modules with full dictionary support.
+*   **[vocoloco_tts](https://github.com/Magkino/vocoloco_tts)**
+    *   SentenceBuffer and DurationEstimator patterns ported for improved text chunking and audio duration estimation.
 *   **[Espeak-NG](https://github.com/espeak-ng/espeak-ng)**
     *   The backbone of multilingual phonemization.
 

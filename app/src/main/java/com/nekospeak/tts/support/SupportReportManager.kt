@@ -75,7 +75,7 @@ object SupportReportManager {
             ?: mutableListOf()
 
         while (fresh.size > MAX_REPORT_COUNT) {
-            val oldest = fresh.removeLast()
+            val oldest = fresh.removeAt(fresh.lastIndex)
             oldest.delete()
         }
 
@@ -83,7 +83,7 @@ object SupportReportManager {
         if (totalBytes > MAX_TOTAL_BYTES) {
             val oldestFirst = fresh.sortedBy { it.lastModified() }.toMutableList()
             while (totalBytes > MAX_TOTAL_BYTES && oldestFirst.isNotEmpty()) {
-                val file = oldestFirst.removeFirst()
+                val file = oldestFirst.removeAt(0)
                 totalBytes -= file.length()
                 file.delete()
             }
