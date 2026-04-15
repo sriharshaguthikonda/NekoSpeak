@@ -36,55 +36,8 @@ class ZhG2P(
     companion object {
         private const val TAG = "ZhG2P"
 
-        // --- Pinyin → IPA mapping (from transcription.py) ---
-        private val INITIAL_MAPPING = mapOf(
-            "b" to listOf("p"), "p" to listOf("pʰ"), "m" to listOf("m"), "f" to listOf("f"),
-            "d" to listOf("t"), "t" to listOf("tʰ"), "n" to listOf("n"), "l" to listOf("l"),
-            "g" to listOf("k"), "k" to listOf("kʰ"), "h" to listOf("x", "h"),
-            "j" to listOf("ʨ"), "q" to listOf("ʨʰ"), "x" to listOf("ɕ"),
-            "zh" to listOf("ʈʂ"), "ch" to listOf("ʈʂʰ"), "sh" to listOf("ʂ"),
-            "r" to listOf("ɻ", "ʐ"), "z" to listOf("ʦ"), "c" to listOf("ʦʰ"), "s" to listOf("s")
-        )
-
-        private val FINAL_MAPPING = mapOf(
-            "a" to listOf("a0"), "ai" to listOf("ai̯0"), "an" to listOf("a0", "n"),
-            "ang" to listOf("a0", "ŋ"), "ao" to listOf("au̯0"),
-            "e" to listOf("ɤ0"), "ei" to listOf("ei̯0"), "en" to listOf("ə0", "n"),
-            "eng" to listOf("ə0", "ŋ"),
-            "i" to listOf("i0"), "ia" to listOf("j", "a0"), "ian" to listOf("j", "ɛ0", "n"),
-            "iang" to listOf("j", "a0", "ŋ"), "iao" to listOf("j", "au̯0"),
-            "ie" to listOf("j", "e0"), "in" to listOf("i0", "n"), "ing" to listOf("i0", "ŋ"),
-            "iong" to listOf("j", "ʊ0", "ŋ"), "iou" to listOf("j", "ou̯0"),
-            "ong" to listOf("ʊ0", "ŋ"), "ou" to listOf("ou̯0"),
-            "u" to listOf("u0"), "ua" to listOf("w", "a0"), "uai" to listOf("w", "ai̯0"),
-            "uan" to listOf("w", "a0", "n"), "uang" to listOf("w", "a0", "ŋ"),
-            "uei" to listOf("w", "ei̯0"), "uen" to listOf("w", "ə0", "n"),
-            "ueng" to listOf("w", "ə0", "ŋ"), "uo" to listOf("w", "o0"),
-            "ü" to listOf("y0"), "üe" to listOf("ɥ", "e0"),
-            "üan" to listOf("ɥ", "ɛ0", "n"), "ün" to listOf("y0", "n"),
-            "o" to listOf("w", "o0")
-        )
-
-        private val FINAL_AFTER_ZH_CH_SH_R = mapOf(
-            "i" to listOf("ɻ̩0", "ʐ̩0")
-        )
-
-        private val FINAL_AFTER_Z_C_S = mapOf(
-            "i" to listOf("ɹ̩0", "z̩0")
-        )
-
-        private val SYLLABIC_CONSONANT_MAPPINGS = mapOf(
-            "m" to listOf("m0"), "n" to listOf("n0"), "ng" to listOf("ŋ0"),
-            "hm" to listOf("h", "m0"), "hng" to listOf("h", "ŋ0")
-        )
-
-        private val INTERJECTION_MAPPINGS = mapOf(
-            "ê" to listOf("ɛ0"), "er" to listOf("ɚ0", "aɚ̯0"), "o" to listOf("ɔ0")
-        )
-
-        private val TONE_MAPPING = mapOf(
-            1 to "˥", 2 to "˧˥", 3 to "˧˩˧", 4 to "˥˩", 5 to ""
-        )
+        // --- Pinyin → IPA conversion delegated to Transcription module ---
+        // (see Transcription.kt for full INITIAL_MAPPING, FINAL_MAPPING, etc.)
 
         // --- Retone (from zh.py) ---
         fun retone(p: String): String {
@@ -214,50 +167,11 @@ class ZhG2P(
      */
     fun py2ipa(py: String): String {
         if (py.isBlank()) return ""
-
-        // Extract tone number
-        val toneStr = py.lastOrNull()?.toString() ?: ""
-        val tone = toneStr.toIntOrNull() ?: 1
-        val pyNoTone = if (tone in 1..5) py.dropLast(1) else py
-
-        // Check syllabic consonants
-        if (pyNoTone in SYLLABIC_CONSONANT_MAPPINGS) {
-            return SYLLABIC_CONSONANT_MAPPINGS[pyNoTone]!!.joinToString("")
-                .replace("0", TONE_MAPPING[tone] ?: "")
-        }
-
-        // Check interjections
-        if (pyNoTone in INTERJECTION_MAPPINGS) {
-            return INTERJECTION_MAPPINGS[pyNoTone]!!.joinToString("")
-                .replace("0", TONE_MAPPING[tone] ?: "")
-        }
-
-        // Split into initial + final
-        val initial = INITIAL_MAPPING.keys
-            .filter { pyNoTone.startsWith(it) }
-            .maxByOrNull { it.length }
-
-        val finalPart = if (initial != null) pyNoTone.drop(initial.length) else pyNoTone
-
-        val parts = mutableListOf<String>()
-        if (initial != null) {
-            parts.add(INITIAL_MAPPING[initial]!!.first())
-        }
-
-        // Get final phonemes
-        val finalPhonemes: List<String> = when {
-            initial in listOf("zh", "ch", "sh", "r") && finalPart in FINAL_AFTER_ZH_CH_SH_R ->
-                FINAL_AFTER_ZH_CH_SH_R[finalPart]!!
-            initial in listOf("z", "c", "s") && finalPart in FINAL_AFTER_Z_C_S ->
-                FINAL_AFTER_Z_C_S[finalPart]!!
-            finalPart in FINAL_MAPPING -> FINAL_MAPPING[finalPart]!!
-            finalPart.isBlank() -> emptyList()
-            else -> return "" // Unknown final
-        }
-
-        parts.addAll(finalPhonemes.map { it.replace("0", TONE_MAPPING[tone] ?: "") })
-
-        return parts.joinToString("")
+        // Delegate to the faithful Transcription module from upstream
+        val ipa = Transcription.pinyinToIpa(py)
+        if (ipa.isBlank()) return ""
+        // Apply Misaki's tone markers (↗↘↓→) for Kokoro compatibility
+        return retone(ipa)
     }
 
     /**

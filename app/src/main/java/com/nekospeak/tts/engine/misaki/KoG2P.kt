@@ -458,6 +458,19 @@ class KoG2P(
             return out
         }
 
+        // --- Apply table.csv coda×onset assimilation rules ---
+        fun applyTableRules(inp: String): String {
+            if (tableRules.isEmpty()) return inp
+            var out = inp
+            for ((coda, onset, result) in tableRules) {
+                val pattern = Regex(Regex.escape(coda) + Regex.escape(onset))
+                val cleanResult = result.replace(Regex("\\(\\d+/\\d+\\)$"), "")
+                    .replace(Regex("\\(\\d+\\)$"), "")
+                out = pattern.replace(out, cleanResult)
+            }
+            return out
+        }
+
         // --- Group vowels (postprocessing) ---
         fun groupVowels(inp: String): String {
             return inp
@@ -536,6 +549,9 @@ class KoG2P(
 
         // 6. Special rules
         result = applySpecialRules(result)
+
+        // 6.5. Table rules from table.csv (coda×onset assimilation)
+        result = applyTableRules(result)
 
         // 7. Regular table rules
         result = applyRegularRules(result)
