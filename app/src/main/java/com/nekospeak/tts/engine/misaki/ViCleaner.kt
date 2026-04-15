@@ -386,7 +386,7 @@ class ViCleaner(
 
     private fun expandMeasurements(text: String): String {
         var result = text
-        for ((unit, expanded) in MEASUREMENT_KEY.sortedByDescending { it.key.length }) {
+        for ((unit, expanded) in MEASUREMENT_KEY.entries.sortedByDescending { it.key.length }) {
             val re = Regex("(\\d)\\s*${Regex.escape(unit)}\\b")
             result = re.replace(result) { m ->
                 "${m.groupValues[1]} $expanded "

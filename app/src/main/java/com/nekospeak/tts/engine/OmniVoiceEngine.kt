@@ -14,7 +14,7 @@ import java.nio.ByteOrder
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.exp
-import kotlin.math.log
+import kotlin.math.ln
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -308,16 +308,18 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 val aligned = pcm.copyOf(clipLen)
 
                 // Run encoder
-                val inputTensor = OnnxTensor.createTensor(env, aligned, longArrayOf(1, 1, aligned.size.toLong()))
+                val inputTensor = OnnxTensor.createTensor(env, aligned)
                 val result = enc.run(mapOf("input_values" to inputTensor))
 
                 // Extract audio codes [1, C, T]
-                val codesTensor = result["audio_codes"] ?: return@withContext null
+                val codesResult = result["audio_codes"] ?: return@withContext null
+                val codesTensor = codesResult as? OnnxTensor ?: return@withContext null
                 val shape = codesTensor.info.shape
                 val T = shape[2].toInt()
                 val C = shape[1].toInt()
 
                 // Reshape to [C][T]
+                @Suppress("UNCHECKED_CAST")
                 val codesData = codesTensor.value as Array<LongArray>
                 val tokens = Array(C) { c -> LongArray(T) { t -> codesData[c][t] } }
 
@@ -593,7 +595,7 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
         val guidedProbs = FloatArray(V)
 
         // Get unmasking schedule
-        val timeSteps = getTimeSteps(0.0, 1.0, numSteps + 1, DEFAULT_T_SHIFT)
+        val timeSteps = getTimeSteps(0.0, 1.0, numSteps + 1, DEFAULT_T_SHIFT.toDouble())
         val schedule = computeSchedule(totalPositions, numSteps, timeSteps)
 
         // Seeded PRNG for deterministic voice reproduction
@@ -617,10 +619,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
             }
 
             // Run model inference
-            val inputIdsTensor = OnnxTensor.createTensor(env, bIds, longArrayOf(2, C.toLong(), maxLen.toLong()))
-            val audioMaskTensor = OnnxTensor.createTensor(env, inputs.batchAudioMask, longArrayOf(2, maxLen.toLong()))
-            val attnShape = longArrayOf(2, 1, maxLen.toLong(), maxLen.toLong())
-            val attnTensor = OnnxTensor.createTensor(env, inputs.batchAttentionMask, attnShape)
+            val inputIdsTensor = OnnxTensor.createTensor(env, bIds)
+            val audioMaskTensor = OnnxTensor.createTensor(env, inputs.batchAudioMask)
+            val attnTensor = OnnxTensor.createTensor(env, inputs.batchAttentionMask)
 
             val results = session.run(mapOf(
                 "input_ids" to inputIdsTensor,
@@ -628,7 +629,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 "attention_mask" to attnTensor
             ))
 
-            val logitsTensor = results["audio_logits"] ?: break
+            val logitsResult = results["audio_logits"] ?: break
+            val logitsTensor = logitsResult as? OnnxTensor ?: break
+            @Suppress("UNCHECKED_CAST")
             val logits = logitsTensor.value as Array<Array<Array<FloatArray>>>
             // logits shape: [2, C, maxLen, V]
 
@@ -649,7 +652,7 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 if (tokens[i] != maskId) {
                     scores[i] = Float.NEGATIVE_INFINITY
                 } else {
-                    val gumbel = -log(-log(rng() + 1e-10f) + 1e-10f)
+                    val gumbel = -ln(-ln(rng().toDouble() + 1e-10) + 1e-10).toFloat()
                     scores[i] = scores[i] * invTemp + gumbel
                 }
             }
@@ -727,9 +730,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 }
 
                 // Compute log-sum-exp
-                var gSum = 0.0f
-                for (v in 0 until V) gSum += exp(_g[v] - gMax)
-                val gLse = gMax + log(gSum)
+                var gSum = 0.0
+                for (v in 0 until V) gSum += exp((_g[v] - gMax).toDouble())
+                val gLse = (gMax + ln(gSum)).toFloat()
 
                 // Argmax (skip maskId)
                 var bestV = 0
@@ -751,9 +754,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
     private fun logSoftmaxInto(input: FloatArray, output: FloatArray) {
         var max = Float.NEGATIVE_INFINITY
         for (v in input) if (v > max) max = v
-        var sum = 0.0f
-        for (i in input.indices) sum += exp(input[i] - max)
-        val lse = max + log(sum)
+        var sum = 0.0
+        for (i in input.indices) sum += exp((input[i] - max).toDouble())
+        val lse = (max + ln(sum)).toFloat()
         for (i in input.indices) output[i] = input[i] - lse
     }
 
@@ -792,10 +795,12 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
         val codes = LongArray(C * numTargetTokens)
         System.arraycopy(tokens, 0, codes, 0, min(tokens.size, codes.size))
 
-        val codesTensor = OnnxTensor.createTensor(env, codes, longArrayOf(1, C.toLong(), numTargetTokens.toLong()))
+        val codesTensor = OnnxTensor.createTensor(env, codes)
         val result = session.run(mapOf("audio_codes" to codesTensor))
-        val audioTensor = result["audio_values"] ?: return FloatArray(0)
+        val audioResult = result["audio_values"] ?: return FloatArray(0)
+        val audioTensor = audioResult as? OnnxTensor ?: return FloatArray(0)
 
+        @Suppress("UNCHECKED_CAST")
         return audioTensor.value as FloatArray
     }
 

@@ -184,8 +184,8 @@ object ZhNormalization {
 
     fun replaceMeasure(text: String): String {
         var result = text
-        for ((notation, chinese) in MEASURE_DICT.sortedByDescending { it.key.length }) {
-            result = result.replace(notation, chinese)
+        for ((notation, chinese) in MEASURE_DICT.entries.sortedByDescending { it.key.length }) {
+            result = result.replace(notation, chinese, ignoreCase = false)
         }
         return result
     }

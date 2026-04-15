@@ -123,8 +123,8 @@ class Lexicon(private val context: Context, private val british: Boolean) {
         fun restress(p: String): String {
             val ips = p.mapIndexed { i, c -> i to c }.toMutableList()
             val stressPositions = mutableMapOf<Int, Int>()
-            for ((i, ch) in ips.withIndex()) {
-                if (ch in STRESSES) {
+            for ((i, pair) in ips.withIndex()) {
+                if (pair.second in STRESSES) {
                     val nextVowelIdx = ips.subList(i, ips.size).indexOfFirst { it.second in VOWELS }
                     if (nextVowelIdx >= 0) stressPositions[i] = i + nextVowelIdx
                 }
@@ -155,7 +155,7 @@ class Lexicon(private val context: Context, private val british: Boolean) {
 
     private fun stressWeight(ps: String?): Int {
         if (ps == null) return 0
-        return ps.sumOf { if (it in DIPHTHONGS) 2 else 1 }
+        return ps.sumOf { if (it in DIPHTHONGS) 2L else 1L }.toInt()
     }
 
     // --- get_parent_tag ---

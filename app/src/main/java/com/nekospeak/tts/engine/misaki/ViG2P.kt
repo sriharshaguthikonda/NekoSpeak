@@ -678,7 +678,7 @@ class ViG2P(
         )
 
         // Vietnamese IPA symbol inventory (from vi.py vi_syms)
-        private val VI_SYMS = listOf("ɯəj", "ɤ̆j", "ʷiə", "ɤ̆w", "ɯəw", "ʷet", "iəw", "uəj", "ʷen", "tʰw", "ʷɤ̆", "ʷiu", "kwi", "ŋ͡m", "k͡p", "cw", "jw", "uə", "eə", "bw", "oj", "ʷi", "vw", "ăw", "ʈw", "ʂw", "aʊ", "fw", "ɛu", "tʰ", "tʃ", "ɔɪ", "xw", "ʷɤ", "ɤ̆", "ŋw", "ʊə", "zi", "ʷă", "dw", "eɪ", "aɪ", "ew", "iə", "ɣw", "zw", "ɯj", "ʷɛ", "ɯw", "ɤj", "ɔ:", "əʊ", "ʷa", "mw", "ɑ:", "hw", "ɔj", "uj", "lw", "ɪə", "ăj", "u:", "aw", "ɛj", "iw", "aj", "ɜ:", "kw", "nw", "ɲw", "eo", "sw", "tw", "ʐw", "iɛ", "ʷe", "i:", "ɯə", "ɲ", "θ", "ʌ", "l", "w", "1", "ɪ", "ɯ", "d", "p", "ə", "u", "o", "3", "ɣ", "!", "ð", "ʧ", "6", "ʒ", "ʐ", "z", "v", "g", "ă", "æ", "ɤ", "2", "ʤ", "i", ".", "b", "h", "n", "ʂ", "ɔ", "ɛ", "k", "m", "5", " ", "c", "j", "x", "ʈ", ",", "4", "ʊ", "s", "ŋ", "a", "ʃ", "?", "r", ":", "f", ";", "e", "t", "", ")
+        private val VI_SYMS = listOf("ɯəj", "ɤ̆j", "ʷiə", "ɤ̆w", "ɯəw", "ʷet", "iəw", "uəj", "ʷen", "tʰw", "ʷɤ̆", "ʷiu", "kwi", "ŋ͡m", "k͡p", "cw", "jw", "uə", "eə", "bw", "oj", "ʷi", "vw", "ăw", "ʈw", "ʂw", "aʊ", "fw", "ɛu", "tʰ", "tʃ", "ɔɪ", "xw", "ʷɤ", "ɤ̆", "ŋw", "ʊə", "zi", "ʷă", "dw", "eɪ", "aɪ", "ew", "iə", "ɣw", "zw", "ɯj", "ʷɛ", "ɯw", "ɤj", "ɔ:", "əʊ", "ʷa", "mw", "ɑ:", "hw", "ɔj", "uj", "lw", "ɪə", "ăj", "u:", "aw", "ɛj", "iw", "aj", "ɜ:", "kw", "nw", "ɲw", "eo", "sw", "tw", "ʐw", "iɛ", "ʷe", "i:", "ɯə", "ɲ", "θ", "ʌ", "l", "w", "1", "ɪ", "ɯ", "d", "p", "ə", "u", "o", "3", "ɣ", "!", "ð", "ʧ", "6", "ʒ", "ʐ", "z", "v", "g", "ă", "æ", "ɤ", "2", "ʤ", "i", ".", "b", "h", "n", "ʂ", "ɔ", "ɛ", "k", "m", "5", " ", "c", "j", "x", "ʈ", ",", "4", "ʊ", "s", "ŋ", "a", "ʃ", "?", "r", ":", "f", ";", "e", "t", "'", "–")
 
         // Vietnamese-only character set
         private val VI_ONLY_CHARS = setOf('ă', 'â', 'đ', 'ê', 'ô', 'ơ', 'ư', 'à', 'á', 'ả', 'ã', 'ạ', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'ầ', 'ấ', 'ẩ', 'ẫ', 'ậ', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ề', 'ế', 'ể', 'ễ', 'ệ', 'ì', 'í', 'ỉ', 'ĩ', 'ị', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ừ', 'ứ', 'ử', 'ữ', 'ự', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ')
@@ -785,8 +785,8 @@ class ViG2P(
         }
 
         // Tone detection
-        val toneChars = word.filter { it in TONES_P }
-        ton = if (toneChars.isNotEmpty()) TONES_P[toneChars.last()] ?: 1 else 1
+        val toneChars = word.filter { it.toString() in TONES_P }
+        ton = if (toneChars.isNotEmpty()) TONES_P[toneChars.last().toString()] ?: 1 else 1
 
         // Labialized allophony
         if (cOffset != 0 && nuc in listOf("u", "o", "ɔ")) {
@@ -842,7 +842,7 @@ class ViG2P(
             } else {
                 // Substring fallback for foreign words
                 val lower = tk.lowercase(Locale.ROOT)
-                val hasViChars = lower.any { it in VI_CHARS }
+                val hasViChars = lower.any { it in VI_ONLY_CHARS }
 
                 if (!hasViChars && lower.matches(Regex("[a-z]+"))) {
                     // Try English G2P

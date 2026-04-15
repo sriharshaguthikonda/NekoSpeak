@@ -73,7 +73,7 @@ class G2P(
     private fun mergeTokens(tokens: List<MToken>): MToken {
         val stresses = tokens.mapNotNull { it.attributes.stress }.toSet()
         val currencies = tokens.mapNotNull { it.attributes.currency }.toSet()
-        val ratings = tokens.mapNotNull { it.attributes.rating }
+        val ratings: List<Int> = tokens.mapNotNull { it.attributes.rating }
 
         val phonemes = if (unk == null) null
         else {
@@ -105,7 +105,7 @@ class G2P(
                 currency = currencies.maxOrNull(),
                 numFlags = combinedNumFlags,
                 prespace = tokens.first().attributes.prespace,
-                rating = if (null in ratings) null else ratings.minOrNull()
+                rating = ratings.minOrNull()
             )
         )
     }
@@ -114,7 +114,7 @@ class G2P(
     private fun stressWeight(ps: String?): Int {
         if (ps == null) return 0
         val diphthongs = setOf('A','I','O','Q','W','Y','ʤ','ʧ')
-        return ps.sumOf { if (it in diphthongs) 2 else 1 }
+        return ps.sumOf { if (it in diphthongs) 2L else 1L }.toInt()
     }
 
     // --- subtokenize ---
@@ -247,7 +247,7 @@ class G2P(
         }
         if (word.all { it.isDigit() }) return "CD"
         if (word.equals("the", ignoreCase = true)) return "DT"
-        if (word in setOf("a", "an", ignoreCase = true)) return "DT"
+        if (word.equals("a", ignoreCase = true) || word.equals("an", ignoreCase = true)) return "DT"
         if (word.endsWith("ing")) return "VBG"
         if (word.endsWith("ed")) return "VBD"
         if (word.endsWith("ly")) return "RB"
@@ -272,27 +272,27 @@ class G2P(
     private fun retokenize(tokens: List<MToken>): List<Any> {
         // Returns list of MToken or List<MToken> (for compound resolution)
         val words = mutableListOf<Any>()
-        var currency: Char? = null
+            var currency: Char? = null
 
-        for ((i, token) in tokens.withIndex()) {
-            val tks = if (token.attributes.alias == null && token.phonemes == null) {
-                subtokenize(token.text).mapIndexed { j, sub ->
-                    val newAttrs = MToken.Underscore(
-                        isHead = j == 0,
-                        numFlags = token.attributes.numFlags,
-                        stress = token.attributes.stress,
-                        prespace = false
-                    )
-                    MToken(sub, token.tag, "", null, token.startTs, token.endTs, newAttrs)
+            for ((i, token) in tokens.withIndex()) {
+                val tks = (if (token.attributes.alias == null && token.phonemes == null) {
+                    subtokenize(token.text).mapIndexed { j, sub ->
+                        val newAttrs = MToken.Underscore(
+                            isHead = j == 0,
+                            numFlags = token.attributes.numFlags,
+                            stress = token.attributes.stress,
+                            prespace = false
+                        )
+                        MToken(sub, token.tag, "", null, token.startTs, token.endTs, newAttrs)
+                    }
+                } else {
+                    listOf(token)
+                }).toMutableList()
+                // Last subtoken inherits whitespace
+                if (tks.isNotEmpty()) {
+                    val lastTk = tks.last()
+                    tks[tks.lastIndex] = replaceMToken(lastTk, whitespace = token.whitespace)
                 }
-            } else {
-                listOf(token)
-            }
-            // Last subtoken inherits whitespace
-            if (tks.isNotEmpty()) {
-                val lastTk = tks.last()
-                tks[tks.lastIndex] = replaceMToken(lastTk, whitespace = token.whitespace)
-            }
 
             for ((j, tk) in tks.withIndex()) {
                 when {
@@ -310,7 +310,7 @@ class G2P(
                     }
                     tk.tag in PUNCT_TAGS && !tk.text.all { it.lowercaseChar() in 'a'..'z' } -> {
                         tk.phonemes = PUNCT_TAG_PHONEMES[tk.tag]
-                            ?: tk.text.filter { it in PUNCTS }.joinToString("")
+                            ?: tk.text.filter { it in PUNCTS }
                         tk.attributes.rating = 4
                     }
                     currency != null -> {
@@ -322,7 +322,7 @@ class G2P(
                         }
                     }
                     j in 1 until tks.lastIndex && tk.text == "2" &&
-                        tks[j - 1].text.last().isLetter() && tks[j + 1].text.first().isLetter -> {
+                        (tks[j - 1].text.last().isLetter()) && (tks[j + 1].text.first().isLetter()) -> {
                         tk.attributes.alias = "to"
                     }
                 }
@@ -332,7 +332,8 @@ class G2P(
                 } else if (words.isNotEmpty() && words.last() is List<*> &&
                     !(words.last() as List<*>).lastMToken().whitespace.isNotEmpty()) {
                     tk.attributes.isHead = false
-                    (words.last() as MutableList<*>).add(tk)
+                    @Suppress("UNCHECKED_CAST")
+                    (words.last() as MutableList<MToken>).add(tk)
                 } else {
                     if (tk.whitespace.isNotEmpty()) words.add(tk)
                     else words.add(mutableListOf(tk))
@@ -372,13 +373,19 @@ class G2P(
     private fun resolveTokens(tokens: List<MToken>) {
         val text = tokens.dropLast(1).joinToString("") { it.text + it.whitespace } + tokens.last().text
         val prespace = ' ' in text || '/' in text ||
-            text.filter { it !in SUBTOKEN_JUNKS }
-                .groupingBy { if (it.isLetter()) 0 else if (it.isDigit()) 1 else 2 }
-                .eachCount().size > 1
+            run {
+                val filtered = text.filter { it !in SUBTOKEN_JUNKS }
+                val groupMap = mutableMapOf<Int, Int>()
+                for (c in filtered) {
+                    val key = if (c.isLetter()) 0 else if (c.isDigit()) 1 else 2
+                    groupMap[key] = (groupMap[key] ?: 0) + 1
+                }
+                groupMap.size > 1
+            }
 
         for ((i, tk) in tokens.withIndex()) {
             if (tk.phonemes == null) {
-                if (i == tokens.lastIndex && tk.text in NON_QUOTE_PUNCTS) {
+                if (i == tokens.lastIndex && tk.text.any { it in NON_QUOTE_PUNCTS }) {
                     tk.phonemes = tk.text
                     tk.attributes.rating = 3
                 } else if (tk.text.all { it in SUBTOKEN_JUNKS }) {
@@ -404,7 +411,7 @@ class G2P(
         }
         if (indices.size < 2 || indices.count { it.first } <= (indices.size + 1) / 2) return
 
-        val sorted = indices.sortedBy { it.first.toInt().toInt() + it.second }
+        val sorted = indices.sortedBy { (if (it.first) 1 else 0) + it.second }
         for ((_, _, i) in sorted.take(indices.size / 2)) {
             tokens[i].phonemes = lexicon.applyStress(tokens[i].phonemes, -0.5)
         }

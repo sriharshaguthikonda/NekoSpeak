@@ -1,6 +1,7 @@
 package com.nekospeak.tts.engine
 
 import android.util.Log
+import kotlin.math.pow
 
 /**
  * Phonetic-weight-based audio duration estimator for TTS.
@@ -173,7 +174,7 @@ object DurationEstimator {
         val estimated = targetWeight / speedFactor
         if (lowThreshold > 0f && estimated < lowThreshold) {
             val alpha = 1.0f / boostStrength
-            return lowThreshold * kotlin.math.pow(estimated / lowThreshold, alpha)
+            return lowThreshold * (estimated / lowThreshold).pow(alpha).toFloat()
         }
         return estimated
     }

@@ -88,7 +88,7 @@ class ToneSandhi {
             finals[1] = replaceTone(finals[1], 5)
         } else {
             for (i in word.indices) {
-                if (word[i] == BU && i + 1 < word.size && finals[i + 1].last() == '4') {
+                if (word[i] == BU && i + 1 < word.length && finals[i + 1].last() == '4') {
                     finals[i] = replaceTone(finals[i], 2)
                 }
             }
@@ -117,7 +117,7 @@ class ToneSandhi {
 
         // General 一 sandhi
         for (i in word.indices) {
-            if (word[i] == YI && i + 1 < word.size) {
+            if (word[i] == YI && i + 1 < word.length) {
                 if (finals[i + 1].last() in setOf('4', '5')) {
                     finals[i] = replaceTone(finals[i], 2)
                 } else if (word[i + 1] !in PUNC) {

@@ -134,11 +134,10 @@ class PiperEngine(
                     misakiLexicon?.load()
                     
                     // Create G2P with eSpeak fallback
-                    misakiG2P = G2P(misakiLexicon!!) { word ->
+                    misakiG2P = G2P(misakiLexicon!!, fallback = { word: String ->
                         // Fallback: use eSpeak for unknown words
-                        val espeakPhonemes = espeak?.textToPhonemesSafe(word, espeakVoice)
-                        espeakPhonemes
-                    }
+                        espeak?.textToPhonemesSafe(word, espeakVoice) ?: ""
+                    })
                     Log.i(TAG, "Misaki G2P initialized (british=$isBritish)")
                 } catch (e: Exception) {
                     Log.w(TAG, "Misaki init failed, using eSpeak only", e)

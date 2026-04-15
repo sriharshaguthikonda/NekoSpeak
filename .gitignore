@@ -55,3 +55,4 @@ NekoSpeak Android System Sequence diagram .png
 
 # Scripts (development only)
 scripts/
+.bg-shell/

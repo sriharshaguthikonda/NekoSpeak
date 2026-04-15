@@ -551,7 +551,7 @@ class KoG2P(
             // Remaining digits → digit-by-digit
             val digitNames = "영일이삼사오육칠팔구"
             for (i in 0..9) {
-                result = result.replace(i.digitToChar(), '^' + digitNames[i])
+                result = result.replace(i.digitToChar().toString(), "^${digitNames[i]}")
             }
             result = result.replace("십^육", "심뉵")
             result = result.replace("백^육", "뱅뉵")

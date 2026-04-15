@@ -301,14 +301,16 @@ class NekoTtsService : TextToSpeechService() {
      * TextToSpeech.isInRange() which internally checks voice validity
      * before offering the engine as a TTS option.
      */
-    override fun onIsValidVoiceName(voiceName: String?): Boolean {
-        if (voiceName.isNullOrBlank()) return false
+    override fun onIsValidVoiceName(voiceName: String?): Int {
+        if (voiceName.isNullOrBlank()) return TextToSpeech.LANG_NOT_SUPPORTED
 
-        val engine = currentEngine ?: return false
-        val availableVoices = engine.getVoices()
-
-        // Direct match
-        if (availableVoices.contains(voiceName)) return true
+        val engine = currentEngine
+        if (engine != null && engine.isInitialized()) {
+            val availableVoices = engine.getVoices()
+            if (availableVoices.contains(voiceName)) {
+                return TextToSpeech.LANG_COUNTRY_AVAILABLE
+            }
+        }
 
         // Also accept voices from VoiceDefinitions even if engine hasn't loaded yet
         // (engine init is async — voices may not be available immediately)
@@ -319,10 +321,14 @@ class NekoTtsService : TextToSpeechService() {
             com.nekospeak.tts.data.VoiceDefinitions.CELEBRITY_VOICES
         ).map { it.id }
 
-        return allDefinedVoices.contains(voiceName) ||
+        return if (allDefinedVoices.contains(voiceName) ||
                voiceName.startsWith("piper_") ||
                voiceName.startsWith("ov_") ||
-               voiceName.startsWith("expr-voice-")
+               voiceName.startsWith("expr-voice-")) {
+            TextToSpeech.LANG_COUNTRY_AVAILABLE
+        } else {
+            TextToSpeech.LANG_NOT_SUPPORTED
+        }
     }
 
     /**

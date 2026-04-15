@@ -159,8 +159,12 @@ object OrtModelLoader {
 
             Log.d(TAG, "Model loaded into page-aligned buffer: ${fileSize}MB, alignment offset: $alignmentOffset")
 
-            // Create session from the aligned ByteBuffer
-            return env.createSession(buffer, options)
+            // Convert aligned ByteBuffer to ByteArray for ORT createSession(byte[], options)
+            // ORT Android doesn't have a ByteBuffer overload
+            val modelBytes = ByteArray(buffer.limit() - alignmentOffset)
+            buffer.position(alignmentOffset)
+            buffer.get(modelBytes)
+            return env.createSession(modelBytes, options)
 
         } catch (e: OutOfMemoryError) {
             // Fallback: if we can't allocate the aligned buffer (very large models on low-RAM devices),

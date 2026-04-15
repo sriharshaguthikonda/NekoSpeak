@@ -59,6 +59,48 @@ class Qwen2Tokenizer private constructor() {
             }
             return instance!!
         }
+
+        /**
+         * Build the byte→unicode mapping used by GPT-2 BPE.
+         * Maps bytes 0-255 to unicode characters, avoiding control characters
+         * and ensuring all bytes have a visible representation.
+         */
+        private fun buildByteEncoder(): Map<Int, Char> {
+            val bs = mutableListOf<Int>()
+            // '!' to '~' (33-126)
+            for (i in 33..126) bs.add(i)
+            // '¡' to '¬' (161-172)
+            for (i in 161..172) bs.add(i)
+            // '®' to 'ÿ' (174-255)
+            for (i in 174..255) bs.add(i)
+
+            val cs = mutableListOf<Int>()
+            cs.addAll(bs.map { it })
+
+            var n = 0
+            // Map remaining bytes (0-32, 127-160, 173) to 256+ unicode range
+            for (b in 0..255) {
+                if (b !in bs) {
+                    cs.add(256 + n)
+                    n++
+                }
+            }
+
+            // Build the mapping
+            val encoder = mutableMapOf<Int, Char>()
+            for (i in bs.indices) {
+                encoder[bs[i]] = cs[i].toChar()
+            }
+            // Map the non-printable bytes
+            n = 0
+            for (b in 0..255) {
+                if (b !in bs) {
+                    encoder[b] = (256 + n).toChar()
+                    n++
+                }
+            }
+            return encoder
+        }
     }
 
     // Vocab: token string → ID
@@ -309,45 +351,6 @@ class Qwen2Tokenizer private constructor() {
     // ========================================================================
     // Byte-level encoding (GPT-2 style)
     // ========================================================================
-
-    /**
-     * Build the byte→unicode mapping used by GPT-2 BPE.
-     * Maps bytes 0-255 to unicode characters, avoiding control characters
-     * and ensuring all bytes have a visible representation.
-     */
-    private fun buildByteEncoder(): Map<Int, Char> {
-        // Start with printable ASCII ranges that map to themselves
-        val bs = mutableListOf<Int>()
-        // '!' to '~' (33-126)
-        for (i in 33..126) bs.add(i)
-        // '¡' to '¬' (161-172)
-        for (i in 161..172) bs.add(i)
-        // '®' to 'ÿ' (174-255)
-        for (i in 174..255) bs.add(i)
-
-        val cs = bs.toIntArray()
-        var n = 0
-        // Map remaining bytes (0-32, 127-160, 173) to 256+ unicode range
-        for (b in 0..255) {
-            if (b !in bs) {
-                cs += (256 + n)
-                n++
-            }
-        }
-
-        // Build the mapping
-        val encoder = mutableMapOf<Int, Char>()
-        for (i in bs.indices) {
-            encoder[bs[i]] = cs[i].toChar()
-        }
-        // Map the non-printable bytes
-        n = 0
-        for (b in 0..255) {
-            if (b !in bs) {
-                encoder[b] = (256 + n).toChar()
-                n++
-            }
-        }
-        return encoder
-    }
+    // Tokenizer core (uses companion's buildByteEncoder)
+    // ========================================================================
 }

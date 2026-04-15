@@ -13,6 +13,8 @@ import com.nekospeak.tts.engine.misaki.JaG2P
 import com.nekospeak.tts.engine.misaki.ZhG2P
 import com.nekospeak.tts.engine.misaki.KoG2P
 import com.nekospeak.tts.engine.misaki.CmuDict
+import com.nekospeak.tts.engine.misaki.ZhNormalization
+import com.nekospeak.tts.engine.misaki.ViCleaner
 import com.nekospeak.tts.engine.misaki.ViG2P
 import com.nekospeak.tts.engine.misaki.HeG2P
 
@@ -86,15 +88,15 @@ class Phonemizer(private val context: Context) {
             // English G2P (Misaki port)
             val usLexicon = Lexicon(context, british = false)
             usLexicon.load()
-            g2pUS = G2P(usLexicon) { text -> 
-                try { espeak.textToPhonemesSafe(text, "en-us") } catch (e: Exception) { null }
-            }
+            g2pUS = G2P(usLexicon, fallback = { text: String -> 
+                try { espeak.textToPhonemesSafe(text, "en-us") ?: "" } catch (e: Exception) { "" }
+            })
             
             val gbLexicon = Lexicon(context, british = true)
             gbLexicon.load()
-            g2pGB = G2P(gbLexicon) { text ->
-                try { espeak.textToPhonemesSafe(text, "en-gb") } catch (e: Exception) { null } 
-            }
+            g2pGB = G2P(gbLexicon, fallback = { text: String ->
+                try { espeak.textToPhonemesSafe(text, "en-gb") ?: "" } catch (e: Exception) { "" }
+            })
 
             // eSpeak fallback function for language-specific G2P modules
             val espeakFallback: (String, String) -> String? = { text, lang ->

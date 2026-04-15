@@ -56,11 +56,11 @@ class ZhG2P(
                 .replace('。', '.').replace('．', '.')
                 .replace('！', '!').replace('：', ':')
                 .replace('；', ';').replace('？', '?')
-                .replace('«', " \"").replace('»', "\" ")
-                .replace('《', " \"").replace('》', "\" ")
-                .replace('「', " \"").replace('」', "\" ")
-                .replace('【', " \"").replace('】', "\" ")
-                .replace('（', " (").replace('）', ") ")
+                .replace("«", " \"").replace("»", "\" ")
+                .replace("《", " \"").replace("》", "\" ")
+                .replace("「", " \"").replace("」", "\" ")
+                .replace("【", " \"").replace("】", "\" ")
+                .replace('（', '(').replace('）', ')')
                 .trim()
         }
 
