@@ -9,6 +9,11 @@ import java.util.*
 import com.nekospeak.tts.engine.misaki.G2P
 import com.nekospeak.tts.engine.misaki.Lexicon
 import com.nekospeak.tts.engine.misaki.OutputMode
+import com.nekospeak.tts.engine.misaki.JaG2P
+import com.nekospeak.tts.engine.misaki.ZhG2P
+import com.nekospeak.tts.engine.misaki.KoG2P
+import com.nekospeak.tts.engine.misaki.ViG2P
+import com.nekospeak.tts.engine.misaki.HeG2P
 
 class Phonemizer(private val context: Context) {
     
@@ -49,6 +54,14 @@ class Phonemizer(private val context: Context) {
     private lateinit var g2pUS: G2P
     private lateinit var g2pGB: G2P
     private lateinit var espeak: EspeakWrapper
+
+    // Language-specific G2P engines (Misaki ports)
+    private lateinit var jaG2P: JaG2P
+    private lateinit var zhG2P: ZhG2P
+    private lateinit var koG2P: KoG2P
+    private lateinit var viG2P: ViG2P
+    private lateinit var heG2P: HeG2P
+
     private var isLoaded = false
 
     suspend fun load() = withContext(Dispatchers.IO) {
@@ -69,6 +82,7 @@ class Phonemizer(private val context: Context) {
                  Log.i(TAG, "Espeak initialized with data in ${context.filesDir.absolutePath}")
             }
 
+            // English G2P (Misaki port)
             val usLexicon = Lexicon(context, british = false)
             usLexicon.load()
             g2pUS = G2P(usLexicon) { text -> 
@@ -80,9 +94,41 @@ class Phonemizer(private val context: Context) {
             g2pGB = G2P(gbLexicon) { text ->
                 try { espeak.textToPhonemesSafe(text, "en-gb") } catch (e: Exception) { null } 
             }
+
+            // eSpeak fallback function for language-specific G2P modules
+            val espeakFallback: (String, String) -> String? = { text, lang ->
+                try {
+                    val ph = espeak.textToPhonemesSafe(text, lang)
+                    if (ph.isNotBlank()) convertEspeakToKokoro(ph) else null
+                } catch (e: Exception) { null }
+            }
+
+            // English callable for ZH (handles mixed English+Chinese text)
+            val enCallable: (String) -> String = { text ->
+                g2pUS.phonemize(text, OutputMode.KOKORO)
+            }
+
+            // Japanese G2P (Misaki JA port)
+            jaG2P = JaG2P(espeakFallback = espeakFallback)
+
+            // Chinese G2P (Misaki ZH port)
+            zhG2P = ZhG2P(espeakFallback = espeakFallback, enCallable = enCallable)
+            zhG2P.load(context)
+
+            // Korean G2P (Misaki KO port)
+            koG2P = KoG2P(espeakFallback = espeakFallback)
+
+            // Vietnamese G2P (Misaki VI port)
+            viG2P = ViG2P(
+                enG2P = { text -> g2pUS.phonemize(text, OutputMode.KOKORO) },
+                espeakFallback = espeakFallback
+            )
+
+            // Hebrew G2P (Misaki HE port)
+            heG2P = HeG2P(espeakFallback = espeakFallback)
             
             isLoaded = true
-            Log.i(TAG, "Loaded Misaki G2P engines (US + GB)")
+            Log.i(TAG, "Loaded Misaki G2P engines (EN-US, EN-GB, JA, ZH, KO, VI, HE)")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to load G2P", e)
         }
@@ -92,7 +138,7 @@ class Phonemizer(private val context: Context) {
      * Determine the language code for phonemization.
      * Maps language tags from the TTS service to eSpeak/Misaki language codes.
      *
-     * Supports: en, en-us, en-gb, fr, de, es, it, pt, ru, nl, pl, sv, cs, fi, el, hu, tr, ar, zh, ja, ko, vi, ta
+     * Supports: en, en-us, en-gb, fr, de, es, it, pt, ru, nl, pl, sv, cs, fi, el, hu, tr, ar, zh, ja, ko, vi, he, ta
      * Fixes: https://github.com/siva-sub/NekoSpeak/issues/5
      */
     private fun resolveLanguage(language: String): String {
@@ -120,6 +166,7 @@ class Phonemizer(private val context: Context) {
             "ja", "jpn" -> "ja"
             "ko", "kor" -> "ko"
             "vi", "vie" -> "vi"
+            "he", "heb" -> "he"
             "ta", "tam" -> "ta"
             else -> "en-us"  // Default fallback
         }
@@ -127,13 +174,8 @@ class Phonemizer(private val context: Context) {
 
     /**
      * Detect if text contains Arabic characters.
-     * Arabic text requires diacritization (tashkeel) before phonemization
-     * because Arabic omits short vowels — without diacritics, the TTS output
-     * is unreliable or nonsensical.
-     *
-     * This is a prerequisite for Libtashkeel integration (Issue #8).
-     * Currently logs a warning; full diacritization will be added when
-     * Libtashkeel is integrated.
+     * Arabic text requires diacritization (tashkeel) before phonemization.
+     * Prerequisite for Libtashkeel integration (Issue #8).
      */
     private fun containsArabic(text: String): Boolean {
         return ARABIC_REGEX.containsMatchIn(text)
@@ -148,9 +190,6 @@ class Phonemizer(private val context: Context) {
             val langCode = resolveLanguage(language)
             
             // Arabic preprocessing hook (Issue #8 prerequisite)
-            // Arabic text needs diacritization before phonemization to be intelligible.
-            // Without tashkeel (diacritical marks), Arabic TTS produces nonsensical output.
-            // Full Libtashkeel integration is tracked in Issue #8.
             if (langCode == "ar" || containsArabic(text)) {
                 Log.w(TAG, "Arabic text detected but diacritization (tashkeel) is not yet integrated. " +
                     "Arabic TTS quality will be limited. See: https://github.com/siva-sub/NekoSpeak/issues/8")
@@ -159,8 +198,13 @@ class Phonemizer(private val context: Context) {
             val phonemes = when (langCode) {
                 "en-us", "a" -> g2pUS.phonemize(text, OutputMode.KOKORO)
                 "en-gb", "b" -> g2pGB.phonemize(text, OutputMode.KOKORO)
+                "ja" -> jaG2P.phonemize(text)
+                "zh" -> zhG2P.phonemize(text)
+                "ko" -> koG2P.phonemize(text)
+                "vi" -> viG2P.phonemize(text)
+                "he" -> heG2P.phonemize(text)
                 else -> {
-                    // For non-English languages, use eSpeak directly
+                    // For other languages, use eSpeak directly
                     // eSpeak supports 100+ languages and handles phonemization natively.
                     // The language markers are already stripped by EspeakWrapper.cleanPhonemes().
                     // Fixes: https://github.com/siva-sub/NekoSpeak/issues/5
@@ -171,7 +215,6 @@ class Phonemizer(private val context: Context) {
                             g2pUS.phonemize(text, OutputMode.KOKORO)
                         } else {
                             // Convert eSpeak output to Kokoro-compatible phonemes
-                            // eSpeak produces IPA-like output with language markers already stripped
                             convertEspeakToKokoro(espeakPhonemes)
                         }
                     } catch (e: Exception) {
@@ -209,7 +252,6 @@ class Phonemizer(private val context: Context) {
         result = result.replace("-", "")
         
         // Convert common eSpeak diphthong patterns to Kokoro phoneme representation
-        // These are the diphthongs that eSpeak ties with ^
         val diphthongMap = mapOf(
             "eɪ" to "AI",    // hey
             "aɪ" to "AY",    // high (Kokoro uses Y for aɪ)
@@ -241,7 +283,7 @@ class Phonemizer(private val context: Context) {
                         tokens.add(tokenId)
                         i += length
                         matched = true
-                        break  // Exit the for loop on match
+                        break
                     }
                 }
             }
