@@ -79,5 +79,14 @@ interface TtsEngine {
      * @return true if deletion succeeded
      */
     fun deleteClonedVoice(voiceId: String): Boolean = false
+
+    // ========== Voice Design Support (Optional) ==========
+    
+    /**
+     * Check if this engine supports text-based voice design
+     * (e.g. OmniVoice's instruct-based gender/pitch control)
+     * @return true if the engine uses voice design instead of fixed voice embeddings
+     */
+    fun supportsVoiceDesign(): Boolean = false
 }
 

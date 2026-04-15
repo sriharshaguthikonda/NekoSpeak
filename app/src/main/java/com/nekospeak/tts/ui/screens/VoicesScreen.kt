@@ -146,7 +146,7 @@ fun VoicesScreen(
         },
 
         floatingActionButton = {
-            if (prefs.currentModel == "pocket_v1") {
+            if (prefs.currentModel == "pocket_v1" || prefs.currentModel == "omnivoice") {
                 ExtendedFloatingActionButton(
                     onClick = { showCloneOptionsSheet = true },
                     icon = { Icon(Icons.Default.Add, "Clone Voice") },

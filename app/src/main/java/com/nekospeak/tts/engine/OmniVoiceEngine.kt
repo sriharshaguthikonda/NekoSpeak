@@ -169,6 +169,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 Log.i(TAG, "Encoder not present — voice cloning unavailable")
             }
 
+            // Load persisted cloned voices from disk
+            loadClonedVoices()
+
             initialized = true
             Log.i(TAG, "OmniVoice engine initialized successfully")
             return@withContext true
@@ -236,10 +239,11 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                     )
 
                     // 3e. Run iterative diffusion with seeded PRNG
+                    val prefs = com.nekospeak.tts.data.PrefsManager(context)
                     val audioTokens = generateIterative(
                         inputs, mainSess, env,
-                        numSteps = DEFAULT_NUM_STEPS,
-                        guidanceScale = DEFAULT_GUIDANCE_SCALE,
+                        numSteps = prefs.omnivoiceNumSteps,
+                        guidanceScale = prefs.omnivoiceGuidanceScale,
                         seed = seed
                     )
 
@@ -286,6 +290,8 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
 
     override fun supportsVoiceCloning(): Boolean = encoderSession != null
 
+    override fun supportsVoiceDesign(): Boolean = true
+
     override suspend fun cloneVoice(audioPath: String, voiceName: String): String? {
         val enc = encoderSession ?: return null
         val env = ortEnv ?: return null
@@ -316,7 +322,9 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
                 val tokens = Array(C) { c -> LongArray(T) { t -> codesData[c][t] } }
 
                 val durationSec = clipLen.toFloat() / SAMPLE_RATE
-                clonedVoices[voiceName] = ClonedVoice(voiceName, tokens, refText = null, durationSec)
+                val voice = ClonedVoice(voiceName, tokens, refText = null, durationSec)
+                clonedVoices[voiceName] = voice
+                saveClonedVoice(voice)
                 Log.i(TAG, "Voice cloned: $voiceName ($T tokens, ${"%.1f".format(durationSec)}s)")
                 return@withContext voiceName
 
@@ -331,7 +339,90 @@ class OmniVoiceEngine(private val context: Context) : TtsEngine {
 
     override fun deleteClonedVoice(voiceId: String): Boolean {
         clonedVoices.remove(voiceId)
+        // Also delete from disk
+        val file = File(context.filesDir, "omnivoice/cloned_voices/$voiceId.bin")
+        if (file.exists()) file.delete()
         return true
+    }
+
+    /**
+     * Save a cloned voice to disk for persistence across app restarts.
+     * Format: magic(4) + version(2) + reserved(2) + nameLen(4) + name +
+     *          refTextLen(4) + refText + codebooks(4) + T(4) + durationSec(4) +
+     *          codebook0(T*8) + codebook1(T*8) + ...
+     */
+    private fun saveClonedVoice(voice: ClonedVoice) {
+        try {
+            val voicesDir = File(context.filesDir, "omnivoice/cloned_voices")
+            voicesDir.mkdirs()
+            val nameBytes = voice.name.toByteArray(Charsets.UTF_8)
+            val refTextBytes = (voice.refText ?: "").toByteArray(Charsets.UTF_8)
+            val C = voice.tokens.size
+            val T = voice.tokens[0].size
+
+            val size = 4 + 2 + 2 + 4 + nameBytes.size + 4 + refTextBytes.size +
+                       4 + 4 + 4 + (C * T * 8)
+            val buf = java.nio.ByteBuffer.allocate(size).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+
+            buf.putInt(0x56564F4F)  // "OOVV" magic
+            buf.putShort(1)         // version
+            buf.putShort(0)         // reserved
+            buf.putInt(nameBytes.size)
+            buf.put(nameBytes)
+            buf.putInt(refTextBytes.size)
+            buf.put(refTextBytes)
+            buf.putInt(C)
+            buf.putInt(T)
+            buf.putFloat(voice.durationSec)
+
+            for (c in 0 until C) {
+                for (t in 0 until T) {
+                    buf.putLong(voice.tokens[c][t])
+                }
+            }
+
+            File(voicesDir, "${voice.name}.bin").writeBytes(buf.array())
+            Log.d(TAG, "Saved cloned voice: ${voice.name}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to save cloned voice: ${voice.name}", e)
+        }
+    }
+
+    /** Load all persisted cloned voices from disk. */
+    private fun loadClonedVoices() {
+        val voicesDir = File(context.filesDir, "omnivoice/cloned_voices")
+        if (!voicesDir.exists()) return
+
+        for (file in voicesDir.listFiles()?.filter { it.name.endsWith(".bin") } ?: emptyList()) {
+            try {
+                val buf = java.nio.ByteBuffer.wrap(file.readBytes())
+                    .order(java.nio.ByteOrder.LITTLE_ENDIAN)
+
+                val magic = buf.int
+                if (magic != 0x56564F4F) continue  // Not an OmniVoice clone file
+
+                val version = buf.short
+                buf.short  // reserved
+                val nameLen = buf.int
+                val nameBytes = ByteArray(nameLen); buf.get(nameBytes)
+                val name = String(nameBytes, Charsets.UTF_8)
+                val refTextLen = buf.int
+                val refTextBytes = ByteArray(refTextLen); buf.get(refTextBytes)
+                val refText = String(refTextBytes, Charsets.UTF_8).ifBlank { null }
+                val C = buf.int
+                val T = buf.int
+                val durationSec = buf.float
+
+                val tokens = Array(C) { c ->
+                    LongArray(T) { t -> buf.long }
+                }
+
+                clonedVoices[name] = ClonedVoice(name, tokens, refText, durationSec)
+                Log.d(TAG, "Loaded cloned voice: $name ($C codebooks, $T tokens)")
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to load cloned voice: ${file.name}", e)
+            }
+        }
     }
 
     // ========================================================================

@@ -298,6 +298,56 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                     
                     standardVoices + celebrityVoices + clonedVoices
                 }
+                currentModel == "omnivoice" -> {
+                    // OmniVoice preset voices (voice design)
+                    val presetVoices = VoiceDefinitions.OMNIVOICE_VOICES.map { def ->
+                        Voice(
+                            id = def.id,
+                            name = def.name,
+                            language = when (def.region) {
+                                "CN" -> "zh-cn"
+                                "JP" -> "ja-jp"
+                                "KR" -> "ko-kr"
+                                "FR" -> "fr-fr"
+                                "DE" -> "de-de"
+                                "ES" -> "es-es"
+                                "SA" -> "ar-sa"
+                                "RU" -> "ru-ru"
+                                "IN" -> "hi-in"
+                                else -> "en-us"
+                            },
+                            gender = def.gender,
+                            region = def.region,
+                            downloadState = com.nekospeak.tts.data.DownloadState.Downloaded
+                        )
+                    }
+
+                    // OmniVoice cloned voices from local storage
+                    val clonedVoices = mutableListOf<Voice>()
+                    val clonedDir = File(context.filesDir, "omnivoice/cloned_voices")
+                    if (clonedDir.exists()) {
+                        clonedDir.listFiles()?.filter { it.extension == "bin" }?.forEach { file ->
+                            try {
+                                val name = file.nameWithoutExtension
+                                clonedVoices.add(
+                                    Voice(
+                                        id = name,
+                                        name = "$name (Cloned)",
+                                        language = "multi",
+                                        gender = "Cloned",
+                                        region = "Custom",
+                                        downloadState = com.nekospeak.tts.data.DownloadState.Downloaded,
+                                        isCloned = true
+                                    )
+                                )
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+
+                    presetVoices + clonedVoices
+                }
                 else -> kokoroVoices
             }
             
@@ -393,12 +443,17 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
             val pocketVoiceIds = VoiceDefinitions.POCKET_VOICES.map { it.id }
             val celebrityVoiceIds = VoiceDefinitions.CELEBRITY_VOICES.map { it.id }
             val isClonedVoice = java.io.File(context.filesDir, "pocket/cloned_voices/$voiceId.bin").exists()
+            val isOmniClonedVoice = java.io.File(context.filesDir, "omnivoice/cloned_voices/$voiceId.bin").exists()
             
             val newModel = when {
                 // Kitten voices
                 voiceId.startsWith("expr-voice-") -> "kitten_nano"
                 // Kokoro voices
-                voiceId.startsWith("af_") || voiceId.startsWith("am_") || voiceId.startsWith("bf_") || voiceId.startsWith("bm_") -> "kokoro_v1.0"
+                voiceId.startsWith("af_") || voiceId.startsWith("am_") || voiceId.startsWith("bf_") || voiceId.startsWith("bm_") || voiceId.startsWith("ff_") || voiceId.startsWith("hf_") || voiceId.startsWith("hm_") || voiceId.startsWith("jf_") || voiceId.startsWith("jm_") || voiceId.startsWith("zf_") || voiceId.startsWith("kf_") -> "kokoro_v1.0"
+                // OmniVoice preset voices (ov_ prefix)
+                voiceId.startsWith("ov_") -> "omnivoice"
+                // OmniVoice cloned voices
+                isOmniClonedVoice -> "omnivoice"
                 // Pocket-TTS standard voices, celebrity voices, or cloned voices
                 pocketVoiceIds.contains(voiceId) || celebrityVoiceIds.contains(voiceId) || isClonedVoice -> "pocket_v1"
                 // Default to Piper voices
@@ -555,7 +610,8 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                 
                 // CRITICAL: Copy file to permanent location BEFORE engine init
                 // The engine init takes ~10s, during which cache files may be deleted
-                val voicesDir = java.io.File(context.filesDir, "pocket/voice_clone_input")
+                val modelPrefix = PrefsManager(context).currentModel.takeIf { it == "omnivoice" } ?: "pocket"
+                val voicesDir = java.io.File(context.filesDir, "$modelPrefix/voice_clone_input")
                 voicesDir.mkdirs()
                 val permanentFile = java.io.File(voicesDir, "input_${System.currentTimeMillis()}.wav")
                 sourceFile.copyTo(permanentFile, overwrite = true)
@@ -564,13 +620,23 @@ class VoicesViewModel(application: Application) : AndroidViewModel(application) 
                 // Update status: Initializing engine
                 _uiState.update { it.copy(processingStatus = "Encoding voice: $name (this may take a moment)...") }
                 
-                // Initialize a lightweight clone-only engine to avoid OOM/native crashes
-                val engine = com.nekospeak.tts.engine.pocket.PocketTtsEngine(context, cloneOnly = true)
-                android.util.Log.i("VoicesViewModel", "Initializing PocketTtsEngine (clone-only) for cloning...")
+                // Initialize a clone-capable engine — use the current model's engine
+                val prefs = PrefsManager(context)
+                val currentModel = prefs.currentModel
+                val engine: com.nekospeak.tts.engine.TtsEngine = when (currentModel) {
+                    "omnivoice" -> {
+                        android.util.Log.i("VoicesViewModel", "Initializing OmniVoiceEngine for cloning...")
+                        com.nekospeak.tts.engine.OmniVoiceEngine(context)
+                    }
+                    else -> {
+                        android.util.Log.i("VoicesViewModel", "Initializing PocketTtsEngine (clone-only) for cloning...")
+                        com.nekospeak.tts.engine.pocket.PocketTtsEngine(context, cloneOnly = true)
+                    }
+                }
                 try {
                     if (engine.initialize()) {
                         android.util.Log.i("VoicesViewModel", "Engine initialized, calling cloneVoice...")
-                        SupportLogStore.log(context, "VoicesViewModel", "Clone engine initialized (clone-only)")
+                        SupportLogStore.log(context, "VoicesViewModel", "Clone engine initialized for model=$currentModel")
                         // TODO: Use transcript for text conditioning in voice cloning
                         val voiceId = engine.cloneVoice(permanentFile.absolutePath, name)
                         if (voiceId != null) {

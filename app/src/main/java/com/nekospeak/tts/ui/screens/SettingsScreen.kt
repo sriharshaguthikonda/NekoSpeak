@@ -437,6 +437,123 @@ fun SettingsScreen(navController: NavController) {
                                 steps = 4
                             )
                         }
+                    } else if (currentModel == "omnivoice") {
+                        // OmniVoice diffusion TTS settings
+                        Text("OmniVoice Settings", fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.primary)
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Voice design info
+                        Text(
+                            "OmniVoice uses text-based voice design. Select a voice preset in the Voices tab.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Denoising Steps
+                        var ovSteps by remember { mutableIntStateOf(prefs.omnivoiceNumSteps) }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Diffusion Steps: $ovSteps", fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+                            Button(
+                                onClick = {
+                                    ovSteps = 16
+                                    prefs.omnivoiceNumSteps = 16
+                                },
+                                enabled = ovSteps != 16
+                            ) {
+                                Text("Reset")
+                            }
+                        }
+                        Text(
+                            "More steps = better quality, slower. 8=min, 32=max. Default: 16",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Slider(
+                            value = ovSteps.toFloat(),
+                            onValueChange = { ovSteps = it.toInt() },
+                            onValueChangeFinished = { prefs.omnivoiceNumSteps = ovSteps },
+                            valueRange = 8f..32f,
+                            steps = 5
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Guidance Scale (CFG)
+                        var ovCfg by remember { mutableFloatStateOf(prefs.omnivoiceGuidanceScale) }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Guidance Scale: ${"%.1f".format(ovCfg)}", fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+                            Button(
+                                onClick = {
+                                    ovCfg = 3.0f
+                                    prefs.omnivoiceGuidanceScale = 3.0f
+                                },
+                                enabled = ovCfg != 3.0f
+                            ) {
+                                Text("Reset")
+                            }
+                        }
+                        Text(
+                            "Higher = more adherence to voice description. 1.5-5.0 typical. Default: 3.0",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Slider(
+                            value = ovCfg,
+                            onValueChange = { ovCfg = it },
+                            onValueChangeFinished = { prefs.omnivoiceGuidanceScale = ovCfg },
+                            valueRange = 1.0f..5.0f,
+                            steps = 7
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Time Shift
+                        var ovTShift by remember { mutableFloatStateOf(prefs.omnivoiceTShift) }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Time Shift: ${"%.1f".format(ovTShift)}", fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+                            Button(
+                                onClick = {
+                                    ovTShift = 0.8f
+                                    prefs.omnivoiceTShift = 0.8f
+                                },
+                                enabled = ovTShift != 0.8f
+                            ) {
+                                Text("Reset")
+                            }
+                        }
+                        Text(
+                            "Controls denoising schedule shape. 0.5-1.5 typical. Default: 0.8",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Slider(
+                            value = ovTShift,
+                            onValueChange = { ovTShift = it },
+                            onValueChangeFinished = { prefs.omnivoiceTShift = ovTShift },
+                            valueRange = 0.3f..1.5f,
+                            steps = 11
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Voice cloning info
+                        Text("Voice Cloning", fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.primary)
+                        Text(
+                            "Upload 5-10s of reference audio in the Voices tab to clone a voice. " +
+                            "The encoder model (624MB) must be downloaded first.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     } else {
                         Text("Speech Speed", fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f))
                          Text(

@@ -23,6 +23,9 @@ class PrefsManager(context: Context) {
         private const val KEY_POCKET_EOS = "pocket_frames_after_eos"
         private const val KEY_POCKET_DECODE = "pocket_decoding_mode"
         private const val KEY_POCKET_CHUNK = "pocket_decode_chunk_size"
+        private const val KEY_OMNIVOICE_STEPS = "omnivoice_num_steps"
+        private const val KEY_OMNIVOICE_CFG = "omnivoice_guidance_scale"
+        private const val KEY_OMNIVOICE_TSHIFT = "omnivoice_t_shift"
     }
 
     // Reactive counter for theme updates
@@ -91,4 +94,17 @@ class PrefsManager(context: Context) {
     var pocketDecodeChunkSize: Int
         get() = prefs.getInt(KEY_POCKET_CHUNK, 15)
         set(value) = prefs.edit().putInt(KEY_POCKET_CHUNK, value).apply()
+
+    // OmniVoice settings
+    var omnivoiceNumSteps: Int
+        get() = prefs.getInt(KEY_OMNIVOICE_STEPS, 16)
+        set(value) = prefs.edit().putInt(KEY_OMNIVOICE_STEPS, value).apply()
+
+    var omnivoiceGuidanceScale: Float
+        get() = prefs.getFloat(KEY_OMNIVOICE_CFG, 3.0f)
+        set(value) = prefs.edit().putFloat(KEY_OMNIVOICE_CFG, value).apply()
+
+    var omnivoiceTShift: Float
+        get() = prefs.getFloat(KEY_OMNIVOICE_TSHIFT, 0.8f)
+        set(value) = prefs.edit().putFloat(KEY_OMNIVOICE_TSHIFT, value).apply()
 }

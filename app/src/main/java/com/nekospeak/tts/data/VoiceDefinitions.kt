@@ -94,12 +94,42 @@ object VoiceDefinitions {
         VoiceDefinition("celebrity_tate", "Andrew Tate", "Male", "UK", "⭐ Internet Personality", null, "pocket_v1")
     )
     
+    // OmniVoice preset voices — voice design system
+    // These use instruct-based voice control (gender + pitch → text description)
+    // The model generates voice characteristics from the description
+    val OMNIVOICE_VOICES = listOf(
+        // English voices
+        VoiceDefinition("ov_alex", "Alex (F, Low)", "Female", "US", "Low-pitched female voice", null, "omnivoice"),
+        VoiceDefinition("ov_bella", "Bella (F, Mid)", "Female", "US", "Medium-pitched female voice", null, "omnivoice"),
+        VoiceDefinition("ov_clara", "Clara (F, High)", "Female", "US", "High-pitched female voice", null, "omnivoice"),
+        VoiceDefinition("ov_daniel", "Daniel (M, Low)", "Male", "US", "Low-pitched male voice", null, "omnivoice"),
+        VoiceDefinition("ov_eric", "Eric (M, Mid)", "Male", "US", "Medium-pitched male voice", null, "omnivoice"),
+        VoiceDefinition("ov_felix", "Felix (M, High)", "Male", "US", "High-pitched male voice", null, "omnivoice"),
+        VoiceDefinition("ov_glen", "Glen (N, Low)", "Male", "US", "Low-pitched neutral voice", null, "omnivoice"),
+        VoiceDefinition("ov_hayden", "Hayden (N, Mid)", "Male", "US", "Medium-pitched neutral voice", null, "omnivoice"),
+        VoiceDefinition("ov_iris", "Iris (N, High)", "Female", "US", "High-pitched neutral voice", null, "omnivoice"),
+        // Multilingual voices
+        VoiceDefinition("ov_zh_female", "中文女声", "Female", "CN", "Chinese female voice", null, "omnivoice"),
+        VoiceDefinition("ov_zh_male", "中文男声", "Male", "CN", "Chinese male voice", null, "omnivoice"),
+        VoiceDefinition("ov_ja_female", "日本語女声", "Female", "JP", "Japanese female voice", null, "omnivoice"),
+        VoiceDefinition("ov_ja_male", "日本語男声", "Male", "JP", "Japanese male voice", null, "omnivoice"),
+        VoiceDefinition("ov_ko_female", "한국어 여성", "Female", "KR", "Korean female voice", null, "omnivoice"),
+        VoiceDefinition("ov_ko_male", "한국어 남성", "Male", "KR", "Korean male voice", null, "omnivoice"),
+        VoiceDefinition("ov_fr_female", "Française", "Female", "FR", "French female voice", null, "omnivoice"),
+        VoiceDefinition("ov_de_female", "Deutsch", "Female", "DE", "German female voice", null, "omnivoice"),
+        VoiceDefinition("ov_es_female", "Español", "Female", "ES", "Spanish female voice", null, "omnivoice"),
+        VoiceDefinition("ov_ar_male", "العربية", "Male", "SA", "Arabic male voice", null, "omnivoice"),
+        VoiceDefinition("ov_ru_male", "Русский", "Male", "RU", "Russian male voice", null, "omnivoice"),
+        VoiceDefinition("ov_hi_female", "हिन्दी", "Female", "IN", "Hindi female voice", null, "omnivoice"),
+    )
+    
     // Helper to get all available voices for a model
     fun getVoicesForModel(modelType: String): List<VoiceDefinition> {
         return when (modelType) {
             "pocket_v1" -> POCKET_VOICES + CELEBRITY_VOICES
             "kokoro_v1.0" -> KOKORO_VOICES
             "kitten_nano" -> listOf(VoiceDefinition("kitten_v1", "Kitten", "Female", "US", "Standard Kitten Voice", null, "kitten_nano"))
+            "omnivoice" -> OMNIVOICE_VOICES
             else -> emptyList()
         }
     }

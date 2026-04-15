@@ -106,6 +106,8 @@ object ModelRepository {
     fun isInstalled(context: Context, modelId: String): Boolean {
         val model = models.find { it.id == modelId } ?: return false
         return model.files.all { fileDef ->
+            // Encoder is optional (624MB, voice cloning only) — don't block install check
+            if (modelId == "omnivoice" && fileDef.fileName.contains("encoder")) return@all true
             val file = File(context.filesDir, fileDef.fileName)
             // Check file exists and has reasonable size (> 1KB to avoid placeholder files)
             file.exists() && file.length() > 1024

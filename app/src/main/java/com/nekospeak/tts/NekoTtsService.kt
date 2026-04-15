@@ -329,6 +329,8 @@ class NekoTtsService : TextToSpeechService() {
             // For Pocket-TTS celebrity/cloned voices: pass savedVoice directly
             // The engine will load on-demand or fall back to alba
             prefs.currentModel == "pocket_v1" -> savedVoice
+            // For OmniVoice: pass voice directly (engine resolves preset IDs and cloned voices)
+            prefs.currentModel == "omnivoice" -> savedVoice
             // For other models: check if saved voice is available
             availableVoices.contains(savedVoice) -> savedVoice
             // Default fallback
