@@ -1,0 +1,3012 @@
+'em|6 1r
+'m|6 1r
+'n|6 1u
+'s|v 2c
+a|6
+a's|11 33
+a.|11
+a.s|11 33
+aaa|2i 29 1e 26 6 1o 11
+ab|4 i
+abe|11 i
+abo|1 i 20
+abortion|6 i a 29 2f 6 1u
+about|6 i d 2i
+abroad|6 i 29 a o
+abs|11 i 1g v 2c
+abt|4 i 2i
+abu|4 i 2r
+abuse|6 i 30 2s 2c
+ac|11 2c 1g
+aca|4 1l 6
+accept|3 1l 2c v 26 2i
+access|4 1l 2c w 2c
+accident|4 1l 2c 6 o 6 1u 2i
+account|6 1l d 1u 2i
+accuse|6 1l 30 2s 33
+ace|11 2c
+achieve|6 l 1g 2u
+ack|4 1l
+across|6 1l 29 a 2c
+act|4 1l 2i
+action|4 1l 2f 6 1u
+active|4 1l 2i 1c 2u
+actual|4 1l l 6 2x 6 1o
+ad|4 o
+ada|11 o 6
+add|4 o
+address|4 o 29 w 2c
+ade|11 o
+ado|6 o 2s
+ads|4 o 33
+advance|6 o 2u 4 1u 2c
+advantage|3 o 2u 4 1u 2i 1c 1i
+advice|3 o 2u g 2c
+ady|11 o 1f
+adz|4 o 33
+ae|11
+aer|v 29
+affair|6 13 v 29
+afford|6 13 a 29 o
+aft|4 13 2i
+after|4 13 2i x
+ag|4 16
+aga|1 16 6
+again|6 16 v 1u
+age|11 1i
+ago|6 16 21
+agree|6 16 29 1g
+ah|1
+aha|2 19 1
+ahh|1
+ahl|1 1o
+ahn|4 1u
+aho|1 19 20
+ahr|1 29
+ahs|1 33
+ai|g
+aid|11 o
+ail|11 1o
+aim|11 1r
+air|v 29
+ais|g 33
+aix|v 1l 2c
+aja|g 6
+aka|1 1l 6
+akc|4 1l
+ake|11 1l
+aki|1 1l 1f
+al|4 1o
+al.|4 1o
+ala|11 1o 6
+album|4 1o i 6 1r
+alcohol|4 1o 1l 6 19 2 1o
+ale|11 1o
+alf|4 1o 13
+ali|1 1o 1f
+all|a 1o
+allow|6 1o d
+alm|1 1r
+alone|6 1o 21 1u
+along|6 1o a 1x
+als|4 1o 33
+also|a 1o 2c 20
+alt|1 1o 2i
+alternative|9 1o 2i y 1u 6 2i 1c 2u
+alu|1 1o 2r
+aly|11 1o 1f
+am|4 1r
+amc|11 v 1r 2c 1g
+ame|11 1r
+ami|1 1r 1f
+amo|1 1r 20
+amount|6 1r d 1u 2i
+amp|4 1r 26
+amr|1 1r x
+ams|4 1r 33
+amy|11 1r 1f
+an|4 1u
+ana|1 1u 6
+and|6 1u o
+ane|11 1u
+ang|4 1x
+ann|4 1u
+announce|6 1u d 1u 2c
+annual|4 1u 30 2r 6 1o
+ano|4 1u 20
+ant|4 1u 2i
+anxiety|3 1x 33 g 6 2i 1f
+any|v 1u 1f
+anyway|v 1u 1f 2x 12
+aoi|d 1f
+aol|11 21 v 1o
+aon|11 20 1u
+apartment|6 26 1 29 2i 1r 6 1u 2i
+apc|11 26 1g 2c 1g
+ape|11 26
+app|4 26
+appeal|6 26 1g 1o
+appear|6 26 1d 29
+application|5 26 1o 6 1l 11 2f 6 1u
+apply|6 26 1o g
+approve|6 26 29 2s 2u
+april|11 26 29 6 1o
+apt|4 26 2i
+ar|1 29
+ara|4 29 6
+arb|1 29 i
+arc|1 29 1l
+ard|1 29 o
+are|1 29
+argue|1 29 16 30 2r
+ari|1 29 1f
+ark|1 29 1l
+arm|1 29 1r
+arn|1 29 1u
+aro|1 29 20
+arp|1 29 26
+arrange|x 11 1u 1i
+arrive|x g 2u
+art|1 29 2i
+article|1 29 2i 6 1l 6 1o
+artist|1 29 2i 6 2c 2i
+arx|1 29 1l 2c
+ary|v 29 1f
+as|4 33
+asa|1 2c 6
+ash|4 2f
+ask|4 2c 1l
+asp|4 2c 26
+ass|4 2c
+assault|6 2c a 1o 2i
+ast|4 2c 2i
+at|4 2i
+ata|1 2i 6
+ate|11 2i
+atp|11 2i 1g 26 1g
+attempt|6 2i v 1r 26 2i
+attend|6 2i v 1u o
+attitude|4 2i 6 2i 2t o
+attorney|6 2i y 1u 1f
+atx|11 2i 1g v 1l 2c
+atz|4 2i 2c
+au|21
+aud|a o
+audience|1 o 1f 6 1u 2c
+audio|1 o 1f 22
+aue|d
+aug|a 16 6 2c 2i
+august|1 16 6 2c 2i
+aul|a 1o
+aus|d 33
+aux|21
+ava|11 2u 6
+ave|4 2u 6 1u 2r
+avi|1 2u 1f
+avoid|6 2u 24 o
+aw|a
+aware|6 2x v 29
+awb|1 2x i
+awe|1
+ax|4 1l 2c
+axa|4 1l 2c 6
+axe|4 1l 2c
+axt|4 1l 2c 2i
+ay|11
+aye|g
+ayn|11 1u
+ayo|11 20
+ayr|11 29
+b|i 1g
+b's|i 1g 33
+b-j|i 1g 1i 11
+b.|i 1g
+b.s|i 1g 33
+bab|i 4 i
+back|i 4 1l
+bad|i 4 o
+bae|i g
+bag|i 4 16
+baggage|i 4 16 6 1i
+bah|i 1
+bak|i 4 1l
+bal|i 4 1o
+balance|i 4 1o 6 1u 2c
+balcony|i 4 1o 1l 6 1u 1f
+bam|i 4 1r
+ban|i 4 1u
+band|i 4 1u o
+bank|i 4 1x 1l
+bao|i d
+bar|i 1 29
+barrier|i 4 29 1f x
+base|i 11 2c
+basis|i 11 2c 6 2c
+bat|i 4 2i
+battle|i 4 2i 6 1o
+bax|i 4 1l 2c
+bay|i 11
+baz|i 4 33
+bbc|i 1h i 1f 2c 1g
+bbq|i 1g i 1f 1l 30 2t
+be|i 1g
+bea|i 1g
+bec|i v 1l
+because|i 1c 1l a 33
+bed|i v o
+bedroom|i v o 29 2t 1r
+bee|i 1g
+before|i 1c 13 a 29
+beg|i v 16
+bel|i v 1o
+bem|i v 1r
+ben|i v 1u
+benefit|i v 1u 6 13 1c 2i
+bes|i 1g 33
+best|i v 2c 2i
+bet|i v 2i
+between|i 1c 2i 2x 1g 1u
+beu|i 2s
+bev|i v 2u
+bey|i 11
+bi|i g
+bib|i 1d i
+bic|i 1d 1l
+bid|i 1d o
+big|i 1d 16
+bil|i 1d 1o
+bill|i 1d 1o
+billion|i 1d 1o 30 6 1u
+bin|i 1d 1u
+bio|i h 21
+bip|i 1d 26
+bir|i y
+bird|i y o
+bis|i 1d 2c
+bit|i 1d 2i
+bix|i 1d 1l 2c
+biz|i 1d 33
+black|i 1o 4 1l
+blame|i 1o 11 1r
+block|i 1o 1 1l
+blood|i 1o 7 o
+blow|i 1o 21
+blue|i 1o 2s
+bly|i 1o g
+bo|i 21
+boa|i 21 6
+boarding|i a 29 o 1c 1x
+boat|i 21 2i
+bob|i 1 i
+body|i 1 o 1f
+boe|i 21
+bog|i 1 16
+bok|i 1 1l
+bol|i 1 1o
+bom|i 1 1r
+bon|i 1 1u
+bone|i 21 1u
+boo|i 2s
+book|i 2p 1l
+boolean|i 2r 1o 1g 6 1u
+bop|i 1 26
+border|i a 29 o x
+borrow|i 1 29 22
+bos|i 1 2c
+bottle|i 1 2i 6 1o
+bow|i d
+bowl|i 21 1o
+box|i 1 1l 2c
+boy|i 24
+bra|i 29 1
+brain|i 29 11 1u
+brand|i 29 4 1u o
+brave|i 29 11 2u
+bread|i 29 v o
+breath|i 29 v 2l
+bridge|i 29 1d 1i
+bro|i 29 21
+broadcast|i 29 a o 1l 5 2c 2i
+brother|i 29 7 r x
+bt|i 1g 2i 1g
+bta|i 1g 2i 1g 11
+bua|i 30 2s 6
+bub|i 7 i
+buc|i 7 1l
+bud|i 7 o
+budget|i 7 1i 1c 2i
+bue|i 2x v
+bug|i 7 16
+bui|i 1d
+building|i 1d 1o o 1c 1x
+bum|i 7 1r
+bun|i 7 1u
+bur|i y
+burden|i y o 6 1u
+bus|i 7 2c
+business|i 1d 33 1u 6 2c
+but|i 7 2i
+button|i 7 2i 6 1u
+buy|i g
+by|i g
+bye|i g
+byte|i g 2i
+byu|i 1g 2x g 30 2s
+c|2c 1g
+c's|2c 1g 33
+c.|2c 1g
+c.s|2c 1g 33
+c1|2c 1g 2x 7 1u
+c2|2c 1g 2i 2s
+c3|2c 1g 2l 29 1g
+c4|2c 1g 13 a 29
+c5|2c 1g 13 g 2u
+ca|1l 7
+cab|1l 4 i
+cabinet|1l 4 i 6 1u 6 2i
+cable|1l 11 i 6 1o
+cac|1l 4 1l
+cad|1l 4 o
+cai|1l g
+cake|1l 11 1l
+cal|1l 4 1o
+calculate|1l 4 1o 1l 30 6 1o 12 2i
+call|1l a 1o
+cam|1l 4 1r
+camera|1l 4 1r x 6
+campaign|1l 3 1r 26 11 1u
+campus|1l 4 1r 26 6 2c
+can|1l 4 1u
+cancer|1l 4 1u 2c x
+candidate|1l 4 1u o 6 o 10 2i
+cao|1l d
+cap|1l 4 26
+capacity|1l 6 26 4 2c 6 2i 1f
+captain|1l 4 26 2i 6 1u
+capture|1l 4 26 l x
+caq|1l 4 1l
+car|1l 1 29
+card|1l 1 29 o
+care|1l v 29
+career|1l x 1d 29
+carpet|1l 1 29 26 6 2i
+cas|1l 4 2c
+case|1l 11 2c
+cash|1l 4 2f
+cat|1l 4 2i
+cau|1l d
+caw|1l a
+cay|1l 11
+cbs|2c 1g i 1h w 2c
+cc|2c 1g 2c 1g
+ccs|2c 1g 2c 1g v 2c
+cd|2c 1g o 1g
+cdc|2c 1g o 1h 2c 1g
+cds|2c 1g o 1g 33
+cea|2c 1g 1g 11
+ceiling|2c 1g 1o 1c 1x
+cel|2c v 1o
+celebrate|2c v 1o 6 i 29 12 2i
+cep|2c v 26
+cha|l 1
+chain|l 11 1u
+chair|l v 29
+chairman|l v 29 1r 6 1u
+challenge|l 4 1o 6 1u 1i
+chamber|l 11 1r i x
+champion|l 4 1r 26 1f 6 1u
+change|l 11 1u 1i
+channel|l 4 1u 6 1o
+chapter|l 4 26 2i x
+character|1l v 29 1c 1l 2i x
+charge|l 1 29 1i
+charity|l v 29 1c 2i 1f
+chart|l 1 29 2i
+chase|l 11 2c
+che|l 11
+cheap|l 1g 26
+cheat|l 1g 2i
+check|l v 1l
+chi|1l g
+chicken|l 1d 1l 6 1u
+chief|l 1g 13
+child|l g 1o o
+children|l 1d 1o o 29 6 1u
+cho|l 21
+chocolate|l a 1l 1o 6 2i
+chu|l 2s
+cia|2c 1g g 11
+cid|2c 1d o
+cie|2c 1g
+city|2c 1d 2i 1f
+civilian|2c 6 2u 1d 1o 30 6 1u
+claim|1l 1o 11 1r
+class|1l 1o 4 2c
+classic|1l 1o 4 2c 1c 1l
+classroom|1l 1o 4 2c 29 2t 1r
+client|1l 1o g 6 1u 2i
+clinic|1l 1o 1d 1u 1c 1l
+close|1l 1o 21 2c
+clothing|1l 1o 21 r 1c 1x
+cmu|2c 1g v 1r 30 2s
+cmx|1l 6 1r v 1l 2c
+cnn|2c 1g v 1u v 1u
+co|1l 21
+co.|1l 21
+coach|1l 21 l
+coalition|1l 22 6 1o 1d 2f 6 1u
+cob|1l 1 i
+cod|1l 1 o
+code|1l 21 o
+coe|1l 21
+coffee|1l 1 13 1f
+cog|1l a 16
+cold|1l 21 1o o
+collapse|1l 6 1o 4 26 2c
+college|1l 1 1o 1c 1i
+colonial|1l 6 1o 21 1u 1f 6 1o
+color|1l 7 1o x
+column|1l 1 1o 6 1r
+com|1l 1 1r
+combat|1l 1 1r i 3 2i
+come|1l 7 1r
+commission|1l 6 1r 1d 2f 6 1u
+commit|1l 6 1r 1d 2i
+communicate|1l 6 1r 30 2s 1u 6 1l 12 2i
+companion|1l 6 1r 26 4 1u 30 6 1u
+complaint|1l 6 1r 26 1o 11 1u 2i
+computer|1l 6 1r 26 30 2s 2i x
+con|1l 1 1u
+concentrate|1l 1 1u 2c 6 1u 2i 29 12 2i
+concept|1l 1 1u 2c u 26 2i
+concern|1l 6 1u 2c y 1u
+concert|1l 1 1u 2c x 2i
+conclude|1l 6 1u 1l 1o 2s o
+conference|1l 1 1u 13 x 6 1u 2c
+confirm|1l 6 1u 13 y 1r
+conflict|1l 1 1u 13 1o 1c 1l 2i
+congress|1l 1 1x 16 29 6 2c
+connect|1l 6 1u v 1l 2i
+conservative|1l 6 1u 2c y 2u 6 2i 1c 2u
+consider|1l 6 1u 2c 1d o x
+constant|1l 1 1u 2c 2i 6 1u 2i
+construction|1l 6 1u 2c 2i 29 7 1l 2f 6 1u
+consultant|1l 6 1u 2c 7 1o 2i 6 1u 2i
+consumer|1l 6 1u 2c 2s 1r x
+contact|1l 1 1u 2i 5 1l 2i
+contain|1l 6 1u 2i 11 1u
+content|1l 1 1u 2i u 1u 2i
+contest|1l 1 1u 2i u 2c 2i
+context|1l 1 1u 2i u 1l 2c 2i
+contract|1l 1 1u 2i 29 5 1l 2i
+contrast|1l 1 1u 2i 29 3 2c 2i
+contribute|1l 6 1u 2i 29 1d i 30 2r 2i
+contribution|1l 2 1u 2i 29 6 i 30 2s 2f 6 1u
+control|1l 6 1u 2i 29 21 1o
+convention|1l 6 1u 2u v 1u 2f 6 1u
+convert|1l 1 1u 2u x 2i
+convince|1l 6 1u 2u 1d 1u 2c
+coo|1l 2s
+cooperate|1l 20 1 26 x 12 2i
+cop|1l 1 26
+copy|1l 1 26 1f
+cor|1l a 29
+core|1l a 29
+corner|1l a 29 1u x
+corporate|1l a 29 26 x 6 2i
+correction|1l x v 1l 2f 6 1u
+corridor|1l a 29 6 o x
+cos|1l a 2c
+cost|1l 1 2c 2i
+cot|1l 1 2i
+cou|1l 2s
+could|1l 2p o
+council|1l d 1u 2c 6 1o
+countless|1l d 1u 2i 1o 6 2c
+county|1l d 1u 2i 1f
+couple|1l 7 26 6 1o
+courage|1l y 6 1i
+court|1l a 29 2i
+cousin|1l 7 33 6 1u
+coverage|1l 7 2u x 6 1i
+cow|1l d
+cox|1l 1 1l 2c
+coy|1l 24
+coz|1l 1 33
+crash|1l 29 4 2f
+cream|1l 29 1g 1r
+creation|1l 29 1f 11 2f 6 1u
+creative|1l 29 1f 11 2i 1c 2u
+creature|1l 29 1g l x
+crime|1l 29 g 1r
+criminal|1l 29 1d 1r 6 1u 6 1o
+crisis|1l 29 g 2c 6 2c
+critical|1l 29 1d 2i 1c 1l 6 1o
+cro|1l 29 21
+crowd|1l 29 d o
+cry|1l 29 g
+ct|1l a 29 2i
+cub|1l 7 i
+cue|1l 30 2s
+cul|1l 7 1o
+cultural|1l 7 1o l x 6 1o
+culture|1l 7 1o l x
+cum|1l 7 1r
+cup|1l 7 26
+cur|1l y
+cure|1l 30 2p 29
+curious|1l 30 2p 29 1f 6 2c
+curve|1l y 2u
+cus|1l 7 2c
+customer|1l 7 2c 2i 6 1r x
+cut|1l 7 2i
+cxc|2c 1g v 1l 2c 2c 1g
+cy|2c g
+cyb|2c g i
+cyd|2c 1d o
+cyr|2c 1d 29
+d|o 1g
+d's|o 1g 33
+d.|o 1g
+d.s|o 1g 33
+da|o 1
+dab|o 4 i
+dac|o 4 1l
+dad|o 4 o
+dae|o 11
+dag|o 4 16
+dah|o 7
+dai|o g
+dak|o 4 1l
+dal|o 4 1o
+dam|o 4 1r
+damage|o 4 1r 6 1i
+dan|o 4 1u
+dao|o d
+dar|o 1 29
+dare|o v 29
+das|o 4 2c
+dat|o 4 2i
+data|o 11 2i 6
+database|o 11 2i 6 i 12 2c
+dau|o 21
+daw|o a
+dax|o 4 1l 2c
+day|o 11
+ddt|o 1h o 1h 2i 1g
+de|o 1g
+dea|o 1g
+deb|o v i
+dec|o v 1l
+decade|o u 1l 11 o
+december|o 1c 2c v 1r i x
+decent|o 1g 2c 6 1u 2i
+dee|o 1g
+deep|o 1g 26
+defeat|o 1c 13 1g 2i
+defend|o 1c 13 v 1u o
+defense|o 1c 13 v 1u 2c
+deficit|o v 13 6 2c 6 2i
+degree|o 1c 16 29 1g
+del|o v 1o
+delete|o 1c 1o 1g 2i
+deliver|o 1c 1o 1d 2u x
+demand|o 1c 1r 4 1u o
+democracy|o 1c 1r 1 1l 29 6 2c 1f
+democratic|o w 1r 6 1l 29 4 2i 1c 1l
+demonstrate|o v 1r 6 1u 2c 2i 29 12 2i
+den|o v 1u
+denial|o 1c 1u g 6 1o
+deo|o 1g 20
+dep|o v 26
+depart|o 1c 26 1 29 2i
+deposit|o 6 26 1 33 1c 2i
+der|o y
+des|o v
+deserve|o 1c 33 y 2u
+design|o 1c 33 g 1u
+desk|o v 2c 1l
+detail|o 1c 2i 11 1o
+dev|o v 2u
+develop|o 1c 2u v 1o 6 26
+device|o 1c 2u g 2c
+dew|o 2s
+dex|o v 1l 2c
+dey|o 11
+dfw|o 1g v 13 o 7 i 6 1o 30 2s
+di|o 1g
+dia|o 1g 6
+dialogue|o g 6 1o b 16
+dic|o 1d 1l
+did|o 1d o
+die|o g
+diet|o g 6 2i
+dif|o 1d 13
+dig|o 1d 16
+digital|o 1d 1i 6 2i 6 1o
+dim|o 1d 1r
+dimension|o 1c 1r v 1u 2f 6 1u
+din|o 1d 1u
+dip|o 1d 26
+diplomat|o 1d 26 1o 6 1r 5 2i
+direct|o x v 1l 2i
+director|o x v 1l 2i x
+dis|o 1d 2c
+discipline|o 1d 2c 6 26 1o 6 1u
+discovery|o 1c 2c 1l 7 2u x 1f
+discrimination|o 1c 2c 1l 29 1e 1r 6 1u 11 2f 6 1u
+dish|o 1d 2f
+disk|o 1d 2c 1l
+display|o 1c 2c 26 1o 11
+distinct|o 1c 2c 2i 1d 1x 1l 2i
+district|o 1d 2c 2i 29 1c 1l 2i
+diverse|o f 2u y 2c
+division|o 1c 2u 1d 36 6 1u
+dix|o 1d 1l 2c
+dk|o 1g 1l 11
+dmz|o 1g w 1r 33 1h
+dna|o 1g w 1u 11
+dnc|o 1g w 1u 2c 1h
+do|o 2s
+dob|o 1 i
+doc|o 1 1l
+doctrine|o 1 1l 2i 29 6 1u
+document|o 1 1l 30 6 1r u 1u 2i
+documentary|o 2 1l 30 6 1r v 1u 2i x 1f
+doe|o 21
+dog|o a 16
+doh|o 21
+doi|o 24
+dol|o 1 1o
+dom|o 1 1r
+domestic|o 6 1r v 2c 2i 1c 1l
+dominate|o 1 1r 6 1u 12 2i
+don|o 1 1u
+doo|o 2s
+door|o a 29
+dos|o a 2c
+dose|o 21 2c
+dot|o 1 2i
+double|o 7 i 6 1o
+dov|o 1 2u
+dow|o d
+download|o d 1u 1o 22 o
+downtown|o d 1u 2i d 1u
+dr|o 29 g 2u
+dr.|o 29 g 2u
+draft|o 29 4 13 2i
+drama|o 29 1 1r 6
+dramatically|o 29 6 1r 4 2i 1c 1l 1o 1f
+dream|o 29 1g 1r
+dress|o 29 v 2c
+drink|o 29 1d 1x 1l
+drive|o 29 g 2u
+driver|o 29 g 2u x
+drop|o 29 1 26
+dru|o 29 2s
+drug|o 29 7 16
+dry|o 29 g
+dss|o 1g v 2c v 2c
+dsv|o 1g v 2c 2u 1g
+du|o 2s
+dub|o 7 i
+duc|o 7 1l
+dud|o 7 o
+due|o 2s
+dug|o 7 16
+duh|o 7
+dui|o 1g 30 2s g
+duk|o 7 1l
+dum|o 7 1r
+dump|o 7 1r 26
+dun|o 7 1u
+duo|o 2s 20
+duration|o 2p 29 11 2f 6 1u
+dux|o 7 1l 2c
+dvd|o 1h 2u 1h o 1g
+dwi|o 1g o 7 i 6 1o 30 2s g
+dye|o g
+dyk|o 1d 1l
+e|1g
+e's|1g 33
+e.|1g
+e.s|1g 33
+eap|1g 11 26 1g
+ear|1g 29
+earn|y 1u
+east|1g 2c 2i
+easy|1g 33 1f
+eat|1g 2i
+eau|21
+eb|v i
+eba|1g i 6
+ebb|v i
+eby|1g i 1f
+eck|v 1l
+eco|1g 1l 20
+economy|1c 1l 1 1u 6 1r 1f
+ed|v o
+eda|1g o 6
+ede|1g o
+edi|1g o 1f
+edition|6 o 1d 2f 6 1u
+editor|v o 6 2i x
+edo|1g o 20
+edu|v o 30 2r
+ee|1g
+eeg|1g 16
+eel|1g 1o
+eeo|1g 1g 21
+effective|1c 13 v 1l 2i 1c 2u
+efficiency|1c 13 1d 2f 6 1u 2c 1f
+ege|1g 1i
+egg|v 16
+ego|1g 16 20
+eh|v
+eid|g o
+eight|11 2i
+ein|g 1u
+eir|g 29
+eis|g 33
+ek|v 1l
+eka|v 1l 6
+eke|1g 1l
+ekk|1g 1l 11 1l 11
+eko|v 1l 20
+el|v 1o
+ela|v 1o 6
+election|1c 1o v 1l 2f 6 1u
+electric|1c 1o v 1l 2i 29 1c 1l
+element|v 1o 6 1r 6 1u 2i
+elf|v 1o 13
+elg|v 1o 16
+eli|1g 1o f
+eliminate|1c 1o 1d 1r 6 1u 12 2i
+elk|v 1o 1l
+ell|v 1o
+elm|v 1o 1r
+els|v 1o 33
+ely|1g 1o f
+em|v 1r
+ema|1g 1r 6
+emerge|1c 1r y 1i
+emergency|1c 1r y 1i 6 1u 2c 1f
+emission|1c 1r 1d 2f 6 1u
+emotional|1c 1r 21 2f 6 1u 6 1o
+emphasize|v 1r 13 6 2c h 33
+emu|1g 1r 30 2t
+en|v 1u
+ena|v 1u 6
+enable|u 1u 11 i 6 1o
+encounter|1c 1u 1l d 1u 2i x
+encourage|u 1u 1l y 1c 1i
+end|v 1u o
+enemy|v 1u 6 1r 1f
+energy|v 1u x 1i 1f
+enforce|u 1u 13 a 29 2c
+eng|v 1x
+engine|v 1u 1i 6 1u
+enhance|u 1u 19 4 1u 2c
+eno|v 1u 20
+enormous|1c 1u a 29 1r 6 2c
+ensure|u 1u 2f 2p 29
+ent|v 1u 2i
+enter|v 1u 2i x
+enterprise|v 1u 2i x 26 29 h 33
+entertainment|w 1u 2i x 2i 11 1u 1r 6 1u 2i
+entrance|v 1u 2i 29 6 1u 2c
+envelope|v 1u 2u 6 1o 22 26
+enz|v 1u 33
+eon|1g 6 1u
+eos|1g 0 2c
+episode|v 26 6 2c 22 o
+epp|v 26
+equality|1c 1l 2x 1 1o 6 2i 1f
+equip|1c 1l 2x 1d 26
+er|x
+era|v 29 6
+erb|y i
+ere|v 29
+erk|y 1l
+erl|y 1o
+ero|1d 29 20
+err|v 29
+error|v 29 x
+ers|y 33
+es|v 2c
+escape|1c 2c 1l 11 26
+esh|v 2f
+ess|v 2c
+essential|1c 2c v 1u 2f 6 1o
+est|6 2c 2i 11 2i
+establish|1c 2c 2i 4 i 1o 1c 2f
+estimate|v 2c 2i 6 1r 6 2i
+et|v 2i
+etc|w 2i 2c v 2i x 6
+ev|v 2u
+eva|11 2u 6
+evaluate|1c 2u 4 1o 30 2r 12 2i
+eve|1g 2u
+even|1g 2u 1c 1u
+event|1c 2u v 1u 2i
+eventual|6 2u v 1u l 2r 6 1o
+every|v 2u x 1f
+evidence|v 2u 6 o 6 1u 2c
+evil|1g 2u 6 1o
+evolution|w 2u 6 1o 2s 2f 6 1u
+ewe|30 2s
+ewy|30 2s 1f
+ex|v 1l 2c
+exact|1c 16 33 4 1l 2i
+examine|1c 16 33 4 1r 1c 1u
+exchange|1c 1l 2c l 11 1u 1i
+excuse|1c 1l 2c 1l 30 2s 2c
+executive|1c 16 33 v 1l 30 6 2i 1c 2u
+exhibit|1c 16 33 1d i 1c 2i
+exist|1c 16 33 1d 2c 2i
+expand|1c 1l 2c 26 4 1u o
+expectation|w 1l 2c 26 u 1l 2i 11 2f 6 1u
+expense|1c 1l 2c 26 v 1u 2c
+experiment|1c 1l 2c 26 v 29 6 1r 6 1u 2i
+expert|v 1l 2c 26 x 2i
+explanation|w 1l 2c 26 1o 6 1u 11 2f 6 1u
+explosion|1c 1l 2c 26 1o 21 36 6 1u
+export|v 1l 2c 26 9 29 2i
+expose|1c 1l 2c 26 21 33
+extend|1c 1l 2c 2i v 1u o
+extent|1c 1l 2c 2i v 1u 2i
+extreme|1c 1l 2c 2i 29 1g 1r
+eye|g
+f|v 13
+f'd|v 13 o
+f's|v 13 2c
+f.|v 13
+fab|13 4 i
+fabric|13 4 i 29 1c 1l
+fac|13 4 1l
+face|13 11 2c
+facility|13 6 2c 1d 1o 1c 2i 1f
+fact|13 4 1l 2i
+factor|13 4 1l 2i x
+faculty|13 4 1l 6 1o 2i 1f
+fad|13 4 o
+fae|13 g
+fag|13 4 16
+failure|13 11 1o 30 x
+fall|13 a 1o
+false|13 a 1o 2c
+familiar|13 6 1r 1d 1o 30 x
+family|13 4 1r 6 1o 1f
+fan|13 4 1u
+fantasy|13 4 1u 2i 6 2c 1f
+fao|13 d
+far|13 1 29
+fashion|13 4 2f 6 1u
+fast|13 4 2c 2i
+fat|13 4 2i
+father|13 1 r x
+fatigue|13 6 2i 1g 16
+faw|13 a
+fax|13 4 1l 2c
+fay|13 11
+faz|13 4 33
+fe|13 11
+feature|13 1g l x
+feb|13 v i 30 6 2x w 29 1f
+february|13 v i 30 6 2x w 29 1f
+fed|13 v o
+federal|13 v o x 6 1o
+fee|13 1g
+feel|13 1g 1o
+fel|13 v 1o
+fellow|13 v 1o 20
+fen|13 v 1u
+fer|13 y
+fever|13 1g 2u x
+few|13 30 2s
+fey|13 11
+fez|13 v 33
+fi|13 g
+fierce|13 1d 29 2c
+fifth|13 1d 13 2l
+fig|13 1d 16
+fil|13 1d 1o
+film|13 1d 1o 1r
+fin|13 1d 1u
+final|13 g 1u 6 1o
+finance|13 6 1u 4 1u 2c
+fir|13 y
+fire|13 g x
+first|13 y 2c 2i
+fis|13 1d 2c
+fish|13 1d 2f
+fit|13 1d 2i
+fitness|13 1d 2i 1u 6 2c
+five|13 g 2u
+fix|13 1d 1l 2c
+flight|13 1o g 2i
+flo|13 1o 21
+float|13 1o 21 2i
+floor|13 1o a 29
+flower|13 1o d x
+flu|13 1o 2s
+fly|13 1o g
+fm|v 13 v 1r
+fob|13 a i
+focus|13 21 1l 6 2c
+foe|13 21
+fog|13 1 16
+follow|13 1 1o 20
+font|13 1 1u 2i
+foo|13 2s
+food|13 2s o
+foot|13 2p 2i
+fop|13 a 26
+for|13 a 29
+force|13 a 29 2c
+forecast|13 a 29 1l 5 2c 2i
+foreign|13 a 29 6 1u
+forever|13 x v 2u x
+form|13 a 29 1r
+formula|13 a 29 1r 30 6 1o 6
+fortune|13 a 29 l 6 1u
+forward|13 a 29 2x x o
+found|13 d 1u o
+foundation|13 c 1u o 11 2f 6 1u
+four|13 a 29
+fourth|13 a 29 2l
+fox|13 1 1l 2c
+foy|13 24
+frame|13 29 11 1r
+free|13 29 1g
+frequency|13 29 1g 1l 2x 6 1u 2c 1f
+frequently|13 29 1g 1l 2x 6 1u 2i 1o 1f
+friday|13 29 g o 1f
+friend|13 29 v 1u o
+friendly|13 29 v 1u o 1o 1f
+fro|13 29 21
+from|13 29 7 1r
+front|13 29 7 1u 2i
+fry|13 29 g
+fs|13 2c
+fsi|13 2c 1g
+fu|13 2s
+fua|13 2s 6
+fuel|13 30 2s 6 1o
+full|13 2p 1o
+fun|13 7 1u
+function|13 7 1x 1l 2f 6 1u
+fund|13 7 1u o
+fundamental|13 8 1u o 6 1r v 1u 2i 6 1o
+fur|13 y
+furniture|13 y 1u 1c l x
+future|13 30 2s l x
+fye|13 g
+g|1i 1g
+g's|1i 1g 33
+g.|1i 1g
+g.s|1i 1g 33
+ga|16 1
+gab|16 4 i
+gad|16 4 o
+gae|16 g
+gaf|16 4 13
+gag|16 4 16
+gai|16 11
+gain|16 11 1u
+gal|16 4 1o
+gallery|16 4 1o x 1f
+game|16 11 1r
+gan|16 4 1u
+gang|16 4 1x
+gap|16 4 26
+gar|16 1 29
+gas|16 4 2c
+gat|16 4 2i
+gate|16 11 2i
+gather|16 4 r x
+gau|16 21
+gaw|16 a
+gay|16 11
+gaz|16 1 33
+gaze|16 11 33
+gear|16 1d 29
+ged|16 v o
+gee|1i 1g
+gel|1i v 1o
+gem|1i v 1r
+gen|1i v 1u x 6 1o
+general|1i v 1u x 6 1o
+generation|1i w 1u x 11 2f 6 1u
+genetic|1i 6 1u v 2i 1c 1l
+geo|1i 1g 20
+get|16 v 2i
+giant|1i g 6 1u 2i
+gib|16 1d i
+gig|16 1d 16
+gil|16 1d 1o
+gin|1i 1d 1u
+girl|16 y 1o
+give|16 1d 2u
+glo|16 1o 21
+global|16 1o 21 i 6 1o
+glory|16 1o a 29 1f
+gnc|1i 1g v 1u 2c 1g
+gnu|1u 2s
+go|16 21
+goa|16 21 6
+goal|16 21 1o
+gob|16 1 i
+god|16 1 o
+goe|16 21
+goh|16 21
+golden|16 21 1o o 6 1u
+goo|16 2s
+good|16 2p o
+got|16 1 2i
+gov|16 7 2u
+govern|16 7 2u x 1u
+gow|16 d
+goy|16 24
+grace|16 29 11 2c
+grade|16 29 11 o
+gradual|16 29 4 1i 2r 6 1o
+grand|16 29 4 1u o
+grant|16 29 4 1u 2i
+graphic|16 29 4 13 1c 1l
+grasp|16 29 4 2c 26
+grave|16 29 11 2u
+great|16 29 11 2i
+green|16 29 1g 1u
+gro|16 29 21
+grocery|16 29 21 2c x 1f
+group|16 29 2s 26
+growth|16 29 21 2l
+gu|16 2s
+guarantee|16 w 29 6 1u 2i 1g
+guard|16 1 29 o
+gue|16 30 2s
+guidance|16 g o 6 1u 2c
+guilty|16 1d 1o 2i 1f
+guitar|16 1c 2i 1 29
+gul|16 7 1o
+gum|16 7 1r
+gun|16 7 1u
+gus|16 7 2c
+gut|16 7 2i
+guy|16 g
+gyi|16 1g
+gym|1i 1d 1r
+gyn|16 1d 1u
+gyp|1i 1d 26
+gyr|1i g 29
+h|11 l
+h's|11 l 1c 33
+h.|11 l
+ha|19 1
+habit|19 4 i 6 2i
+had|19 4 o
+hag|19 4 16
+hah|19 1
+hal|19 4 1o
+ham|19 4 1r
+han|19 1 1u
+hand|19 4 1u o
+handle|19 4 1u o 6 1o
+hang|19 4 1x
+hao|19 d
+hap|19 4 26
+happening|19 4 26 6 1u 1c 1x
+haq|19 4 1l
+har|19 1 29
+hard|19 1 29 o
+hardly|19 1 29 o 1o 1f
+has|19 4 33
+hat|19 4 2i
+hau|19 d
+have|19 4 2u
+haw|19 a
+hay|19 11
+he|19 1g
+head|19 v o
+heading|19 v o 1c 1x
+headline|19 v o 1o h 1u
+healthy|19 v 1o 2l 1f
+heart|19 1 29 2i
+heaven|19 v 2u 6 1u
+hee|19 1g
+heh|19 v
+height|19 g 2i
+hello|19 6 1o 21
+help|19 v 1o 26
+hem|19 v 1r
+hen|19 v 1u
+hep|19 v 26
+her|19 x
+hew|19 30 2s
+hex|19 v 1l 2c
+hey|19 11
+hgh|11 l 1i 1g 11 l
+hi|19 g
+hid|19 1d o
+high|19 g
+highlight|19 g 1o h 2i
+highway|19 g 2x 12
+him|19 1d 1r
+hip|19 1d 26
+his|19 1d 33
+hit|19 1d 2i
+hix|19 1d 1l 2c
+ho|19 21
+hob|19 1 i
+hoc|19 1 1l
+hoe|19 21
+hof|19 1 13
+hog|19 1 16
+hoh|19 21
+hoi|19 24
+hok|19 a 1l
+hold|19 21 1o o
+hom|19 1 1r
+home|19 21 1r
+hon|19 1 1u
+honest|1 1u 6 2c 2i
+honor|1 1u x
+hoo|19 2s
+hop|19 1 26
+hope|19 21 26
+horror|19 a 29 x
+hospital|19 1 2c 26 1e 2i 6 1o
+hot|19 1 2i
+hotel|19 20 2i v 1o
+hou|19 2s
+house|19 d 2c
+household|19 d 2c 19 22 1o o
+how|19 d
+hoy|19 24
+hsu|2f 2s
+hu|19 2s
+hua|19 2s 6
+hub|19 7 i
+hud|19 7 o
+hue|19 30 2s
+hug|19 7 16
+huh|19 7
+hui|19 2s 1c
+hum|19 7 1r
+human|19 30 2s 1r 6 1u
+humor|19 30 2s 1r x
+hun|19 7 1u
+hundred|19 7 1u o 29 6 o
+hunt|19 7 1u 2i
+hur|19 y
+hut|19 7 2i
+hux|19 7 1l 2c
+hwa|19 2x 1
+hwe|19 2x 11
+hy|19 g
+hye|19 f
+hypothesis|19 f 26 1 2l 6 2c 6 2c
+hyundai|19 30 7 1u o 12
+i|g
+i'd|g o
+i'm|g 1r
+i's|g 33
+i.|g
+i.s|g 33
+ia|1g 6
+ian|1g 6 1u
+ib|1d i
+iba|1g i 6
+ibn|1d i 6 1u
+ice|g 2c
+ich|1d l
+icon|g 1l 0 1u
+icy|g 2c 1f
+id|1d o
+ida|g o 6
+ide|g o
+ideal|f o 1g 1o
+identify|f o v 1u 2i 6 13 h
+identity|f o v 1u 2i 6 2i 1f
+ido|1g o 22
+if|1d 13
+ifs|1d 13 2c
+ige|g 1i
+ignore|1c 16 1u a 29
+igo|1g 16 20
+iie|1g 1f
+ike|g 1l
+il|1d 1o
+ila|1g 1o 6
+ilg|1d 1o 16
+ilk|1d 1o 1l
+ill|1d 1o
+illegal|1c 1o 1g 16 6 1o
+illustrate|1d 1o 6 2c 2i 29 12 2i
+ilo|g 1o 20
+im|1d 1r
+image|1d 1r 6 1i
+imagine|1c 1r 4 1i 6 1u
+imm|g v 1r v 1r
+imo|g 1r 20
+imp|1d 1r 26
+impact|1c 1r 26 4 1l 2i
+imply|1c 1r 26 1o g
+import|1c 1r 26 a 29 2i
+impose|1c 1r 26 21 33
+impress|1c 1r 26 29 v 2c
+improve|1c 1r 26 29 2s 2u
+in|1c 1u
+in.|1d 1u
+ina|1g 1u 6
+inc|1d 1x 1l
+incident|1d 1u 2c 6 o 6 1u 2i
+income|1d 1u 1l 8 1r
+increase|1c 1u 1l 29 1g 2c
+independent|1e 1u o 1c 26 v 1u o 6 1u 2i
+index|1d 1u o u 1l 2c
+indicate|1d 1u o 6 1l 12 2i
+individual|1e 1u o 6 2u 1d 1i 6 2x 6 1o
+industrial|1c 1u o 7 2c 2i 29 1f 6 1o
+inflation|1c 1u 13 1o 11 2f 6 1u
+influence|1d 1u 13 1o 2r 6 1u 2c
+ing|1d 1x
+initial|1c 1u 1d 2f 6 1o
+inject|1c 1u 1i v 1l 2i
+ink|1d 1x 1l
+inn|1d 1u
+inner|1d 1u x
+innocent|1d 1u 6 2c 6 1u 2i
+input|1d 1u 26 2q 2i
+inquiry|1c 1u 1l 2x g 29 1f
+ins|1d 1u 33
+install|1c 1u 2c 2i a 1o
+instance|1d 1u 2c 2i 6 1u 2c
+instead|1c 1u 2c 2i v o
+institute|1d 1u 2c 2i 6 2i 2t 2i
+instrument|1d 1u 2c 2i 29 6 1r 6 1u 2i
+insurance|1c 1u 2f 2p 29 6 1u 2c
+integer|1d 1u 2i 6 1i x
+intend|1c 1u 2i v 1u o
+intense|1c 1u 2i v 1u 2c
+interior|1c 1u 2i 1d 29 1f x
+internet|1d 1u 2i x 1u w 2i
+interpret|1c 1u 2i y 26 29 6 2i
+intervention|1e 1u 2i x 2u v 1u l 6 1u
+interview|1d 1u 2i x 2u 30 2t
+into|1c 1u 2i 2s
+introduce|1e 1u 2i 29 6 o 2s 2c
+invasion|1c 1u 2u 11 36 6 1u
+investigate|1c 1u 2u v 2c 2i 6 16 12 2i
+investment|1c 1u 2u v 2c 2i 1r 6 1u 2i
+invisible|1c 1u 2u 1d 33 6 i 6 1o
+involve|1c 1u 2u 1 1o 2u
+iny|1d 1u 1f
+io|g 20
+ion|g 6 1u
+ios|1g 20 2c
+iou|h 22 30 2s
+ip|1d 26
+ira|g 29 6
+ire|g 29
+irk|y 1l
+irv|y 2u
+is|1d 33
+isa|1g 2c 6
+ise|g 33
+ish|1d 2f
+island|g 1o 6 1u o
+ism|1d 33 6 1r
+isu|1d 2c 2t
+it|1d 2i
+ita|g 2i 6
+item|g 2i 6 1r
+ito|1g 2i 20
+its|1d 2i 2c
+iva|1g 2u 6
+ivo|g 2u 1g 21
+ivy|g 2u 1f
+iwo|g 2x 20
+j|1i 11
+j's|1i 11 33
+j.|1i 11
+ja|30 1
+jab|1i 4 i
+jac|1i 4 1l
+jae|1i 11
+jai|1i g
+jail|1i 11 1o
+jam|1i 4 1r
+jan|1i 4 1u
+january|1i 4 1u 30 2r w 29 1f
+jap|1i 4 26
+jar|1i 1 29
+jas|1i 11 1r 33
+jaw|1i a
+jay|1i 11
+je|1i 1g
+jeb|1i v i
+jed|1i v o
+jee|1i 1g
+jem|1i v 1r
+jen|1i v 1u
+jet|1i v 2i
+jew|1i 2s
+jex|1i v 1l 2c
+jha|1i 1
+ji|1i 1g
+jia|1i 1g 6
+jib|1i 1d i
+jie|1i 1g
+jif|1i 1d 13
+jig|1i 1d 16
+jil|1i 1d 1o
+jim|1i 1d 1r
+jin|1i 1d 1u
+jna|1i 11 v 1u 11
+jo|1i 21
+job|1i 1 i
+joe|1i 21
+jog|1i 1 16
+joh|1i 21
+joint|1i 24 1u 2i
+jon|1i 1 1u
+joo|1i 2s
+jos|1i 21 33
+jot|1i 1 2i
+journal|1i y 1u 6 1o
+journalism|1i y 1u 6 1o 1e 33 6 1r
+journey|1i y 1u 1f
+joy|1i 24
+jr|1i 2s 1u 30 x
+ju|1i 2s
+jua|1i 2s 6
+judge|1i 7 1i
+jue|1i 2s
+jug|1i 7 16
+juice|1i 2s 2c
+july|1i 2t 1o g
+jun|1i 7 1u
+june|1i 2s 1u
+jungle|1i 7 1x 16 6 1o
+junior|1i 2s 1u 30 x
+jus|1i 2s
+just|1i 7 2c 2i
+justice|1i 7 2c 2i 6 2c
+jut|1i 7 2i
+k|1l 11
+k's|1l 11 33
+k.|1l 11
+ka|1l 1
+kah|1l 1
+kai|1l g
+kal|1l 4 1o
+kam|1l 4 1r
+kan|1l 4 1u
+kao|1l d
+kat|1l 4 2i
+kau|1l d
+kay|1l 11
+kea|1l 1g
+kee|1l 1g
+keen|1l 1g 1u
+keep|1l 1g 26
+keg|1l v 16
+kem|1l v 1r
+ken|1l v 1u
+keo|1l 1g 20
+ker|1l y
+kew|1l 30 2s
+key|1l 1g
+keyboard|1l 1g i b 29 o
+khe|1l 1g
+ki|1l 1g
+kia|1l 1g x
+kick|1l 1d 1l
+kid|1l 1d o
+kim|1l 1d 1r
+kin|1l 1d 1u
+king|1l 1d 1x
+kingdom|1l 1d 1x o 6 1r
+kip|1l 1d 26
+kir|1l 1d 29
+kis|1l 1d 2c
+kiss|1l 1d 2c
+kit|1l 1d 2i
+kitchen|1l 1d l 6 1u
+kkk|1l 11 1l 11 1l 11
+know|1u 21
+ko|1l 21
+koh|1l 21
+kok|1l 1 1l
+kol|1l 21 1o
+kon|1l 1 1u
+koo|1l 2s
+kos|1l 1 2c
+kot|1l 1 2i
+ku|1l 2s
+kuc|1l 7 1l
+kuk|1l 7 1l
+kun|1l 7 1u
+kuo|1l 2s 20
+kus|1l 7 2c
+kut|1l 7 2i
+kwh|1l 11 o 7 i 6 1o 30 2r 11 l
+kyd|1l 1d o
+kyi|1l 1g
+kyl|1l g 1o
+kym|1l 1d 1r
+kyo|1l 30 21
+kyu|1l 30 2s
+l|v 1o
+l's|v 1o 33
+l.|v 1o
+l.s|v 1o 33
+la|1o 1
+lab|1o 4 i
+label|1o 11 i 6 1o
+labor|1o 11 i x
+lac|1o 4 1l
+lad|1o 4 o
+ladder|1o 4 o x
+lag|1o 4 16
+lai|1o g
+lak|1o 4 1l
+lal|1o 4 1o
+lam|1o 4 1r
+lan|1o 4 1u
+land|1o 4 1u o
+landscape|1o 4 1u o 2c 1l 12 26
+lao|1o d
+lap|1o 4 26
+lar|1o 1 29
+large|1o 1 29 1i
+las|1o 1 2c
+lat|1o 1 2i
+late|1o 11 2i
+lau|1o d
+laundry|1o a 1u o 29 1f
+law|1o a
+lawsuit|1o a 2c 2t 2i
+lawyer|1o a 30 x
+lax|1o 4 1l 2c
+lay|1o 11
+lb|26 d 1u o
+lbs|26 d 1u o 33
+lcs|v 1o 2c 1g v 2c
+le|1o 6
+lea|1o 1g
+league|1o 1g 16
+lean|1o 1g 1u
+lecture|1o v 1l l x
+led|1o v o
+lee|1o 1g
+left|1o v 13 2i
+leg|1o v 16
+legal|1o 1g 16 6 1o
+leh|1o v
+lei|1o 11
+leisure|1o v 36 x
+lek|1o v 1l
+lem|1o v 1r
+len|1o v 1u
+leo|1o 1g 20
+lep|1o v 26
+les|1o v 2c
+let|1o v 2i
+leu|1o 2s
+lev|1o v 2u
+level|1o v 2u 6 1o
+lew|1o 2s
+lex|1o v 1l 2c
+ley|1o 11
+li|1o 1g
+lia|1o 1g 6
+lib|1o 1d i
+liberal|1o 1d i x 6 1o
+liberty|1o 1d i x 2i 1f
+lid|1o 1d o
+lie|1o g
+life|1o g 13
+lifetime|1o g 13 2i h 1r
+light|1o g 2i
+like|1o g 1l
+lil|1o 1d 1o
+lim|1o 1d 1r
+limit|1o 1d 1r 6 2i
+lin|1o 1d 1u
+line|1o g 1u
+lip|1o 1d 26
+lis|1o 1d 2c
+list|1o 1d 2c 2i
+lit|1o 1d 2i
+literary|1o 1d 2i x w 29 1f
+literature|1o 1d 2i x 6 l x
+liu|1o 30 2s
+liv|1o 1d 2u
+live|1o g 2u
+liz|1o 1d 33
+ln|1o 11 1u
+lo|1o 21
+load|1o 21 o
+loan|1o 21 1u
+lob|1o 1 i
+lobby|1o 1 i 1f
+lock|1o 1 1l
+loe|1o 21
+log|1o a 16
+logical|1o 1 1i 1c 1l 6 1o
+loh|1o 21
+lok|1o 1 1l
+lon|1o 1 1u
+long|1o a 1x
+loo|1o 2s
+look|1o 2p 1l
+loose|1o 2s 2c
+lop|1o 1 26
+lor|1o a 29
+lord|1o a 29 o
+los|1o 21 2c
+loss|1o a 2c
+lot|1o 1 2i
+lou|1o 2s
+lounge|1o d 1u 1i
+love|1o 7 2u
+low|1o 21
+lox|1o 1 1l 2c
+loy|1o 24
+lp|v 1o 26 1g
+lpn|v 1o 26 1g v 1u
+ls|v 1o v 2c
+lsd|w 1o w 2c o 1g
+ltd|1o 1d 1r 1c 2i 1c o
+lu|1o 2s
+lua|1o 2s 6
+luc|1o 2s 1l
+lue|1o 2s
+lug|1o 7 16
+lui|1o 2s 1c
+luk|1o 7 1l
+lum|1o 7 1r
+lun|1o 7 1u
+luo|1o 2x 21
+luu|1o 2s 2r
+lux|1o 7 1l 2c
+luxury|1o 7 16 36 x 1f
+luz|1o 7 33
+lxi|1o 1l 2c 1g
+ly|1o g
+lye|1o g
+lyn|1o 1d 1u
+m|v 1r
+m's|v 1r 33
+m-8|v 1r 11 2i
+m.|v 1r
+m.s|v 1r 33
+m1|v 1r 2x 7 1u
+m2|v 1r 2i 2s
+m3|v 1r 2l 29 1g
+m4|v 1r 13 a 29
+m5|v 1r 13 g 2u
+ma|1r 1
+mab|1r 4 i
+mac|1r 4 1l
+machine|1r 6 2f 1g 1u
+mad|1r 4 o
+mae|1r 11
+mag|1r 4 16
+magazine|1r 4 16 6 33 1h 1u
+magic|1r 4 1i 1c 1l
+mah|1r 1
+mai|1r g
+maj|1r 4 1i
+mak|1r 4 1l
+make|1r 11 1l
+mal|1r 4 1o
+mam|1r 1 1r
+man|1r 4 1u
+manage|1r 4 1u 6 1i
+manner|1r 4 1u x
+manual|1r 4 1u 30 2r 6 1o
+mao|1r d
+map|1r 4 26
+mar|1r 1 29
+march|1r 1 29 l
+margin|1r 1 29 1i 6 1u
+market|1r 1 29 1l 6 2i
+mas|1r 1 33
+mass|1r 4 2c
+master|1r 4 2c 2i x
+mat|1r 4 2i
+match|1r 4 l
+matter|1r 4 2i x
+mau|1r 21
+mav|1r 1 2u
+maw|1r a
+max|1r 4 1l 2c
+may|1r 11
+mayor|1r 11 x
+maz|1r 1 33
+mc|1r 1c 1l
+me|1r 1g
+mea|1r 1g
+med|1r v o
+medal|1r v o 6 1o
+media|1r 1g o 1f 6
+medicine|1r v o 6 2c 6 1u
+medium|1r 1g o 1f 6 1r
+mee|1r 1g
+meg|1r v 16
+mei|1r g
+mel|1r v 1o
+memory|1r v 1r x 1f
+men|1r v 1u
+mental|1r v 1u 2i 6 1o
+menu|1r v 1u 30 2r
+meo|1r 1g 20
+mer|1r v 29
+merely|1r 1d 29 1o 1f
+message|1r v 2c 6 1i
+met|1r v 2i
+method|1r v 2l 6 o
+mew|1r 30 2s
+mex|1r v 1l 2c
+mey|1r 11
+mez|1r v 33
+mgm|v 1r 16 1g v 1r
+mh|v 1r 11 l
+mhm|6 1r 19 6 1r
+mi|1r 1g
+mia|1r 1g 6
+mib|1r 1d i
+mic|1r 1d 1l
+mid|1r 1d o
+middle|1r 1d o 6 1o
+midnight|1r 1d o 1u h 2i
+mig|1r 1d 16
+mil|1r 1d 1o
+military|1r 1d 1o 6 2i w 29 1f
+milk|1r 1d 1o 1l
+million|1r 1d 1o 30 6 1u
+mim|1r 1d 1r
+min|1r 1d 1u
+mind|1r g 1u o
+minimum|1r 1d 1u 6 1r 6 1r
+minister|1r 1d 1u 6 2c 2i x
+mir|1r 1d 29
+miracle|1r 1d 29 6 1l 6 1o
+mis|1r 1d 2c
+miss|1r 1d 2c
+mission|1r 1d 2f 6 1u
+mit|v 1r g 2i 1g
+mix|1r 1d 1l 2c
+mme|1r 6 o 4 1r
+mo|1r 21
+mob|1r 1 i
+mobile|1r 21 i 6 1o
+mod|1r a o
+mode|1r 21 o
+module|1r 1 1i 2r 1o
+moe|1r 21
+mof|1r 1 13
+moi|1r 2x 1
+mok|1r 1 1l
+mol|1r a 1o
+mom|1r 1 1r
+mon|1r 21 1u
+monday|1r 7 1u o 1f
+money|1r 7 1u 1f
+monitor|1r 1 1u 6 2i x
+moo|1r 2s
+mood|1r 2s o
+moon|1r 2s 1u
+mop|1r 1 26
+mor|1r a 29
+moral|1r a 29 6 1o
+mos|1r a 2c
+most|1r 21 2c 2i
+mother|1r 7 r x
+motor|1r 21 2i x
+mount|1r d 1u 2i
+mouse|1r d 2c
+mouth|1r d 2l
+move|1r 2s 2u
+movement|1r 2s 2u 1r 6 1u 2i
+movie|1r 2s 2u 1f
+mow|1r 21
+moy|1r 24
+mpg|v 1r 26 1g 1i 1g
+mph|v 1r 26 1g 11 l
+mr|1r 1d 2c 2i x
+mr.|1r 1d 2c 2i x
+mrs|1r 1d 2c 1c 33
+ms|1r 1d 33
+ms.|1r 1d 33
+mt|1r d 1u 2i
+mu|1r 2s
+much|1r 7 l
+mud|1r 7 o
+mug|1r 7 16
+mui|1r 2s 1c
+mum|1r 7 1r
+mun|1r 7 1u
+murder|1r y o x
+music|1r 30 2s 33 1c 1l
+my|1r g
+mystery|1r 1d 2c 2i x 1f
+n|v 1u
+n's|v 1u 33
+n.|v 1u
+n.s|v 1u 33
+na|1u 1
+nab|1u 4 i
+nad|1u 4 o
+nag|1u 4 16
+nah|1u 1
+nam|1u 4 1r
+name|1u 11 1r
+nan|1u 4 1u
+nap|1u 4 26
+narrow|1u v 29 20
+nat|1u 4 2i
+national|1u 4 2f 6 1u 6 1o
+nau|1u 21
+nav|1u 4 2u
+naw|1u 1
+nay|1u 11
+ne|1u 1g
+nec|1u v 1l
+ned|1u v o
+nee|1u 1g
+need|1u 1g o
+neg|1u v 16
+negative|1u v 16 6 2i 1c 2u
+negotiate|1u 6 16 21 2f 1f 12 2i
+nej|1u 11
+nel|1u v 1o
+neo|1u 1g 20
+nerve|1u y 2u
+nes|1u v 2c
+net|1u v 2i
+network|1u v 2i 2x z 1l
+neu|1u 24
+new|1u 2s
+newspaper|1u 2s 33 26 12 26 x
+nex|1u v 1l 2c
+ney|1u 11
+nez|1u v 33
+ng|v 1x
+ngo|16 21
+ni|1u 1g
+nib|1u 1d i
+nic|v 1u g 2c 1g
+nie|1u 1g
+night|1u g 2i
+nik|1u 1d 1l
+nil|1u 1d 1o
+nine|1u g 1u
+nip|1u 1d 26
+nir|1u 1d 29
+nit|1u 1d 2i
+nix|1u 1d 1l 2c
+njt|v 1u 1i 11 2i 1g
+no|1u 21
+noa|1u 21 6
+nod|1u 1 o
+noe|1u 21
+noh|1u 21
+noise|1u 24 33
+nom|1u 1 1r
+non|1u 1 1u
+nonetheless|1u 8 1u r 6 1o v 2c
+nor|1u a 29
+north|1u a 29 2l
+not|1u 1 2i
+nov|1u 20 2u v 1r i x
+novel|1u 1 2u 6 1o
+november|1u 20 2u v 1r i x
+now|1u d
+npr|v 1u 26 1g 1 29
+nth|v 1u 2l
+nu|1u 2s
+nub|1u 7 i
+nuclear|1u 2s 1l 1o 1f x
+null|1u 7 1o
+nun|1u 7 1u
+nur|1u 2p 29
+nurse|1u y 2c
+nut|1u 7 2i
+nye|1u g
+nyx|1u 1d 1l 2c
+o|21
+o'|21
+o's|21 33
+o.|21
+o.s|21 33
+oad|21 11 o 1g
+oak|21 1l
+oar|a 29
+oas|21 11 v 2c
+oat|21 2i
+oba|21 i 6
+object|1 i 1i u 1l 2i
+och|1 1l
+oct|9 1l 2i 21 i x
+october|0 1l 2i 21 i x
+oda|21 o 6
+odd|1 o
+ode|21 o
+odp|21 o 1g 26 1g
+of|7 2u
+ofc|21 v 13 2c 1g
+off|a 13
+offense|6 13 v 1u 2c
+officer|a 13 6 2c x
+oft|a 13 2i
+often|a 13 6 1u
+og|1 16
+ogg|1 16
+oh|21
+ohl|21 1o
+ohm|21 1r
+ohr|a 29
+ohs|21 33
+oi|24
+oie|24
+oil|24 1o
+oj|21 1i 11
+oja|21 30 6
+oji|21 1i 1f
+ok|21 1l 11
+oka|21 1l 6
+oki|21 1l 1f
+ol'|21 1o
+ola|21 1o 6
+old|21 1o o
+ole|21 1o
+olk|21 1l
+olt|21 1o 2i
+oma|21 1r 6
+on|1 1u
+ona|6 1u 1
+once|2x 7 1u 2c
+one|2x 7 1u
+ong|a 1x
+online|a 1u 1o h 1u
+only|21 1u 1o 1f
+ono|21 1u 20
+ons|1 1u 33
+ooh|2s
+oop|2s 26
+op|1 26
+open|21 26 6 1u
+operate|1 26 x 12 2i
+opinion|6 26 1d 1u 30 6 1u
+opp|1 26
+opponent|6 26 21 1u 6 1u 2i
+opposite|1 26 6 33 6 2i
+ops|1 26 2c
+opt|1 26 2i
+option|1 26 2f 6 1u
+or|a 29
+ora|a 29 6
+orange|a 29 6 1u 1i
+orb|a 29 i
+ord|a 29 o
+ordinary|a 29 o 6 1u w 29 1f
+ore|a 29
+orf|a 29 13
+org|a 29 16
+organize|a 29 16 6 1u h 33
+ori|a 29 1f
+origin|a 29 6 1i 6 1u
+original|x 1d 1i 6 1u 6 1o
+orn|a 29 1u
+oro|a 29 20
+orr|a 29
+ort|a 29 2i
+ory|a 29 1f
+os|1 2c
+ose|21 33
+osh|1 2f
+oss|a 2c
+ost|21 2c 2i
+ot|a 2i
+ota|21 2i 6
+other|7 r x
+ott|1 2i
+ou|2s
+oui|2x 1g
+our|d x
+out|d 2i
+outcome|d 2i 1l 8 1r
+output|d 2i 26 2q 2i
+ova|21 2u 6
+over|21 2u x
+overcome|21 2u x 1l 8 1r
+overlook|21 2u x 1o 2q 1l
+ow|21
+owe|21
+owl|d 1o
+own|21 1u
+owner|21 1u x
+ox|1 1l 2c
+oxy|1 1l 2c 1f
+oy|24
+oye|24
+oz|1 33
+p|26 1g
+p's|26 1g 33
+p.|26 1g
+p.s|26 1g 33
+pa|26 1
+pac|26 4 1l
+pace|26 11 2c
+pack|26 4 1l
+package|26 4 1l 6 1i
+pad|26 4 o
+pae|26 g
+page|26 11 1i
+pah|26 4
+pai|26 1 1f
+pak|26 4 1l
+pal|26 4 1o
+pam|26 4 1r
+pan|26 4 1u
+panel|26 4 1u 6 1o
+pao|26 d
+pap|26 4 26
+paper|26 11 26 x
+par|26 1 29
+parallel|26 v 29 6 1o w 1o
+parent|26 v 29 6 1u 2i
+parking|26 1 29 1l 1c 1x
+parliament|26 1 29 1o 6 1r 6 1u 2i
+part|26 1 29 2i
+partner|26 1 29 2i 1u x
+pas|26 1 33
+pass|26 4 2c
+passage|26 4 2c 6 1i
+passion|26 4 2f 6 1u
+passive|26 4 2c 1c 2u
+passport|26 4 2c 26 b 29 2i
+pat|26 4 2i
+patient|26 11 2f 6 1u 2i
+patrol|26 6 2i 29 21 1o
+pattern|26 4 2i x 1u
+pause|26 a 33
+paw|26 a
+pax|26 4 1l 2c
+pay|26 11
+paz|26 1 33
+pc|26 1g 2c 1g
+pcs|26 1g 2c 1g 33
+pea|26 1g
+peak|26 1g 1l
+pee|26 1g
+peg|26 v 16
+pei|26 11
+pen|26 v 1u
+penalty|26 v 1u 6 1o 2i 1f
+pension|26 v 1u 2f 6 1u
+people|26 1g 26 6 1o
+pep|26 v 26
+per|26 y
+percent|26 x 2c v 1u 2i
+perfect|26 x 13 v 1l 2i
+performance|26 x 13 a 29 1r 6 1u 2c
+permanent|26 y 1r 6 1u 6 1u 2i
+permit|26 x 1r 1d 2i
+personal|26 y 2c 1c 1u 1c 1o
+perspective|26 x 2c 26 v 1l 2i 1c 2u
+pet|26 v 2i
+pew|26 30 2s
+pez|26 v 33
+pgm|26 1g 1i 1g v 1r
+ph|26 1g 11 l
+phase|13 11 33
+phenomenon|13 6 1u 1 1r 6 1u 2 1u
+phi|13 g
+phone|13 21 1u
+photo|13 21 2i 22
+phu|13 2s
+phy|13 g
+physical|13 1d 33 1c 1l 6 1o
+pi|26 g
+pia|26 1g 6
+pic|26 1d 1l
+picture|26 1d 1l l x
+pie|26 g
+pig|26 1d 16
+pih|26 1d
+pik|26 1d 1l
+pil|26 1d 1o
+pill|26 1d 1o
+pilot|26 g 1o 6 2i
+pin|26 1d 1u
+pink|26 1d 1x 1l
+pio|26 g 20
+pip|26 1d 26
+pit|26 1d 2i
+pitch|26 1d l
+pix|26 1d 1l 2c
+pla|26 1o 1
+place|26 1o 11 2c
+plastic|26 1o 4 2c 2i 1c 1l
+play|26 1o 11
+pleasure|26 1o v 36 x
+ply|26 1o g
+pm|26 1g v 1r
+po|26 21
+pocket|26 1 1l 6 2i
+pod|26 1 o
+poe|26 21
+pog|26 1 16
+poh|26 21
+point|26 24 1u 2i
+pol|26 a 1o
+pole|26 21 1o
+poll|26 21 1o
+pom|26 a 1r
+pon|26 1 1u
+poo|26 2s
+pop|26 1 26
+popular|26 1 26 30 6 1o x
+por|26 a 29
+portion|26 a 29 2f 6 1u
+portrait|26 a 29 2i 29 6 2i
+pos|26 1 2c
+pose|26 21 33
+positive|26 1 33 6 2i 1c 2u
+possess|26 6 33 v 2c
+possible|26 1 2c 6 i 6 1o
+pot|26 1 2i
+potential|26 6 2i v 1u 2f 6 1o
+pou|26 2s
+poverty|26 1 2u x 2i 1f
+pow|26 d
+power|26 d x
+pox|26 1 1l 2c
+ppm|26 1g 26 1g v 1r
+pray|26 29 11
+prayer|26 29 v 29
+pre|26 29 1g
+precise|26 29 1c 2c g 2c
+predict|26 29 1c o 1d 1l 2i
+prefer|26 29 6 13 y
+prepare|26 29 1f 26 v 29
+prescription|26 29 6 2c 1l 29 1d 26 2f 6 1u
+presence|26 29 v 33 6 1u 2c
+preserve|26 29 6 33 y 2u
+press|26 29 v 2c
+pressure|26 29 v 2f x
+pretend|26 29 1f 2i v 1u o
+previous|26 29 1g 2u 1f 6 2c
+pri|26 29 g
+price|26 29 g 2c
+prince|26 29 1d 1u 2c
+print|26 29 1d 1u 2i
+prison|26 29 1d 33 6 1u
+private|26 29 g 2u 6 2i
+pro|26 29 21
+problem|26 29 1 i 1o 6 1r
+procedure|26 29 6 2c 1g 1i x
+proceed|26 29 6 2c 1g o
+process|26 29 1 2c w 2c
+produce|26 29 6 o 2s 2c
+product|26 29 1 o 6 1l 2i
+professor|26 29 6 13 v 2c x
+profit|26 29 1 13 6 2i
+program|26 29 21 16 29 5 1r
+project|26 29 1 1i u 1l 2i
+prominent|26 29 1 1r 6 1u 6 1u 2i
+promote|26 29 6 1r 21 2i
+proportion|26 29 6 26 a 29 2f 6 1u
+proposal|26 29 6 26 21 33 6 1o
+prospect|26 29 1 2c 26 u 1l 2i
+protest|26 29 21 2i w 2c 2i
+prove|26 29 2s 2u
+province|26 29 1 2u 6 1u 2c
+provision|26 29 6 2u 1d 36 6 1u
+pru|26 29 2s
+pry|26 29 g
+psi|2c g
+psychological|2c h 1l 6 1o 1 1i 1c 1l 6 1o
+pty|2i g
+pu|26 2s
+pub|26 7 i
+public|26 7 i 1o 1c 1l
+publish|26 7 i 1o 1c 2f
+pug|26 7 16
+pun|26 7 1u
+punishment|26 7 1u 1c 2f 1r 6 1u 2i
+pup|26 7 26
+pur|26 y
+pure|26 30 2p 29
+pus|26 7 2c
+put|26 2p 2i
+pye|26 g
+q|1l 30 2s
+q's|1l 30 2s 33
+q.|1l 30 2s
+q.s|1l 30 2s 33
+qi|1l 1g
+qin|1l 1d 1u
+qom|1l 1 1r
+qu|1l 2s
+qua|1l 2x 1
+quarter|1l 2x a 29 2i x
+que|1l 30 2s
+queen|1l 2x 1g 1u
+question|1l 2x v 2c l 6 1u
+qui|1l 2x 1g
+quit|1l 2x 1d 2i
+quo|1l 2x 21
+quote|1l 2x 21 2i
+r|1 29
+r's|1 29 33
+r.|1 29
+r.s|1 29 33
+ra|29 1
+rab|29 4 i
+race|29 11 2c
+rad|29 4 o
+radical|29 4 o 6 1l 6 1o
+rae|29 11
+raf|29 4 13
+rag|29 4 16
+rage|29 11 1i
+rah|29 1
+rai|29 1 1f
+rail|29 11 1o
+rain|29 11 1u
+raj|29 1 36
+rak|29 4 1l
+ram|29 4 1r
+ran|29 4 1u
+range|29 11 1u 1i
+rank|29 4 1x 1l
+rao|29 d
+rap|29 4 26
+rapid|29 4 26 6 o
+rare|29 v 29
+ras|29 4 2c
+rat|29 4 2i
+rate|29 11 2i
+ratio|29 11 2f 1f 22
+rau|29 d
+raw|29 1
+rax|29 4 1l 2c
+ray|29 11
+raz|29 4 33
+rb|1 29 i 1g
+re|29 11
+rea|29 11
+reach|29 1g l
+reaction|29 1f 4 1l 2f 6 1u
+read|29 v o
+real|29 1g 1o
+reality|29 1f 4 1o 6 2i 1f
+rebel|29 v i 6 1o
+rec|29 v 1l
+receive|29 6 2c 1g 2u
+record|29 6 1l a 29 o
+red|29 v o
+ree|29 1g
+ref|29 v 13
+referee|29 w 13 x 1g
+reform|29 6 13 a 29 1r
+reg|29 v 16
+region|29 1g 1i 6 1u
+register|29 v 1i 1c 2c 2i x
+regulate|29 v 16 30 6 1o 12 2i
+reh|29 v
+reject|29 1c 1i v 1l 2i
+relate|29 1c 1o 11 2i
+release|29 1f 1o 1g 2c
+relevant|29 v 1o 6 2u 6 1u 2i
+relief|29 1c 1o 1g 13
+religion|29 1c 1o 1d 1i 6 1u
+reluctant|29 1c 1o 7 1l 2i 6 1u 2i
+rely|29 1c 1o g
+rem|29 v 1r
+remain|29 1c 1r 11 1u
+remarkable|29 1c 1r 1 29 1l 6 i 6 1o
+remedy|29 v 1r 6 o 1f
+remote|29 1c 1r 21 2i
+removal|29 1c 1r 2s 2u 6 1o
+ren|29 v 1u
+rent|29 v 1u 2i
+reo|29 1g 20
+rep|29 v 26
+repair|29 1c 26 v 29
+repeat|29 1c 26 1g 2i
+replace|29 1h 26 1o 11 2c
+report|29 1f 26 a 29 2i
+reporter|29 1c 26 a 29 2i x
+represent|29 w 26 29 6 33 v 1u 2i
+reproduce|29 1h 26 29 6 o 2s 2c
+reputation|29 w 26 30 6 2i 11 2f 6 1u
+request|29 1c 1l 2x v 2c 2i
+require|29 1h 1l 2x g x
+res|29 11 33
+reservation|29 w 33 x 2u 11 2f 6 1u
+reserve|29 1c 33 y 2u
+resident|29 v 33 1c o 6 1u 2i
+resist|29 1c 33 1d 2c 2i
+resolve|29 1f 33 1 1o 2u
+resource|29 1g 2c 9 29 2c
+respond|29 1c 2c 26 1 1u o
+restore|29 1c 2c 2i a 29
+restrict|29 1f 2c 2i 29 1d 1l 2i
+result|29 1c 33 7 1o 2i
+ret|29 v 2i
+return|29 1c 2i y 1u
+rev|29 v 2u
+revenue|29 v 2u 6 1u 2t
+revolution|29 w 2u 6 1o 2s 2f 6 1u
+rew|29 2s
+rex|29 v 1l 2c
+rey|29 11
+rha|29 1
+rho|29 21
+rhythm|29 1d r 6 1r
+ria|29 1g 6
+rib|29 1d i
+ric|29 1d 1l
+rid|29 1d o
+rig|29 1d 16
+right|29 g 2i
+rim|29 1d 1r
+rio|29 1g 20
+rip|29 1d 26
+ritual|29 1d l 2r 6 1o
+rix|29 1d 1l 2c
+riz|29 1d 33
+ro|29 21
+roa|29 21 6
+road|29 21 o
+rob|29 1 i
+roc|29 1 1l
+rocket|29 1 1l 6 2i
+rod|29 1 o
+roe|29 21
+rog|29 1 16
+roh|29 21
+roi|29 24
+rol|29 21 1o
+rom|29 1 1r
+ron|29 1 1u
+roof|29 2s 13
+room|29 2s 1r
+ros|29 a 2c
+rot|29 1 2i
+rough|29 7 13
+routine|29 2r 2i 1g 1u
+row|29 21
+rox|29 1 1l 2c
+roy|29 24
+royal|29 24 6 1o
+roz|29 1 33
+rpf|1 29 26 1g v 13
+rpm|1 29 26 1g v 1r
+ru|29 2s
+rua|29 2s 6
+rub|29 7 i
+rud|29 7 o
+rue|29 2s
+ruf|29 7 13
+rug|29 7 16
+ruh|29 7
+ruin|29 2s 6 1u
+rum|29 7 1r
+run|29 7 1u
+runner|29 7 1u x
+rural|29 2p 29 6 1o
+rus|29 7 2c
+rut|29 7 2i
+rux|29 7 1l 2c
+rye|29 g
+rys|29 1d 2c
+s|v 2c
+s's|v 2c 1c 33
+s.|v 2c
+sa|2c 1
+sac|2c 4 1l
+sacred|2c 11 1l 29 6 o
+sacrifice|2c 4 1l 29 6 13 h 2c
+sad|2c 4 o
+sag|2c 4 16
+sai|2c g
+sak|2c 4 1l
+sake|2c 11 1l
+sal|2c 4 1o
+salary|2c 4 1o x 1f
+sale|2c 11 1o
+sam|2c 4 1r
+sample|2c 4 1r 26 6 1o
+samsung|2c 4 1r 2c 8 1x
+san|2c 4 1u
+sao|2c d
+sap|2c 4 26
+sar|2c 1 29
+sas|2c 4 2c
+sat|2c 4 2i
+satellite|2c 4 2i 6 1o h 2i
+saturday|2c 4 2i x o 1f
+save|2c 11 2u
+saw|2c a
+sax|2c 4 1l 2c
+say|2c 11
+sbf|v 2c i 1g v 13
+scandal|2c 1l 4 1u o 6 1o
+schedule|2c 1l v 1i 2o 1o
+scheme|2c 1l 1g 1r
+scholarship|2c 1l 1 1o x 2f 1e 26
+school|2c 1l 2s 1o
+sci|2c 1g
+scope|2c 1l 21 26
+score|2c 1l a 29
+screen|2c 1l 29 1g 1u
+sculpture|2c 1l 7 1o 26 l x
+sdn|v 2c o 1g v 1u
+se|2c e 2l 1g 2c 2i
+sea|2c 1g
+search|2c y l
+sec|2c v 1l
+second|2c v 1l 6 1u o
+secure|2c 1c 1l 30 2p 29
+security|2c 1c 1l 30 2p 29 6 2i 1f
+see|2c 1g
+segment|2c v 16 1r 6 1u 2i
+sel|2c v 1o
+select|2c 6 1o v 1l 2i
+sell|2c v 1o
+seminar|2c v 1r 6 1u 2 29
+sen|2c v 1u
+send|2c v 1u o
+senior|2c 1g 1u 30 x
+seo|2c 1g 20
+sep|2c v 26
+september|2c u 26 2i v 1r i x
+sequence|2c 1g 1l 2x 6 1u 2c
+series|2c 1d 29 1f 33
+service|2c y 2u 6 2c
+session|2c v 2f 6 1u
+set|2c v 2i
+settle|2c v 2i 6 1o
+seven|2c v 2u 6 1u
+severe|2c 6 2u 1d 29
+sew|2c 21
+sex|2c v 1l 2c
+sh|v 2c 11 l
+sha|2f 1
+shadow|2f 4 o 22
+she|2f 1g
+shh|2f
+shi|2f 1g
+shift|2f 1d 13 2i
+shirt|2f y 2i
+shock|2f 1 1l
+shoe|2f 2s
+shooting|2f 2s 2i 1c 1x
+shop|2f 1 26
+shore|2f a 29
+short|2f a 29 2i
+shortage|2f a 29 2i 6 1i
+should|2f 2p o
+shu|2f 2s
+shut|2f 7 2i
+shy|2f g
+si|2c 1g
+sib|2c 1d i
+sic|2c 1d 1l
+sid|2c 1d o
+side|2c g o
+sie|2c 1g
+sig|2c 1d 16
+signal|2c 1d 16 1u 6 1o
+signature|2c 1d 16 1u 6 l x
+sil|2c 1d 1o
+silent|2c g 1o 6 1u 2i
+silver|2c 1d 1o 2u x
+sim|2c 1d 1r
+sin|2c 1d 1u
+sink|2c 1d 1x 1l
+sip|2c 1d 26
+sir|2c y
+sis|2c 1d 2c
+sit|2c 1d 2i
+site|2c g 2i
+siu|2c 1g 2r
+six|2c 1d 1l 2c
+size|2c g 33
+ski|2c 1l 1g
+sky|2c 1l g
+slave|2c 1o 11 2u
+slight|2c 1o g 2i
+slot|2c 1o 1 2i
+slow|2c 1o 21
+sly|2c 1o g
+small|2c 1r a 1o
+smart|2c 1r 1 29 2i
+smoke|2c 1r 21 1l
+smooth|2c 1r 2s r
+so|2c 21
+sob|2c 1 i
+socialist|2c 21 2f 6 1o 6 2c 2i
+sod|2c 1 o
+soft|2c 1 13 2i
+software|2c a 13 2i 2x w 29
+sok|2c 1 1l
+sol|2c 1 1o
+solely|2c 21 1o 1o 1f
+solidarity|2c 2 1o 6 o v 29 6 2i 1f
+solution|2c 6 1o 2s 2f 6 1u
+som|2c 1 1r
+some|2c 7 1r
+somehow|2c 7 1r 19 e
+somewhat|2c 7 1r 2x 7 2i
+son|2c 7 1u
+soo|2c 2s
+sop|2c 1 26
+sor|2c a 29
+sot|2c a 2i
+soul|2c 21 1o
+source|2c a 29 2c
+south|2c d 2l
+sow|2c d
+sox|2c 1 1l 2c
+soy|2c 24
+spa|2c 26 1
+speaker|2c 26 1g 1l x
+special|2c 26 v 2f 6 1o
+speed|2c 26 1g o
+spirit|2c 26 1d 29 6 2i
+spontaneous|2c 26 0 1u 2i 11 1u 1f 6 2c
+sport|2c 26 a 29 2i
+spring|2c 26 29 1d 1x
+spy|2c 26 g
+sr|2c 1g 1u 30 x
+sri|2f 29 1g
+st|2c 2i 29 1g 2i
+sta|2c 2i 7
+stable|2c 2i 11 i 6 1o
+stadium|2c 2i 11 o 1f 6 1r
+staff|2c 2i 4 13
+stage|2c 2i 11 1i
+stairs|2c 2i v 29 33
+stake|2c 2i 11 1l
+stand|2c 2i 4 1u o
+standard|2c 2i 4 1u o x o
+star|2c 2i 1 29
+start|2c 2i 1 29 2i
+steady|2c 2i v o 1f
+stem|2c 2i v 1r
+step|2c 2i v 26
+still|2c 2i 1d 1o
+stir|2c 2i y
+stock|2c 2i 1 1l
+stop|2c 2i 1 26
+store|2c 2i a 29
+storm|2c 2i a 29 1r
+story|2c 2i a 29 1f
+strain|2c 2i 29 11 1u
+strategic|2c 2i 29 6 2i 1g 1i 1c 1l
+stream|2c 2i 29 1g 1r
+street|2c 2i 29 1g 2i
+strength|2c 2i 29 v 1x 1l 2l
+stretch|2c 2i 29 v l
+strike|2c 2i 29 g 1l
+string|2c 2i 29 1d 1x
+strip|2c 2i 29 1d 26
+stroke|2c 2i 29 21 1l
+stu|2c 2i 2s
+studio|2c 2i 2s o 1f 22
+sty|2c 2i g
+style|2c 2i g 1o
+su|2c 2s
+sub|2c 7 i
+submit|2c 6 i 1r 1d 2i
+substantial|2c 6 i 2c 2i 4 1u l 6 1o
+substitute|2c 7 i 2c 2i 6 2i 2t 2i
+suc|2c 7 1l
+succeed|2c 6 1l 2c 1g o
+sue|2c 2s
+sufficient|2c 6 13 1d 2f 6 1u 2i
+sugar|2f 2p 16 x
+suggest|2c 6 16 1i v 2c 2i
+suh|2c 7
+sui|2c 2s 1f
+suit|2c 2s 2i
+suk|2c 7 1l
+sul|2c 7 1o
+sum|2c 7 1r
+summer|2c 7 1r x
+summit|2c 7 1r 6 2i
+sun|2c 7 1u
+sunday|2c 7 1u o 12
+sup|2c 7 26
+super|2c 2s 26 x
+supply|2c 6 26 1o g
+support|2c 6 26 a 29 2i
+supreme|2c 6 26 29 1g 1r
+sur|2c y
+surface|2c y 13 6 2c
+surgery|2c y 1i x 1f
+surplus|2c y 26 1o 6 2c
+survival|2c x 2u g 2u 6 1o
+sus|2c 7 2c
+suu|v 2c 30 2s 30 2s
+swim|2c 2x 1d 1r
+switch|2c 2x 1d l
+sy|2c g
+syd|2c 1d o
+sym|2c 1d 1r
+symbol|2c 1d 1r i 6 1o
+symptom|2c 1d 1r 26 2i 6 1r
+syn|2c 1d 1u
+syp|2c g 26
+system|2c 1d 2c 2i 6 1r
+sze|2f 1g
+t|2i 1g
+t's|2i 1g 33
+t.|2i 1g
+t.s|2i 1g 33
+ta|2i 1
+tab|2i 4 i
+table|2i 11 i 6 1o
+tac|2i 4 1l
+tad|2i 4 o
+tae|2i 11
+tag|2i 4 16
+tai|2i g
+taj|2i 1 36
+tak|2i 4 1l
+take|2i 11 1l
+tal|2i 1 1o
+tale|2i 11 1o
+talent|2i 4 1o 6 1u 2i
+talk|2i a 1l
+tall|2i a 1o
+tam|2i 4 1r
+tan|2i 4 1u
+tao|2i d
+tap|2i 4 26
+tar|2i 1 29
+target|2i 1 29 16 6 2i
+tat|2i 4 2i
+tax|2i 4 1l 2c
+tay|2i 11
+tb|2i 1g i 1g
+te|2i 1g
+tea|2i 1g
+team|2i 1g 1r
+tec|2i v 1l
+technique|2i u 1l 1u 1g 1l
+ted|2i v o
+tee|2i 1g
+tek|2i v 1l
+tel|2i v 1o
+television|2i v 1o 6 2u 1e 36 6 1u
+temporary|2i v 1r 26 x w 29 1f
+ten|2i v 1u
+tend|2i v 1u o
+tendency|2i v 1u o 6 1u 2c 1f
+tension|2i v 1u 2f 6 1u
+teo|2i 11 20
+ter|2i y
+terminal|2i y 1r 6 1u 6 1o
+territory|2i v 29 1c 2i b 29 1f
+terrorism|2i v 29 x 1e 33 6 1r
+test|2i v 2c 2i
+testimony|2i v 2c 2i 6 1r 22 1u 1f
+tet|2i v 2i
+tew|l 2s
+tex|2i v 1l 2c
+text|2i v 1l 2c 2i
+texture|2i v 1l 2c l x
+th|2i 1g 11 l
+than|r 4 1u
+thanks|2l 4 1x 1l 2c
+that|r 4 2i
+the|r 6
+their|r v 29
+them|r v 1r
+then|r v 1u
+therapy|2l v 29 6 26 1f
+there|r v 29
+thereafter|r u 29 4 13 2i x
+thereby|r v 29 i g
+these|r 1g 33
+they|r 11
+thi|2l 1g
+think|2l 1d 1x 1l
+third|2l y o
+this|r 1d 2c
+tho|r 21
+thorough|2l y 20
+thousand|2l d 33 6 1u o
+threat|2l 29 v 2i
+three|2l 29 1g
+threshold|2l 29 v 2f 22 1o o
+ths|2l 2c
+thursday|2l y 33 o 12
+thy|r g
+ti|2i 1g
+tia|2i 1g 6
+tic|2i 1d 1l
+ticket|2i 1d 1l 6 2i
+tie|2i g
+tig|2i 1d 16
+tight|2i g 2i
+til|2i 1d 1o
+tim|2i 1d 1r
+time|2i g 1r
+tin|2i 1d 1u
+tip|2i 1d 26
+tire|2i g x
+tis|2i 1d 33
+tissue|2i 1d 2c 30 2t
+tit|2i 1d 2i
+to|2i 2s
+toa|2i 21 6
+tod|2i 1 o
+toe|2i 21
+tol|2i a 1o
+tom|2i 1 1r
+ton|2i 7 1u
+tongue|2i 7 1x
+too|2i 2s
+top|2i 1 26
+tor|2i a 29
+tot|2i 1 2i
+tour|2i 2p 29
+tov|2i 21 2u
+tow|2i 21
+toy|2i 24
+trade|2i 29 11 o
+tradition|2i 29 6 o 1d 2f 6 1u
+traffic|2i 29 4 13 1c 1l
+tragedy|2i 29 4 1i 6 o 1f
+trail|2i 29 11 1o
+train|2i 29 11 1u
+transfer|2i 29 3 1u 2c 13 y
+translate|2i 29 3 1u 33 1o 11 2i
+transport|2i 29 3 1u 2c 26 a 29 2i
+tre|2i 29 11
+treasure|2i 29 v 36 x
+treat|2i 29 1g 2i
+treaty|2i 29 1g 2i 1f
+tree|2i 29 1g
+tremendous|2i 29 6 1r v 1u o 6 2c
+tri|2i 29 g
+trial|2i 29 g 6 1o
+tribe|2i 29 g i
+trigger|2i 29 1d 16 x
+trip|2i 29 1d 26
+triumph|2i 29 g 6 1r 13
+troop|2i 29 2s 26
+tropical|2i 29 1 26 1c 1l 6 1o
+true|2i 29 2s
+try|2i 29 g
+ts|2i 1g v 2c
+tse|2i 2c 1g
+tso|2i 2c 21
+tsu|2i 2c 2s
+tu|2i 2s
+tub|2i 7 i
+tue|2i 2s
+tuesday|2i 2s 33 o 1f
+tug|2i 7 16
+tuition|2i 30 2r 1d 2f 6 1u
+tuk|2i 2s 1l
+tumor|2i 2s 1r x
+tunnel|2i 7 1u 6 1o
+turn|2i y 1u
+tut|2i 7 2i
+tux|2i 7 1l 2c
+tv|2i 1g 2u 1g
+twin|2i 2x 1d 1u
+two|2i 2s
+ty|2i g
+tye|2i g
+tyo|2i g 20
+type|2i g 26
+typical|2i 1d 26 6 1l 6 1o
+u|30 2s
+u's|30 2s 33
+u.|30 2s
+u.s|30 2s 33
+ude|2s o
+udo|2s o 22
+udy|30 2s o 1f
+ugh|7 16
+uh|7
+uhh|7
+uhl|7 1o
+uhr|2p 29
+ul|7 1o
+ula|30 2s 1o 6
+ulf|7 1o 13
+uli|30 2s 1o 1f
+ulm|7 1o 1r
+um|7 1r
+uma|30 2s 1r 6
+umm|7 1r
+un|7 1u
+una|2s 1u 6
+unanimous|30 2r 1u 4 1u 6 1r 6 2c
+und|7 1u o
+under|7 1u o x
+undergo|8 1u o x 16 21
+unemployment|8 1u 1c 1r 26 1o 24 1r 6 1u 2i
+unfold|6 1u 13 21 1o o
+ung|7 1x
+uni|30 2s 1u 1f
+unique|30 2r 1u 1g 1l
+unite|30 2s 1u h 2i
+universal|30 2t 1u 6 2u y 2c 6 1o
+unlikely|6 1u 1o g 1l 1o 1f
+uno|6 1u 21
+unz|7 1u 33
+up|7 26
+update|6 26 o 11 2i
+upp|7 26
+ups|7 26 2c
+ur|y
+ure|30 2s 29
+urge|y 1i
+uri|30 y 1f
+urn|y 1u
+ury|30 2s 29 1f
+us|7 2c
+usa|30 2s v 2c 11
+usage|30 2s 2c 6 1i
+use|30 2s 2c
+user|30 2s 33 x
+uss|30 2s v 2c v 2c
+utt|7 2i
+utz|7 2i 2c
+uva|30 2s 2u 6
+uwe|30 2s
+uy|2s 1f
+uys|30 2s 1f 33
+uzi|2s 33 1f
+v|2u 1g
+v's|2u 1g 33
+v.|2u 1g
+v.s|2u 1g 33
+vaccine|2u 5 1l 2c 1g 1u
+val|2u 4 1o
+valley|2u 4 1o 1f
+value|2u 4 1o 30 2r
+van|2u 4 1u
+variable|2u v 29 1f 6 i 6 1o
+variety|2u x g 6 2i 1f
+vast|2u 4 2c 2i
+vat|2u 4 2i
+vax|2u 4 1l 2c
+vaz|2u 4 33
+ve|2u 1g
+vee|2u 1g
+venture|2u v 1u l x
+ver|2u y
+verse|2u y 2c
+version|2u y 36 6 1u
+vet|2u v 2i
+veteran|2u v 2i x 6 1u
+vex|2u v 1l 2c
+vey|2u 11
+vi|2u g
+via|2u g 6
+vic|2u 1d 1l
+victim|2u 1d 1l 2i 6 1r
+victory|2u 1d 1l 2i x 1f
+video|2u 1d o 1f 20
+vie|2u g
+vig|2u 1d 16
+vik|2u 1d 1l
+village|2u 1d 1o 6 1i
+vim|2u 1d 1r
+vin|2u 1d 1u
+violent|2u g 6 1o 6 1u 2i
+virtual|2u y l 2r 6 1o
+virus|2u g 29 6 2c
+vis|2u 1d 2c
+visible|2u 1d 33 6 i 6 1o
+vision|2u 1d 36 6 1u
+vitamin|2u g 2i 6 1r 6 1u
+viv|2u 1d 2u
+vo|2u 21
+volume|2u 1 1o 30 2r 1r
+volunteer|2u 2 1o 6 1u 2i 1d 29
+von|2u a 1u
+vos|2u 1 2c
+vow|2u d
+vox|2u 1 1l 2c
+vs|2u y 2c 6 33
+vu|2u 2s
+vue|2u 30 2s
+vy|2u g
+w|o 7 i 6 1o 30 2r
+w's|o 7 i 6 1o 30 2r 33
+w.|o 7 i 6 1o 30 2r
+w.s|o 7 i 6 1o 30 2r 33
+wa|2x 1
+wad|2x 1 o
+wag|2x 4 16
+wage|2x 11 1i
+wah|2x 1
+wai|2x g
+wal|2x a 1o
+wall|2x a 1o
+wan|2x 1 1u
+want|2x 1 1u 2i
+war|2x a 29
+was|2x 1 33
+wat|2x a 2i
+water|2x a 2i x
+wax|2x 4 1l 2c
+way|2x 11
+we|2x 1g
+web|2x v i
+wed|2x v o
+wednesday|2x v 1u 33 o 1f
+wee|2x 1g
+wei|2x 11
+welfare|2x v 1o 13 w 29
+well|2x v 1o
+wen|2x v 1u
+wes|2x v 2c
+west|2x v 2c 2i
+wet|2x v 2i
+wey|2x 11
+what|2x 7 2i
+wheel|2x 1g 1o
+when|2x v 1u
+where|2x v 29
+which|2x 1d l
+while|2x g 1o
+whisper|2x 1d 2c 26 x
+white|2x g 2i
+who|19 2s
+why|2x g
+wide|2x g o
+widespread|2x g o 2c 26 29 v o
+width|2x 1d o 2l
+wig|2x 1d 16
+wik|2x 1d 1l
+wil|2x 1d 1o
+will|2x 1d 1o
+win|2x 1d 1u
+wind|2x g 1u o
+window|2x 1d 1u o 20
+winter|2x 1d 1u 2i x
+wis|2x 1d 2c
+wit|2x 1d 2i
+with|2x 1d r
+witness|2x 1d 2i 1u 6 2c
+wix|2x 1d 1l 2c
+wiz|2x 1d 33
+wm|2x 1d 1o 30 6 1r
+wo|2x 21
+woe|2x 21
+wok|2x 1 1l
+woman|2x 2p 1r 6 1u
+won|2x 7 1u
+woo|2x 2s
+wood|2x 2p o
+wop|2x 1 26
+wor|2x a 29
+word|2x y o
+work|2x y 1l
+workshop|2x y 1l 2f 2 26
+world|2x y 1o o
+worship|2x y 2f 6 26
+would|2x 2p o
+wow|2x d
+woy|2x 24
+write|29 g 2i
+wry|29 g
+ws|o 7 i 6 1o 30 2r v 2c
+wu|2x 2s
+wy|2x 11
+wye|2x g
+wyk|2x 1d 1l
+x|v 1l 2c
+x's|v 1l 2c 1c 33
+x.|v 1l 2c
+x.s|v 1l 2c 1c 33
+xan|2f 1 1u
+xi|2f 1g
+xie|33 1g
+xio|36 a
+xu|33 2s
+xue|33 2s
+xus|33 7 2c
+y|2x g
+y's|2x g 33
+y.|2x g
+ya|30 1
+yah|30 1
+yak|30 4 1l
+yam|30 4 1r
+yan|30 4 1u
+yao|30 d
+yap|30 4 26
+yard|30 1 29 o
+yau|30 21
+yaw|30 a
+yax|30 4 1l 2c
+yay|30 11
+ye|30 1g
+yea|30 11
+year|30 1d 29
+yee|30 1g
+yeh|30 v
+yellow|30 v 1o 20
+yen|30 v 1u
+yeo|30 1g 20
+yep|30 v 26
+yer|30 y
+yes|30 v 2c
+yet|30 v 2i
+yew|30 2s
+yi|30 1g
+yie|30 1g
+yim|30 1d 1r
+yin|30 1d 1u
+yip|30 1d 26
+yo|30 21
+yoe|30 21
+yoh|30 21
+yom|30 1 1r
+yon|30 1 1u
+yoo|30 2s
+you|30 2s
+young|30 7 1x
+your|30 a 29
+yow|30 d
+yoy|30 24
+yu|30 2s
+yue|30 2s
+yuk|30 7 1l
+yul|30 7 1o
+yum|30 7 1r
+yun|30 7 1u
+yup|30 7 26
+z|33 1g
+z's|33 1g 33
+z.|33 1g
+zag|33 4 16
+zak|33 4 1l
+zan|33 4 1u
+zap|33 4 26
+ze|33 1g
+zea|33 1g
+zed|33 v o
+zee|33 1g
+zeh|33 v
+zel|33 v 1o
+zen|33 v 1u
+zero|33 1d 29 20
+zev|33 v 2u
+zhu|33 2s
+zi|33 1g
+zia|33 1g 6
+zig|33 1d 16
+zil|33 1d 1o
+zim|33 1d 1r
+zip|33 1d 26
+ziv|33 1d 2u
+zoe|33 21 1f
+zoh|33 21
+zon|33 a 1u
+zone|33 21 1u
+zoo|33 2s
+zsa|36 1
+zue|33 2s
+zug|33 7 16
+zuk|33 7 1l

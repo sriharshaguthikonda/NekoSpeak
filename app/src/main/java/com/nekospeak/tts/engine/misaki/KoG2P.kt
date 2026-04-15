@@ -208,7 +208,8 @@ class KoG2P(
             return result
         }
 
-        // --- English → Hangul (from english.py, without CMUdict) ---
+        // --- English → Hangul (full port of english.py + utils.py) ---
+        // Letter-by-letter pronunciation for acronyms (all-caps) and unknown words
         private val ENG2KOR = mapOf(
             'A' to "에이", 'B' to "비", 'C' to "씨", 'D' to "디", 'E' to "이",
             'F' to "에프", 'G' to "지", 'H' to "에이치", 'I' to "아이", 'J' to "제이",
@@ -218,19 +219,253 @@ class KoG2P(
             'Z' to "지"
         )
 
+        // ARPAbet → choseong (onset) — from utils.py to_choseong()
+        private val TO_CHOSEONG = mapOf(
+            "B" to "ᄇ", "CH" to "ᄎ", "D" to "ᄃ", "DH" to "ᄃ",
+            "DZ" to "ᄌ", "F" to "ᄑ", "G" to "ᄀ", "HH" to "ᄒ",
+            "JH" to "ᄌ", "K" to "ᄏ", "L" to "ᄅ", "M" to "ᄆ",
+            "N" to "ᄂ", "NG" to "ᄋ", "P" to "ᄑ", "R" to "ᄅ",
+            "S" to "ᄉ", "SH" to "ᄉ", "T" to "ᄐ", "TH" to "ᄉ",
+            "TS" to "ᄎ", "V" to "ᄇ", "W" to "W", "Y" to "Y",
+            "Z" to "ᄌ", "ZH" to "ᄌ"
+        )
+
+        // ARPAbet → jungseong (vowel) — from utils.py to_jungseong()
+        private val TO_JUNGSEONG = mapOf(
+            "AA" to "ᅡ", "AE" to "ᅢ", "AH" to "ᅥ", "AO" to "ᅩ",
+            "AW" to "ᅡ우", "AWER" to "ᅡ워", "AY" to "ᅡ이",
+            "EH" to "ᅦ", "ER" to "ᅥ", "EY" to "ᅦ이",
+            "IH" to "ᅵ", "IY" to "ᅵ", "OW" to "ᅩ", "OY" to "ᅩ이",
+            "UH" to "ᅮ", "UW" to "ᅮ"
+        )
+
+        // ARPAbet → jongseong (coda) — from utils.py to_jongseong()
+        private val TO_JONGSEONG = mapOf(
+            "B" to "ᆸ", "CH" to "ᆾ", "D" to "ᆮ", "DH" to "ᆮ",
+            "F" to "ᇁ", "G" to "ᆨ", "HH" to "ᇂ", "JH" to "ᆽ",
+            "K" to "ᆨ", "L" to "ᆯ", "M" to "ᆷ", "N" to "ᆫ",
+            "NG" to "ᆼ", "P" to "ᆸ", "R" to "ᆯ", "S" to "ᆺ",
+            "SH" to "ᆺ", "T" to "ᆺ", "TH" to "ᆺ", "V" to "ᆸ",
+            "W" to "ᆼ", "Y" to "ᆼ", "Z" to "ᆽ", "ZH" to "ᆽ"
+        )
+
+        /**
+         * Adjust ARPAbet phonemes for Korean loanword processing.
+         * Port of utils.py adjust().
+         * Strips stress digits, merges TS/DZ clusters, handles AWER/ER patterns.
+         */
+        fun adjust(arpabets: List<String>): List<String> {
+            var s = " " + arpabets.joinToString(" ") + " $"
+            // Strip stress digits
+            s = s.replace(Regex("\\d"), "")
+            // Merge TS and DZ clusters
+            s = s.replace(" T S ", " TS ")
+            s = s.replace(" D Z ", " DZ ")
+            // Handle AW ER → AWER
+            s = s.replace(" AW ER ", " AWER ")
+            // Handle IH/EH + R at end → ER
+            s = s.replace(" IH ER $", " IH ER ")
+            s = s.replace(" EH ER $", " EH ER ")
+            // Remove start/end markers
+            s = s.replace("$", "").trim()
+            return if (s.isNotBlank()) s.split(Regex("\\s+")) else emptyList()
+        }
+
+        /**
+         * Reconstruct Hangul jamo after ARPAbet→jamo conversion.
+         * Port of utils.py reconstruct().
+         * Handles Y/W glide merging and vowel combinations.
+         */
+        fun reconstructJamo(inp: String): String {
+            var s = inp
+            val pairs = listOf(
+                "그W" to "ᄀW", "흐W" to "ᄒW", "크W" to "ᄏW",
+                "ᄂYᅥ" to "니어", "ᄃYᅥ" to "디어", "ᄅYᅥ" to "리어",
+                "Yᅵ" to "ᅵ", "Yᅡ" to "ᅣ", "Yᅢ" to "ᅤ",
+                "Yᅥ" to "ᅧ", "Yᅦ" to "ᅨ", "Yᅩ" to "ᅭ",
+                "Yᅮ" to "ᅲ", "Wᅡ" to "ᅪ", "Wᅢ" to "ᅫ",
+                "Wᅥ" to "ᅯ", "Wᅩ" to "ᅯ", "Wᅮ" to "ᅮ",
+                "Wᅦ" to "ᅰ", "Wᅵ" to "ᅱ",
+                "ᅳᅵ" to "ᅴ", "Y" to "ᅵ", "W" to "ᅮ"
+            )
+            for ((from, to) in pairs) {
+                s = s.replace(from, to)
+            }
+            return s
+        }
+
+        /**
+         * Convert ARPAbet phonemes to Hangul using Korean loanword orthography rules.
+         * Full port of english.py convert_eng() phoneme-by-phoneme rules.
+         *
+         * Rules follow the 외래어 표기법 (Korean loanword orthography):
+         * - Rule 1: Voiceless stops (P, T, K) after short vowels
+         * - Rule 2: Voiced stops (B, D, G) with 으 insertion
+         * - Rule 3: Fricatives (S, Z, F, V, TH, DH, SH, ZH)
+         * - Rule 4: Affricates (TS, DZ, CH, JH)
+         * - Rule 5: Nasals (M, N, NG)
+         * - Rule 6: Liquid (L)
+         * - Rule 8: Diphthongs
+         */
+        fun arpabetToHangul(phonemes: List<String>): String {
+            if (phonemes.isEmpty()) return ""
+            var ret = ""
+            val shortVowels = setOf("AE", "AH", "AX", "EH", "IH", "IX", "UH")
+            val vowels = "AEIOUY"
+            val consonants = "BCDFGHJKLMNPQRSTVWXZ"
+            val syllableFinalOrConsonants = "\$BCDFGHJKLMNPQRSTVWXZ"
+
+            for (i in phonemes.indices) {
+                val p = phonemes[i]
+                val pPrev = if (i > 0) phonemes[i - 1] else "^"
+                val pNext = if (i < phonemes.size - 1) phonemes[i + 1] else "$"
+                val pNext2 = if (i < phonemes.size - 2) phonemes[i + 1] else "$"
+
+                when {
+                    // Rule 1: Voiceless stops (P, T, K)
+                    p in listOf("P", "T", "K") -> {
+                        when {
+                            pPrev.substring(0, minOf(2, pPrev.length)) in shortVowels && pNext == "$" ->
+                                ret += (TO_JONGSEONG[p] ?: p)
+                            pPrev.substring(0, minOf(2, pPrev.length)) in shortVowels &&
+                                pNext.isNotEmpty() && pNext[0] !in "AEIOULRMN" ->
+                                ret += (TO_JONGSEONG[p] ?: p)
+                            pNext.isNotEmpty() && pNext[0] in syllableFinalOrConsonants -> {
+                                ret += (TO_CHOSEONG[p] ?: p)
+                                ret += "ᅳ"
+                            }
+                            else -> ret += (TO_CHOSEONG[p] ?: p)
+                        }
+                    }
+
+                    // Rule 2: Voiced stops (B, D, G)
+                    p in listOf("B", "D", "G") -> {
+                        ret += (TO_CHOSEONG[p] ?: p)
+                        if (pNext.isNotEmpty() && pNext[0] in syllableFinalOrConsonants) {
+                            ret += "ᅳ"
+                        }
+                    }
+
+                    // Rule 3: Fricatives
+                    p in listOf("S", "Z", "F", "V", "TH", "DH", "SH", "ZH") -> {
+                        ret += (TO_CHOSEONG[p] ?: p)
+                        when {
+                            p in listOf("S", "Z", "F", "V", "TH", "DH") -> {
+                                if (pNext.isNotEmpty() && pNext[0] in syllableFinalOrConsonants) {
+                                    ret += "ᅳ"
+                                }
+                            }
+                            p == "SH" -> {
+                                when {
+                                    pNext == "$" -> ret += "ᅵ"
+                                    pNext.isNotEmpty() && pNext[0] in consonants -> ret += "ᅲ"
+                                    else -> ret += "Y" // vowel-dependent glide
+                                }
+                            }
+                            p == "ZH" -> {
+                                if (pNext.isNotEmpty() && pNext[0] in syllableFinalOrConsonants) {
+                                    ret += "ᅵ"
+                                }
+                            }
+                        }
+                    }
+
+                    // Rule 4: Affricates
+                    p in listOf("TS", "DZ", "CH", "JH") -> {
+                        ret += (TO_CHOSEONG[p] ?: p)
+                        if (pNext.isNotEmpty() && pNext[0] in syllableFinalOrConsonants) {
+                            ret += if (p in listOf("TS", "DZ")) "ᅳ" else "ᅵ"
+                        }
+                    }
+
+                    // Rule 5: Nasals (M, N, NG)
+                    p in listOf("M", "N", "NG") -> {
+                        if (p in listOf("M", "N") && pNext.isNotEmpty() && pNext[0] in vowels) {
+                            ret += (TO_CHOSEONG[p] ?: p)
+                        } else {
+                            ret += (TO_JONGSEONG[p] ?: p)
+                        }
+                    }
+
+                    // Rule 6: Liquid (L)
+                    p == "L" -> {
+                        when {
+                            pPrev == "^" -> ret += (TO_CHOSEONG["L"] ?: "ᄅ")
+                            pNext.isNotEmpty() && pNext[0] in "\$BCDFGHJKLPQRSTVWXZ" ->
+                                ret += (TO_JONGSEONG["L"] ?: "ᆯ")
+                            pPrev in listOf("M", "N") -> ret += (TO_CHOSEONG["L"] ?: "ᄅ")
+                            pNext.isNotEmpty() && pNext[0] in vowels -> ret += "ᆯᄅ"
+                            pNext in listOf("M", "N") &&
+                                pNext2.isNotEmpty() && pNext2[0] !in vowels -> ret += "ᆯ르"
+                            else -> ret += (TO_JONGSEONG["L"] ?: "ᆯ")
+                        }
+                    }
+
+                    // ER (rhotic vowel)
+                    p == "ER" -> {
+                        if (pPrev.isNotEmpty() && pPrev[0] in vowels) ret += "ᄋ"
+                        ret += (TO_JUNGSEONG["ER"] ?: "ᅥ")
+                        if (pNext.isNotEmpty() && pNext[0] in vowels) ret += "ᄅ"
+                    }
+
+                    // R (consonant)
+                    p == "R" -> {
+                        if (pNext.isNotEmpty() && pNext[0] in vowels) {
+                            ret += (TO_CHOSEONG["R"] ?: "ᄅ")
+                        }
+                        // else: silent or handled by ER
+                    }
+
+                    // Rule 8: Vowels and diphthongs
+                    p.isNotEmpty() && p[0] in "AEIOU" -> {
+                        ret += (TO_JUNGSEONG[p] ?: p)
+                    }
+
+                    // Fallback: any other consonant
+                    else -> {
+                        ret += (TO_CHOSEONG[p] ?: p)
+                    }
+                }
+            }
+
+            // Apply reconstruction rules (glide merging)
+            ret = reconstructJamo(ret)
+            // Compose jamo back to syllables
+            ret = composeJamo(ret)
+            // Remove remaining jamo characters (should be fully composed)
+            ret = ret.replace(Regex("[\\u1100-\\u11FF]"), "")
+
+            return ret
+        }
+
+        /**
+         * Convert English words in Korean text to Hangul.
+         * Full port of english.py convert_eng().
+         *
+         * For ALL-CAPS words or unknown words: letter-by-letter (word_to_hangul).
+         * For known words in CMUdict: ARPAbet→Hangul via loanword orthography rules.
+         */
         fun convertEng(string: String): String {
             var result = string
-            val engWords = Regex("[A-Za-z]+").findAll(string).map { it.value }
-                .sortedByDescending { it.length }.toList()
+            val engWords = Regex("[A-Za-z]+").findAll(string)
+                .map { it.value }
+                .distinctBy { it.lowercase() }
+                .sortedByDescending { it.length }
+                .toList()
 
-            for (word in engWords) {
-                if (word.all { it.isUpperCase() }) {
-                    val hangul = word.map { ENG2KOR[it] ?: it.toString() }.joinToString("")
-                    result = result.replace(word, hangul)
+            for (engWord in engWords) {
+                if (engWord.all { it.isUpperCase() } || CmuDict.lookup(engWord) == null) {
+                    // Acronym or unknown: letter-by-letter conversion
+                    val hangul = engWord.map { ENG2KOR[it.uppercaseChar()] ?: it.toString() }.joinToString("")
+                    result = result.replace(engWord, hangul)
                 } else {
-                    // For mixed/ lowercase English words, spell letter by letter
-                    val hangul = word.uppercaseChar().let { ENG2KOR[it] ?: it.toString() }
-                    result = result.replace(word, hangul)
+                    // Known word: ARPAbet → Hangul via loanword orthography
+                    val arpabets = CmuDict.lookup(engWord)!!
+                    val phonemes = adjust(arpabets)
+                    val hangul = arpabetToHangul(phonemes)
+                    if (hangul.isNotBlank()) {
+                        result = result.replace(engWord, hangul)
+                    }
                 }
             }
             return result

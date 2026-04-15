@@ -12,6 +12,7 @@ import com.nekospeak.tts.engine.misaki.OutputMode
 import com.nekospeak.tts.engine.misaki.JaG2P
 import com.nekospeak.tts.engine.misaki.ZhG2P
 import com.nekospeak.tts.engine.misaki.KoG2P
+import com.nekospeak.tts.engine.misaki.CmuDict
 import com.nekospeak.tts.engine.misaki.ViG2P
 import com.nekospeak.tts.engine.misaki.HeG2P
 
@@ -120,6 +121,7 @@ class Phonemizer(private val context: Context) {
             // Korean G2P (Misaki KO port)
             koG2P = KoG2P(espeakFallback = espeakFallback)
             KoG2P.loadDictionaries(context)
+            CmuDict.load(context) // ARPAbet dictionary for English→Hangul loanword conversion
 
             // Vietnamese G2P (Misaki VI port)
             viG2P = ViG2P(
