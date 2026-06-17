@@ -28,6 +28,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nekospeak.tts.data.PrefsManager
 import com.nekospeak.tts.ui.navigation.Screen
+import com.nekospeak.tts.ui.screens.AudioOutputScreen
 import com.nekospeak.tts.ui.screens.SettingsScreen
 import com.nekospeak.tts.ui.screens.VoicesScreen
 import com.nekospeak.tts.ui.screens.VoiceRecorderScreen
@@ -79,6 +80,10 @@ fun MainScreen() {
                     onVoiceCloneHandled = { pendingVoiceCloneData = null }
                 )
             }
+
+            composable(Screen.Audio.route) {
+                AudioOutputScreen()
+            }
             
             composable(Screen.Settings.route) {
                 SettingsScreen(navController = navController)
@@ -108,6 +113,7 @@ fun BottomNavBar(navController: NavHostController) {
 
         val items = listOf(
             Screen.Voices to Icons.AutoMirrored.Filled.List,
+            Screen.Audio to Icons.Default.Settings,
             Screen.Settings to Icons.Default.Settings
         )
 
