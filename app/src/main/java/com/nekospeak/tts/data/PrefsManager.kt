@@ -23,6 +23,8 @@ class PrefsManager(context: Context) {
         private const val KEY_POCKET_EOS = "pocket_frames_after_eos"
         private const val KEY_POCKET_DECODE = "pocket_decoding_mode"
         private const val KEY_POCKET_CHUNK = "pocket_decode_chunk_size"
+        private const val KEY_AUDIO_STREAM = "audio_stream"
+        private const val KEY_PREFER_SPEAKER_FOR_CALL_STREAM = "prefer_speaker_for_call_stream"
     }
 
     // Reactive counter for theme updates
@@ -70,6 +72,14 @@ class PrefsManager(context: Context) {
     var darkMode: String
         get() = prefs.getString(KEY_DARK_MODE, "FOLLOW_SYSTEM") ?: "FOLLOW_SYSTEM"
         set(value) = prefs.edit().putString(KEY_DARK_MODE, value).apply()
+
+    var audioStream: String
+        get() = prefs.getString(KEY_AUDIO_STREAM, "media") ?: "media"
+        set(value) = prefs.edit().putString(KEY_AUDIO_STREAM, value).apply()
+
+    var preferSpeakerForCallStream: Boolean
+        get() = prefs.getBoolean(KEY_PREFER_SPEAKER_FOR_CALL_STREAM, false)
+        set(value) = prefs.edit().putBoolean(KEY_PREFER_SPEAKER_FOR_CALL_STREAM, value).apply()
 
     // Restored Pocket-TTS settings
     var pocketTemperature: Float
