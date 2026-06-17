@@ -49,6 +49,19 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Create temporary CI release keystore
+        run: |
+          keytool -genkeypair \
+            -keystore app/release.keystore \
+            -storepass nekospeak123 \
+            -alias nekospeak \
+            -keypass nekospeak123 \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=NekoSpeak CI,O=NekoSpeak,C=IN" \
+            -noprompt
+
       - name: Build release APKs
         run: ./gradlew --no-daemon clean assembleRelease
 
