@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.nekospeak.tts.audio.NekoTtsPreviewSpeaker
 import com.nekospeak.tts.data.PrefsManager
 import com.nekospeak.tts.ui.components.VoiceCard
 import com.nekospeak.tts.ui.viewmodel.VoicesViewModel
@@ -181,24 +182,31 @@ fun VoicesScreen(
                     FloatingActionButton(
                         onClick = {
                              val voiceId = uiState.selectedVoiceId ?: prefs.currentVoice
-                             val params = android.os.Bundle()
-                             params.putString("voiceName", voiceId)
-                             
+                              
                              // Graceful recovery: stop, and if isSpeaking was true after stop, recreate TTS
                              val wasSpeaking = tts?.isSpeaking == true
                              tts?.stop()
-                             
+                              
                              // If TTS was stuck or in an error state, recreate it
                              if (wasSpeaking) {
                                  // Give a brief moment for stop to take effect
                                  tts?.shutdown()
                                  tts = TextToSpeech(context, { _ -> }, "com.nekospeak.tts")
                              }
-                             
-                             // Set the speech rate from preferences
-                             tts?.setSpeechRate(prefs.speechSpeed)
-                             
-                             tts?.speak(testText, TextToSpeech.QUEUE_FLUSH, params, "test_id")
+
+                             val speakResult = NekoTtsPreviewSpeaker.speak(
+                                 context = context,
+                                 prefs = prefs,
+                                 tts = tts,
+                                 text = testText,
+                                 voiceId = voiceId
+                             )
+
+                             if (speakResult == TextToSpeech.ERROR) {
+                                 scope.launch {
+                                     snackbarHostState.showSnackbar("Unable to play preview speech")
+                                 }
+                             }
                         },
                         containerColor = MaterialTheme.colorScheme.primary
                     ) {
